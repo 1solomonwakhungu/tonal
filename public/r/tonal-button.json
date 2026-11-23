@@ -3,7 +3,7 @@
   "name": "tonal-button",
   "type": "registry:ui",
   "title": "Tonal Button",
-  "description": "Quiet primary, dark, outlined, and tonal action buttons with automatic GM3 pill or Store commerce radius.",
+  "description": "Quiet primary, dark, outlined, and tonal action buttons with automatic Soft Pill or Commerce radius.",
   "registryDependencies": [
     "tonal-tokens"
   ],

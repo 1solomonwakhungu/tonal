@@ -3,7 +3,7 @@
   "name": "tonal-app-shell",
   "type": "registry:block",
   "title": "Tonal App Shell",
-  "description": "Google Drive and AI Studio–style cool tonal outer shell with pill navigation rail, optional quota footer slot, and elevated workspace sheet.",
+  "description": "Productivity workspace and cloud console cool tonal outer shell with pill navigation rail, optional quota footer slot, and elevated workspace sheet.",
   "registryDependencies": [
     "tonal-tokens",
     "chevron-link"

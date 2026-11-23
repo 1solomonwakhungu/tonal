@@ -241,9 +241,9 @@ export default function DashboardDemoPage() {
         </div>
       </div>
 
-      {/* Google Workspace / AI Studio–style Tonal App Shell */}
+      {/* Productivity Workspace / Cloud Console Tonal App Shell */}
       <div className="rounded-[var(--t-radius-hero)] bg-[var(--t-surface-cool)] p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Left Navigation Rail (Flat Google Drive / AI Studio style) */}
+        {/* Left Navigation Rail (Flat Tonal Pill Style) */}
         <aside className="lg:col-span-3 flex flex-col justify-between gap-6 p-2">
           <div className="flex flex-col gap-1">
             <div className="px-3 pb-2 text-[11.5px] font-medium uppercase tracking-wider text-[var(--t-ink-muted)]">
@@ -462,7 +462,7 @@ export default function DashboardDemoPage() {
                 </div>
               </div>
 
-              {/* Quiet Editorial Insight Panel (Gemini / Analytics style) */}
+              {/* Quiet Editorial Insight Panel */}
               <div className="xl:col-span-4 rounded-[20px] bg-[var(--t-surface-warm)] p-5 flex flex-col justify-between gap-5">
                 <div>
                   <div className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[var(--t-blue-hover)] mb-2.5">
@@ -518,7 +518,7 @@ export default function DashboardDemoPage() {
               </h2>
 
               <div className="flex flex-wrap items-center gap-2">
-                {/* Google-style Pill Search Field */}
+                {/* Pill Search Field */}
                 <div className="relative">
                   <Search className="h-4 w-4 text-[var(--t-ink-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -614,7 +614,7 @@ export default function DashboardDemoPage() {
         </div>
       </div>
 
-      {/* Minimal Google-style New Project Dialog */}
+      {/* Minimal Tonal New Project Dialog */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px] flex items-center justify-center p-4">
           <div className="w-full max-w-md rounded-[28px] bg-[var(--t-elevated)] p-7 shadow-[0_24px_48px_-16px_rgba(0,0,0,0.4)] border border-[var(--t-border-subtle)]">
