@@ -1,6 +1,6 @@
-/* Tonal Design Tokens — Google Store & Editorial Material */
+/* Tonal Design Tokens — Editorial Tonal Surfaces & Typography */
 :root {
-  --t-font: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --t-font: "DM Sans Variable", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Surfaces (flat tonal steps instead of heavy shadows) */
   --t-bg: #ffffff;
@@ -44,7 +44,7 @@
   --t-ease: cubic-bezier(0.2, 0, 0, 1);
 }
 
-/* Switch button shape & primary ink globally for Google Store Commerce mode */
+/* Switch button shape & primary ink globally for Commerce mode */
 [data-tonal-mode="commerce"] {
   --t-radius-btn: 6px;
   --t-cta-bg: #202124;
@@ -52,7 +52,7 @@
   --t-cta-hover: #3c4043;
 }
 
-/* Authentic Google Dark Mode (Gemini / Chrome / Google Store dark surfaces) */
+/* Dark Mode tonal surfaces */
 [data-tonal-theme="dark"] {
   color-scheme: dark;
 
