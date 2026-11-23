@@ -240,7 +240,7 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
               {
                 question: "Do I need a heavy UI framework installed?",
                 answer:
-                  "No. Tonal is pure React + Tailwind CSS powered by ~12 CSS variables and self-hosted open-source DM Sans (SIL OFL-1.1).",
+                  "No. Tonal is pure React + Tailwind CSS powered by ~12 CSS variables and open-source Google Sans (SIL OFL-1.1).",
               },
               {
                 question:
@@ -394,9 +394,9 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
           Editorial tonal UI, minus the bloat.
         </h1>
         <p className="t-body text-[17px] sm:text-[18px] max-w-xl mb-8">
-          Tonal distills flagship hardware and workspace interfaces down to DM
-          Sans, flat tonal surfaces, 24px bento tiles, and quiet controls you
-          own directly in your codebase.
+          Tonal distills flagship hardware and workspace interfaces down to
+          open-source Google Sans, flat tonal surfaces, 24px bento tiles, and
+          quiet controls you own directly in your codebase.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 mb-7">

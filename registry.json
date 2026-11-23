@@ -7,7 +7,7 @@
       "name": "tonal-tokens",
       "type": "registry:style",
       "title": "Tonal Design Tokens",
-      "description": "Core editorial tonal tokens: DM Sans scale, flat tonal surfaces, radii, and motion.",
+      "description": "Core editorial tonal tokens: Google Sans (SIL OFL-1.1) type scale, flat tonal surfaces, radii, and motion.",
       "files": [
         {
           "path": "registry/tonal/tokens.css",
