@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kpi-grid",
+  "type": "registry:block",
+  "title": "KPI Metric Grid",
+  "description": "Calm 4-column Google Analytics–style KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
+  "registryDependencies": [
+    "tonal-tokens",
+    "tonal-chip"
+  ],
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "registry/tonal/blocks/kpi-grid.tsx",
+      "type": "registry:component",
+      "content": "import * as React from \"react\";\nimport { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\nimport { TonalChip, type TonalChipProps } from \"../chip\";\n\nfunction cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n\nexport interface KpiMetric {\n  id?: string;\n  title: string;\n  value: string;\n  delta?: string;\n  tone?: TonalChipProps[\"tone\"];\n  subtitle?: string;\n}\n\nexport const DEFAULT_KPIS: KpiMetric[] = [\n  {\n    id: \"active-users\",\n    title: \"Active Users\",\n    value: \"24,890\",\n    delta: \"+14.2%\",\n    tone: \"mint\",\n    subtitle: \"vs previous 7 days\",\n  },\n  {\n    id: \"api-requests\",\n    title: \"API Requests\",\n    value: \"1.84M\",\n    delta: \"+22.6%\",\n    tone: \"mint\",\n    subtitle: \"99.98% success rate\",\n  },\n  {\n    id: \"median-latency\",\n    title: \"Median Latency\",\n    value: \"142 ms\",\n    delta: \"-18 ms\",\n    tone: \"blue\",\n    subtitle: \"p95 at 290 ms\",\n  },\n  {\n    id: \"estimated-spend\",\n    title: \"Estimated Spend\",\n    value: \"$418\",\n    delta: \"On track\",\n    tone: \"neutral\",\n    subtitle: \"of $1,200 monthly cap\",\n  },\n];\n\nexport interface KpiGridProps extends React.HTMLAttributes<HTMLDivElement> {\n  items?: KpiMetric[];\n  columns?: 2 | 3 | 4;\n}\n\nconst columnClasses: Record<2 | 3 | 4, string> = {\n  2: \"grid-cols-1 sm:grid-cols-2\",\n  3: \"grid-cols-1 sm:grid-cols-2 lg:grid-cols-3\",\n  4: \"grid-cols-1 sm:grid-cols-2 xl:grid-cols-4\",\n};\n\nexport function KpiGrid({\n  items = DEFAULT_KPIS,\n  columns = 4,\n  className,\n  ...props\n}: KpiGridProps) {\n  return (\n    <div\n      className={cn(\"grid gap-3.5\", columnClasses[columns], className)}\n      {...props}\n    >\n      {items.map((kpi) => (\n        <div\n          key={kpi.id ?? kpi.title}\n          className=\"rounded-[18px] bg-[var(--t-surface)] p-4 flex flex-col justify-between gap-3 transition-colors duration-200 [transition-timing-function:var(--t-ease)]\"\n        >\n          <div className=\"flex items-center justify-between gap-2\">\n            <span className=\"text-[12.5px] font-medium text-[var(--t-ink-muted)] truncate\">\n              {kpi.title}\n            </span>\n            {kpi.delta && (\n              <TonalChip\n                tone={kpi.tone ?? \"neutral\"}\n                className=\"px-2 py-0.5 text-[11px] shrink-0\"\n              >\n                {kpi.delta}\n              </TonalChip>\n            )}\n          </div>\n          <div>\n            <div className=\"text-[28px] font-medium tracking-[-0.03em] leading-none text-[var(--t-ink)] tabular-nums mb-1.5\">\n              {kpi.value}\n            </div>\n            {kpi.subtitle && (\n              <div className=\"text-[11.5px] text-[var(--t-ink-muted)]\">\n                {kpi.subtitle}\n              </div>\n            )}\n          </div>\n        </div>\n      ))}\n    </div>\n  );\n}\n"
+    }
+  ]
+}
