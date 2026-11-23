@@ -62,7 +62,7 @@ export default function AiDemoPage() {
         </div>
       </div>
 
-      {/* Centered Gemini / DeepMind Hero */}
+      {/* Centered Calm AI Studio Hero */}
       <section className="text-center max-w-3xl mx-auto flex flex-col items-center pt-4">
         <TonalChip tone="blue" className="mb-5">
           Introducing Aura 2.5

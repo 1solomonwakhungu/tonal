@@ -3,7 +3,7 @@
   "name": "tonal-accordion",
   "type": "registry:ui",
   "title": "Tonal Accordion",
-  "description": "Hairline-divided FAQ accordion with smooth Google decelerating easing.",
+  "description": "Hairline-divided FAQ accordion with smooth decelerating easing.",
   "registryDependencies": [
     "tonal-tokens"
   ],

@@ -3,9 +3,9 @@ import "./globals.css";
 import { TonalShell } from "@/components/tonal-shell";
 
 export const metadata: Metadata = {
-  title: "Tonal — Google Store–Inspired UI Registry",
+  title: "Tonal — Editorial Tonal UI Registry",
   description:
-    "Flat tonal surfaces, Google Sans typography, and zero Material bloat — shipped as a shadcn-compatible registry.",
+    "Flat tonal surfaces, open-source Google Sans typography, and zero bloat — shipped as a shadcn-compatible registry.",
 };
 
 export default function RootLayout({

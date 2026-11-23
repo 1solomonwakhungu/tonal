@@ -17,8 +17,8 @@ export const DEFAULT_SPEC_ROWS: SpecRow[] = [
   {
     label: "Display",
     values: [
-      '6.7" Super Actua OLED · 1–120Hz',
-      '6.3" Actua OLED · 60–120Hz',
+      '6.7" Pro LTPO OLED · 1–120Hz',
+      '6.3" LTPO OLED · 60–120Hz',
     ],
   },
   {
@@ -40,7 +40,7 @@ export const DEFAULT_SPEC_ROWS: SpecRow[] = [
     ],
   },
   {
-    label: "Materials",
+    label: "Build",
     values: [
       "Matte satin glass · Recycled aluminum",
       "Polished glass · Recycled aluminum",

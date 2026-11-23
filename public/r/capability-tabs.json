@@ -3,7 +3,7 @@
   "name": "capability-tabs",
   "type": "registry:block",
   "title": "Capability Switcher",
-  "description": "Interactive Aura AI and Gemini–style capability switcher inside a cool tonal stage with prompt and grounded response panels.",
+  "description": "Interactive calm AI studio capability switcher inside a cool tonal stage with prompt and grounded response panels.",
   "registryDependencies": [
     "tonal-tokens",
     "surface-tile",

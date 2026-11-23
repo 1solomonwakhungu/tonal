@@ -3,7 +3,7 @@
   "name": "kpi-grid",
   "type": "registry:block",
   "title": "KPI Metric Grid",
-  "description": "Calm 4-column Google Analytics–style KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
+  "description": "Calm 4-column analytics KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
   "registryDependencies": [
     "tonal-tokens",
     "tonal-chip"

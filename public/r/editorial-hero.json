@@ -3,7 +3,7 @@
   "name": "editorial-hero",
   "type": "registry:block",
   "title": "Editorial Finish Hero",
-  "description": "Google Store–style split hero with interactive finish swatches that dynamically tint the tonal backdrop.",
+  "description": "Flagship hardware storefront split hero with interactive finish swatches that dynamically tint the tonal backdrop.",
   "registryDependencies": [
     "tonal-tokens",
     "tonal-button",
