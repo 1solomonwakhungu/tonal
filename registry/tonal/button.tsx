@@ -22,12 +22,12 @@ export const TonalButton = React.forwardRef<HTMLButtonElement, TonalButtonProps>
 
     const variantStyles = {
       primary:
-        "bg-[var(--t-cta-bg)] text-white hover:bg-[var(--t-cta-hover)]",
-      dark: "bg-[#202124] text-white hover:bg-[#3c4043]",
+        "bg-[var(--t-cta-bg)] text-[var(--t-cta-fg,#ffffff)] hover:bg-[var(--t-cta-hover)]",
+      dark: "bg-[var(--t-dark-btn-bg,#202124)] text-[var(--t-dark-btn-fg,#ffffff)] hover:bg-[var(--t-dark-btn-hover,#3c4043)]",
       outline:
-        "bg-transparent text-[var(--t-ink)] border border-[var(--t-ink-muted)] hover:bg-black/[0.04]",
+        "bg-transparent text-[var(--t-ink)] border border-[var(--t-ink-muted)] hover:bg-[var(--t-hover-overlay,rgba(32,33,36,0.04))]",
       tonal:
-        "bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)] hover:bg-[#d2e3fc]",
+        "bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)] hover:bg-[var(--t-blue-tint-hover,#d2e3fc)]",
       ghost:
         "bg-transparent text-[var(--t-ink-secondary)] hover:bg-[var(--t-surface-muted)]",
     };

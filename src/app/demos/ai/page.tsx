@@ -95,8 +95,8 @@ export default function AiDemoPage() {
                     onClick={() => setActiveCap(cap)}
                     className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-medium cursor-pointer transition-all duration-200 ${
                       active
-                        ? "bg-[var(--t-ink)] text-white"
-                        : "bg-white text-[var(--t-ink-secondary)] hover:bg-[#e8f0fe]"
+                        ? "bg-[var(--t-ink)] text-[var(--t-bg)]"
+                        : "bg-[var(--t-elevated)] text-[var(--t-ink-secondary)] border border-[var(--t-border-subtle)] hover:bg-[var(--t-blue-tint)]"
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -111,7 +111,7 @@ export default function AiDemoPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
-            <div className="md:col-span-5 rounded-[20px] bg-white p-6 border border-black/[0.05] flex flex-col justify-between gap-4">
+            <div className="md:col-span-5 rounded-[20px] bg-[var(--t-elevated)] p-6 border border-[var(--t-border-subtle)] flex flex-col justify-between gap-4">
               <div>
                 <div className="text-[11.5px] font-medium uppercase tracking-wider text-[var(--t-ink-muted)] mb-2">
                   Prompt
@@ -125,7 +125,7 @@ export default function AiDemoPage() {
               </div>
             </div>
 
-            <div className="md:col-span-7 rounded-[20px] bg-white p-6 border border-black/[0.05] flex flex-col justify-between gap-4">
+            <div className="md:col-span-7 rounded-[20px] bg-[var(--t-elevated)] p-6 border border-[var(--t-border-subtle)] flex flex-col justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-wider text-[var(--t-blue)] mb-2">
                   <Sparkles className="h-3.5 w-3.5" />
