@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tonal-accordion",
+  "type": "registry:ui",
+  "title": "Tonal Accordion",
+  "description": "Hairline-divided FAQ accordion with smooth Google decelerating easing.",
+  "registryDependencies": [
+    "tonal-tokens"
+  ],
+  "dependencies": [
+    "clsx",
+    "tailwind-merge",
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "registry/tonal/accordion.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { ChevronDown } from \"lucide-react\";\nimport { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nfunction cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n\nexport interface AccordionItemData {\n  question: string;\n  answer: string;\n}\n\nexport function TonalAccordion({\n  items,\n  className,\n}: {\n  items: AccordionItemData[];\n  className?: string;\n}) {\n  const [openIndex, setOpenIndex] = React.useState<number | null>(0);\n\n  return (\n    <div\n      className={cn(\n        \"divide-y divide-[var(--t-border-subtle)] border-y border-[var(--t-border-subtle)]\",\n        className\n      )}\n    >\n      {items.map((item, idx) => {\n        const isOpen = openIndex === idx;\n        return (\n          <div key={item.question}>\n            <button\n              type=\"button\"\n              onClick={() => setOpenIndex(isOpen ? null : idx)}\n              aria-expanded={isOpen}\n              className=\"flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer group\"\n            >\n              <span className=\"text-[16px] font-medium tracking-[-0.015em] text-[var(--t-ink)] group-hover:text-[var(--t-blue)] transition-colors\">\n                {item.question}\n              </span>\n              <ChevronDown\n                className={cn(\n                  \"h-5 w-5 shrink-0 text-[var(--t-ink-muted)] transition-transform duration-250 [transition-timing-function:var(--t-ease)]\",\n                  isOpen && \"rotate-180 text-[var(--t-ink)]\"\n                )}\n              />\n            </button>\n            <div\n              className={cn(\n                \"grid transition-all duration-250 [transition-timing-function:var(--t-ease)]\",\n                isOpen\n                  ? \"grid-rows-[1fr] pb-5 opacity-100\"\n                  : \"grid-rows-[0fr] opacity-0\"\n              )}\n            >\n              <div className=\"overflow-hidden\">\n                <p className=\"text-[14.5px] leading-[1.6] text-[var(--t-ink-secondary)] max-w-2xl\">\n                  {item.answer}\n                </p>\n              </div>\n            </div>\n          </div>\n        );\n      })}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

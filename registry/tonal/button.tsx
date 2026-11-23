@@ -1,0 +1,52 @@
+import * as React from "react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export interface TonalButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "dark" | "outline" | "tonal" | "ghost";
+  size?: "sm" | "md" | "lg";
+}
+
+export const TonalButton = React.forwardRef<HTMLButtonElement, TonalButtonProps>(
+  ({ className, variant = "primary", size = "md", ...props }, ref) => {
+    const sizeStyles = {
+      sm: "px-4 py-2 text-[13px]",
+      md: "px-6 py-3 text-[14px]",
+      lg: "px-7 py-3.5 text-[15px]",
+    };
+
+    const variantStyles = {
+      primary:
+        "bg-[var(--t-cta-bg)] text-white hover:bg-[var(--t-cta-hover)]",
+      dark: "bg-[#202124] text-white hover:bg-[#3c4043]",
+      outline:
+        "bg-transparent text-[var(--t-ink)] border border-[var(--t-ink-muted)] hover:bg-black/[0.04]",
+      tonal:
+        "bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)] hover:bg-[#d2e3fc]",
+      ghost:
+        "bg-transparent text-[var(--t-ink-secondary)] hover:bg-[var(--t-surface-muted)]",
+    };
+
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          "inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] cursor-pointer select-none",
+          "rounded-[var(--t-radius-btn)] transition-all duration-200 [transition-timing-function:var(--t-ease)] active:scale-[0.98]",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)] disabled:opacity-50 disabled:pointer-events-none",
+          sizeStyles[size],
+          variantStyles[variant],
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+
+TonalButton.displayName = "TonalButton";

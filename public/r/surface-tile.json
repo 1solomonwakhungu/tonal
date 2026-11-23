@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "surface-tile",
+  "type": "registry:ui",
+  "title": "Surface Tile",
+  "description": "Flat 24px tonal container replacing drop shadows with subtle Porcelain, Cool, Neutral, Mint, and Sky surface tiers.",
+  "registryDependencies": [
+    "tonal-tokens"
+  ],
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "registry/tonal/surface-tile.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nfunction cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n\nexport type SurfaceTone =\n  | \"white\"\n  | \"neutral\"\n  | \"warm\"\n  | \"cool\"\n  | \"sky\"\n  | \"mint\"\n  | \"sand\";\n\nexport interface SurfaceTileProps extends React.HTMLAttributes<HTMLDivElement> {\n  tone?: SurfaceTone;\n  bordered?: boolean;\n  padding?: \"none\" | \"sm\" | \"md\" | \"lg\";\n}\n\nconst toneMap: Record<SurfaceTone, string> = {\n  white: \"bg-[var(--t-bg)]\",\n  neutral: \"bg-[var(--t-surface)]\",\n  warm: \"bg-[var(--t-surface-warm)]\",\n  cool: \"bg-[var(--t-surface-cool)]\",\n  sky: \"bg-[var(--t-surface-sky)]\",\n  mint: \"bg-[var(--t-surface-mint)]\",\n  sand: \"bg-[var(--t-surface-sand)]\",\n};\n\nconst padMap = {\n  none: \"p-0\",\n  sm: \"p-5\",\n  md: \"p-7 sm:p-8\",\n  lg: \"p-8 sm:p-11\",\n};\n\nexport function SurfaceTile({\n  tone = \"neutral\",\n  bordered = false,\n  padding = \"md\",\n  className,\n  ...props\n}: SurfaceTileProps) {\n  return (\n    <div\n      className={cn(\n        \"rounded-[var(--t-radius-card)] transition-colors duration-300 [transition-timing-function:var(--t-ease)]\",\n        toneMap[tone],\n        padMap[padding],\n        (bordered || tone === \"white\") && \"border border-[var(--t-border-subtle)]\",\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}
