@@ -20,41 +20,41 @@ const DEFAULT_FINISHES: FinishOption[] = [
     id: "porcelain",
     label: "Porcelain",
     swatch: "#EAE6DD",
-    surface: "#F4F2EE",
+    surface: "var(--t-surface-warm)",
     deviceGradient: "linear-gradient(160deg, #FAF9F6 0%, #E7E3DA 100%)",
     barRim: "#D6D2C8",
     markColor: "rgba(32, 33, 36, 0.25)",
-    accentDot: "#1967D2",
+    accentDot: "var(--t-blue)",
   },
   {
     id: "bay",
     label: "Bay",
     swatch: "#AECBFA",
-    surface: "#E8F0FE",
+    surface: "var(--t-surface-sky)",
     deviceGradient: "linear-gradient(160deg, #C9DDFD 0%, #99BFFA 100%)",
     barRim: "#8AB4F8",
     markColor: "rgba(23, 78, 166, 0.35)",
-    accentDot: "#1967D2",
+    accentDot: "var(--t-blue)",
   },
   {
     id: "aloe",
     label: "Aloe",
     swatch: "#A8DAB5",
-    surface: "#E6F4EA",
+    surface: "var(--t-surface-mint)",
     deviceGradient: "linear-gradient(160deg, #C8EBD2 0%, #9AD5AC 100%)",
     barRim: "#81C995",
     markColor: "rgba(19, 115, 51, 0.35)",
-    accentDot: "#188038",
+    accentDot: "var(--t-chip-mint-fg)",
   },
   {
     id: "obsidian",
     label: "Obsidian",
     swatch: "#3C4043",
-    surface: "#F1F3F4",
+    surface: "var(--t-surface-muted)",
     deviceGradient: "linear-gradient(160deg, #474A4E 0%, #26282B 100%)",
     barRim: "#5F6368",
     markColor: "rgba(255, 255, 255, 0.25)",
-    accentDot: "#202124",
+    accentDot: "var(--t-ink)",
   },
 ];
 
@@ -110,9 +110,9 @@ export function EditorialHero({
                     title={f.label}
                     onClick={() => setSelected(f)}
                     style={{ backgroundColor: f.swatch }}
-                    className={`h-6 w-6 rounded-full border border-black/15 cursor-pointer transition-all duration-200 ${
+                    className={`h-6 w-6 rounded-full border border-[var(--t-border)] cursor-pointer transition-all duration-200 ${
                       active
-                        ? "ring-2 ring-[var(--t-ink)] ring-offset-2 ring-offset-white scale-105"
+                        ? "ring-2 ring-[var(--t-ink)] ring-offset-2 ring-offset-[var(--t-bg)] scale-105"
                         : "hover:scale-105"
                     }`}
                   />
@@ -125,7 +125,7 @@ export function EditorialHero({
         <div className="md:col-span-5 flex flex-col items-center gap-4">
           <div
             style={{ background: selected.deviceGradient }}
-            className="w-[172px] h-[272px] rounded-[34px] border border-black/10 shadow-[0_24px_44px_-20px_rgba(32,33,36,0.22)] p-4 pt-8 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-1"
+            className="w-[172px] h-[272px] rounded-[34px] border border-[var(--t-border)] shadow-[0_24px_44px_-20px_rgba(0,0,0,0.32)] p-4 pt-8 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-1"
           >
             <div
               style={{ borderColor: selected.barRim }}
@@ -145,12 +145,12 @@ export function EditorialHero({
             </span>
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-[12px] font-medium text-[var(--t-ink-secondary)] border border-black/[0.06] shadow-[0_6px_16px_-8px_rgba(32,33,36,0.14)]">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[var(--t-elevated)] px-4 py-1.5 text-[12px] font-medium text-[var(--t-ink-secondary)] border border-[var(--t-border-subtle)] shadow-[0_6px_16px_-8px_rgba(0,0,0,0.22)]">
             <span
               style={{ backgroundColor: selected.accentDot }}
               className="h-2 w-2 rounded-full"
             />
-            Surface token: {selected.surface}
+            Surface token: {selected.surface.replace(/^var\((.+)\)$/, "$1")}
           </div>
         </div>
       </div>
