@@ -78,22 +78,22 @@ export function CodePreviewCard({
   return (
     <div
       className={cn(
-        "rounded-[var(--t-radius-card)] border border-[var(--t-border-subtle)] bg-[var(--t-bg)] overflow-hidden flex flex-col",
+        "@container rounded-[var(--t-radius-card)] border border-[var(--t-border-subtle)] bg-[var(--t-bg)] overflow-hidden flex flex-col",
         className
       )}
     >
       {/* Header & Toolbar */}
-      <div className="px-5 sm:px-6 py-4 border-b border-[var(--t-border-subtle)] bg-[var(--t-bg)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="min-w-0">
-          <h3 className="text-[16px] font-medium tracking-[-0.015em] text-[var(--t-ink)]">
+      <div className="px-5 sm:px-6 py-4 border-b border-[var(--t-border-subtle)] bg-[var(--t-bg)] flex flex-col @[720px]:flex-row @[720px]:items-center justify-between gap-3.5">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-[16px] font-medium tracking-[-0.015em] text-[var(--t-ink)] leading-snug">
             {title}
           </h3>
-          <p className="text-[13px] text-[var(--t-ink-muted)] mt-0.5">
+          <p className="text-[13px] text-[var(--t-ink-muted)] mt-1 leading-relaxed">
             {description}
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 @[720px]:shrink-0">
           {/* Responsive Viewport Toggles */}
           {tab === "preview" && (
             <div
