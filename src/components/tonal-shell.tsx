@@ -16,7 +16,7 @@ const NAV_ITEMS = [
 
 export function TonalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [mode, setMode] = React.useState<"gm3" | "commerce">("gm3");
+  const [mode, setMode] = React.useState<"pill" | "commerce">("pill");
   const [theme, setTheme] = React.useState<"light" | "dark">("light");
 
   React.useEffect(() => {
@@ -59,12 +59,20 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
               href="/"
               className="flex items-center gap-2.5 text-[17px] font-medium tracking-[-0.02em] text-[var(--t-ink)]"
             >
-              <span className="grid grid-cols-2 gap-[3px] w-4 h-4">
-                <span className="rounded-full bg-[#4285F4]" />
-                <span className="rounded-full bg-[#EA4335]" />
-                <span className="rounded-full bg-[#FBBC05]" />
-                <span className="rounded-full bg-[#34A853]" />
-              </span>
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="h-5 w-5 shrink-0"
+              >
+                <circle cx="9.5" cy="12" r="6.5" fill="var(--t-ink)" />
+                <circle
+                  cx="15"
+                  cy="12"
+                  r="6.5"
+                  fill="var(--t-blue)"
+                  fillOpacity="0.82"
+                />
+              </svg>
               <span>Tonal</span>
             </Link>
 
@@ -97,15 +105,15 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
             >
               <button
                 type="button"
-                onClick={() => setMode("gm3")}
+                onClick={() => setMode("pill")}
                 className={cn(
                   "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-all duration-200",
-                  mode === "gm3"
+                  mode === "pill"
                     ? "bg-[var(--t-elevated)] text-[var(--t-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.14)]"
                     : "text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
                 )}
               >
-                GM3 Pills
+                Soft Pill
               </button>
               <button
                 type="button"
@@ -117,7 +125,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
                     : "text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
                 )}
               >
-                Store Commerce
+                Commerce
               </button>
             </div>
 
@@ -174,7 +182,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <span className="font-medium text-[var(--t-ink)]">Tonal</span>
             <span>·</span>
-            <span>Google Store–inspired shadcn registry</span>
+            <span>Editorial tonal UI · shadcn registry</span>
           </div>
           <div className="flex flex-wrap items-center gap-5">
             <a

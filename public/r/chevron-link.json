@@ -3,7 +3,7 @@
   "name": "chevron-link",
   "type": "registry:ui",
   "title": "Chevron Link",
-  "description": "Google-style quiet inline text action with subtle animated chevron.",
+  "description": "Quiet editorial inline text action with subtle animated chevron.",
   "registryDependencies": [
     "tonal-tokens"
   ],

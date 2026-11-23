@@ -17,6 +17,12 @@ import { TonalChip } from "@registry/tonal/chip";
 import { ChevronLink } from "@registry/tonal/chevron-link";
 import { TonalAccordion } from "@registry/tonal/accordion";
 import { EditorialHero } from "@registry/tonal/blocks/editorial-hero";
+import { TonalAppShell } from "@registry/tonal/blocks/tonal-app-shell";
+import { KpiGrid } from "@registry/tonal/blocks/kpi-grid";
+import { TonalTable } from "@registry/tonal/blocks/tonal-table";
+import { CapabilityTabs } from "@registry/tonal/blocks/capability-tabs";
+import { PricingGrid } from "@registry/tonal/blocks/pricing-grid";
+import { SpecsTable } from "@registry/tonal/blocks/specs-table";
 import { CodePreviewCard } from "@/components/code-preview-card";
 import type { RegistrySourceMap } from "@/lib/registry-source";
 import { cn } from "@/lib/utils";
@@ -30,7 +36,7 @@ const DEMO_SITES = [
     href: "/demos/hardware",
     tag: "Hardware Storefront",
     title: "Lumen Store",
-    desc: "Google Store–style flagship site with dynamic finish backdrops, editorial bento tiles, comparison specs, and FAQ.",
+    desc: "Flagship hardware storefront with dynamic finish backdrops, editorial bento tiles, comparison specs, and FAQ.",
     tone: "warm" as const,
     icon: Smartphone,
   },
@@ -38,7 +44,7 @@ const DEMO_SITES = [
     href: "/demos/ai",
     tag: "AI Product Site",
     title: "Aura Studio",
-    desc: "DeepMind / Gemini aesthetic with cool tonal surfaces, interactive capability prompt switcher, and clean 2-tier pricing.",
+    desc: "Calm AI studio aesthetic with cool tonal surfaces, interactive capability prompt switcher, and clean 2-tier pricing.",
     tone: "cool" as const,
     icon: Sparkles,
   },
@@ -46,7 +52,7 @@ const DEMO_SITES = [
     href: "/demos/workspace",
     tag: "Productivity SaaS",
     title: "Canvas Workspace",
-    desc: "Google Workspace editorial landing page with live app-tab mockup previews, feature spotlights, and customer quotes.",
+    desc: "Productivity workspace editorial landing page with live app-tab mockup previews, feature spotlights, and customer quotes.",
     tone: "mint" as const,
     icon: Layers,
   },
@@ -54,7 +60,7 @@ const DEMO_SITES = [
     href: "/demos/dashboard",
     tag: "App & Analytics Console",
     title: "Pulse Dashboard",
-    desc: "Google Cloud / AI Studio–style tonal app shell with KPI tiles, interactive SVG throughput chart, and filterable service table.",
+    desc: "Cloud console tonal app shell with KPI tiles, interactive SVG throughput chart, and filterable service table.",
     tone: "sky" as const,
     icon: Activity,
   },
@@ -146,7 +152,7 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         category: "primitives",
         title: "Tonal Button",
         description:
-          "Automatically adapts between GM3 pills and Google Store commerce corners.",
+          "Automatically adapts between Soft Pill and Commerce corners.",
         preview: (
           <div className="flex flex-wrap items-center gap-3">
             <TonalButton>Primary CTA</TonalButton>
@@ -211,7 +217,7 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         category: "primitives",
         title: "Chevron Link",
         description:
-          "Google-style quiet inline text action with subtle animated chevron.",
+          "Quiet editorial inline text action with subtle animated chevron.",
         preview: (
           <div className="flex flex-wrap items-center gap-6">
             <ChevronLink href="#primitives">Learn more</ChevronLink>
@@ -226,13 +232,13 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         category: "primitives",
         title: "Hairline Accordion",
         description:
-          "Minimal Google Store–style FAQ section with decelerating spring motion.",
+          "Minimal editorial FAQ section with decelerating spring motion.",
         fullWidth: true,
         preview: (
           <TonalAccordion
             items={[
               {
-                question: "Do I need Material Web or MUI installed?",
+                question: "Do I need a heavy UI framework installed?",
                 answer:
                   "No. Tonal is pure React + Tailwind CSS powered by ~12 CSS variables and open-source Google Sans (SIL OFL-1.1).",
               },
@@ -242,13 +248,67 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
                 answer: `Run npx shadcn@latest add ${origin}/r/editorial-hero.json. You own 100% of the copied source code directly in your repository.`,
               },
               {
-                question: "How does GM3 Pills vs. Store Commerce work?",
+                question: "How does Soft Pill vs. Commerce mode work?",
                 answer:
                   "It only swaps two CSS custom properties (--t-radius-btn and --t-cta-bg) on a parent data-tonal-mode attribute.",
               },
             ]}
           />
         ),
+      },
+      {
+        registryName: "tonal-app-shell",
+        category: "blocks",
+        title: "Tonal App Shell",
+        description:
+          "Cool tonal outer workspace frame with interactive pill navigation rail, quota card, and elevated content sheet.",
+        fullWidth: true,
+        preview: <TonalAppShell />,
+      },
+      {
+        registryName: "kpi-grid",
+        category: "blocks",
+        title: "KPI Metric Grid",
+        description:
+          "Calm 4-column analytics KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
+        fullWidth: true,
+        preview: <KpiGrid />,
+      },
+      {
+        registryName: "tonal-table",
+        category: "blocks",
+        title: "Tonal Data Table",
+        description:
+          "Interactive pill search field, status filter chips, and hairline data table with hover highlights and resettable empty state.",
+        fullWidth: true,
+        preview: <TonalTable />,
+      },
+      {
+        registryName: "capability-tabs",
+        category: "blocks",
+        title: "Capability Switcher",
+        description:
+          "Interactive calm AI studio capability switcher inside a cool tonal stage with prompt and grounded response panels.",
+        fullWidth: true,
+        preview: <CapabilityTabs />,
+      },
+      {
+        registryName: "pricing-grid",
+        category: "blocks",
+        title: "Tonal Pricing Grid",
+        description:
+          "Clean 2-tier editorial pricing cards pairing a bordered canvas tier with a cool tonal recommended tier and checkmark list.",
+        fullWidth: true,
+        preview: <PricingGrid />,
+      },
+      {
+        registryName: "specs-table",
+        category: "blocks",
+        title: "Specs Comparison Table",
+        description:
+          "Flagship storefront hairline side-by-side model specifications comparison table.",
+        fullWidth: true,
+        preview: <SpecsTable />,
       },
       {
         registryName: "tonal-tokens",
@@ -331,12 +391,12 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
           shadcn-compatible registry · v0.1
         </TonalChip>
         <h1 className="t-display text-[42px] sm:text-[62px] mb-5">
-          The Google editorial look, minus Material bloat.
+          Editorial tonal UI, minus the bloat.
         </h1>
         <p className="t-body text-[17px] sm:text-[18px] max-w-xl mb-8">
-          Tonal distills the Google Store aesthetic down to Google Sans, flat
-          tonal surfaces, 24px bento tiles, and quiet controls you own directly
-          in your codebase.
+          Tonal distills flagship hardware and workspace interfaces down to
+          open-source Google Sans, flat tonal surfaces, 24px bento tiles, and
+          quiet controls you own directly in your codebase.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 mb-7">
@@ -385,7 +445,7 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
           <p className="text-[13.5px] text-[var(--t-ink-muted)]">
             Try toggling{" "}
             <strong className="text-[var(--t-ink)]">
-              GM3 Pills / Store Commerce
+              Soft Pill / Commerce
             </strong>{" "}
             in the top bar.
           </p>

@@ -36,11 +36,11 @@ const PRODUCTS = [
 ];
 
 const SPECS = [
-  { label: "Display", pro: '6.7" Super Actua OLED · 1–120Hz', base: '6.3" Actua OLED · 60–120Hz' },
+  { label: "Display", pro: '6.7" Pro LTPO OLED · 1–120Hz', base: '6.3" LTPO OLED · 60–120Hz' },
   { label: "Camera", pro: "Triple Pro · 50MP + 48MP + 5x Tele", base: "Dual Advanced · 50MP + 48MP" },
   { label: "Chip", pro: "Lumen Silicon G5 · 16 GB RAM", base: "Lumen Silicon G5 · 12 GB RAM" },
   { label: "Battery", pro: "Up to 32 hours · 45W fast charge", base: "Up to 28 hours · 35W fast charge" },
-  { label: "Materials", pro: "Matte satin glass · Recycled aluminum", base: "Polished glass · Recycled aluminum" },
+  { label: "Build", pro: "Matte satin glass · Recycled aluminum", base: "Polished glass · Recycled aluminum" },
 ];
 
 export default function HardwareDemoPage() {

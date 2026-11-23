@@ -7,7 +7,7 @@
       "name": "tonal-tokens",
       "type": "registry:style",
       "title": "Tonal Design Tokens",
-      "description": "Core Google Store–inspired editorial tokens: Google Sans scale, flat tonal surfaces, radii, and motion.",
+      "description": "Core editorial tonal tokens: Google Sans (SIL OFL-1.1) type scale, flat tonal surfaces, radii, and motion.",
       "files": [
         {
           "path": "registry/tonal/tokens.css",
@@ -20,7 +20,7 @@
       "name": "tonal-button",
       "type": "registry:ui",
       "title": "Tonal Button",
-      "description": "Quiet primary, dark, outlined, and tonal action buttons with automatic GM3 pill or Store commerce radius.",
+      "description": "Quiet primary, dark, outlined, and tonal action buttons with automatic Soft Pill or Commerce radius.",
       "registryDependencies": ["tonal-tokens"],
       "dependencies": ["clsx", "tailwind-merge"],
       "files": [
@@ -62,7 +62,7 @@
       "name": "chevron-link",
       "type": "registry:ui",
       "title": "Chevron Link",
-      "description": "Google-style quiet inline text action with subtle animated chevron.",
+      "description": "Quiet editorial inline text action with subtle animated chevron.",
       "registryDependencies": ["tonal-tokens"],
       "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
       "files": [
@@ -76,7 +76,7 @@
       "name": "tonal-accordion",
       "type": "registry:ui",
       "title": "Tonal Accordion",
-      "description": "Hairline-divided FAQ accordion with smooth Google decelerating easing.",
+      "description": "Hairline-divided FAQ accordion with smooth decelerating easing.",
       "registryDependencies": ["tonal-tokens"],
       "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
       "files": [
@@ -90,7 +90,7 @@
       "name": "editorial-hero",
       "type": "registry:block",
       "title": "Editorial Finish Hero",
-      "description": "Google Store–style split hero with interactive finish swatches that dynamically tint the tonal backdrop.",
+      "description": "Flagship hardware storefront split hero with interactive finish swatches that dynamically tint the tonal backdrop.",
       "registryDependencies": ["tonal-tokens", "tonal-button", "chevron-link"],
       "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
       "files": [
@@ -104,7 +104,7 @@
       "name": "tonal-app-shell",
       "type": "registry:block",
       "title": "Tonal App Shell",
-      "description": "Google Drive and AI Studio–style cool tonal outer shell with pill navigation rail, optional quota footer slot, and elevated workspace sheet.",
+      "description": "Productivity workspace and cloud console cool tonal outer shell with pill navigation rail, optional quota footer slot, and elevated workspace sheet.",
       "registryDependencies": ["tonal-tokens", "chevron-link"],
       "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
       "files": [
@@ -118,7 +118,7 @@
       "name": "kpi-grid",
       "type": "registry:block",
       "title": "KPI Metric Grid",
-      "description": "Calm 4-column Google Analytics–style KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
+      "description": "Calm 4-column analytics KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
       "registryDependencies": ["tonal-tokens", "tonal-chip"],
       "dependencies": ["clsx", "tailwind-merge"],
       "files": [
@@ -146,7 +146,7 @@
       "name": "capability-tabs",
       "type": "registry:block",
       "title": "Capability Switcher",
-      "description": "Interactive Aura AI and Gemini–style capability switcher inside a cool tonal stage with prompt and grounded response panels.",
+      "description": "Interactive calm AI studio capability switcher inside a cool tonal stage with prompt and grounded response panels.",
       "registryDependencies": ["tonal-tokens", "surface-tile", "tonal-chip"],
       "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
       "files": [
@@ -160,7 +160,7 @@
       "name": "pricing-grid",
       "type": "registry:block",
       "title": "Tonal Pricing Grid",
-      "description": "Clean 2-tier Google-style pricing cards pairing a bordered canvas tier with a cool tonal recommended tier and checkmark list.",
+      "description": "Clean 2-tier editorial pricing cards pairing a bordered canvas tier with a cool tonal recommended tier and checkmark list.",
       "registryDependencies": [
         "tonal-tokens",
         "surface-tile",
@@ -179,7 +179,7 @@
       "name": "specs-table",
       "type": "registry:block",
       "title": "Specs Comparison Table",
-      "description": "Google Store–style hairline side-by-side model specifications comparison table.",
+      "description": "Flagship storefront hairline side-by-side model specifications comparison table.",
       "registryDependencies": ["tonal-tokens"],
       "dependencies": ["clsx", "tailwind-merge"],
       "files": [

@@ -3,7 +3,7 @@
   "name": "pricing-grid",
   "type": "registry:block",
   "title": "Tonal Pricing Grid",
-  "description": "Clean 2-tier Google-style pricing cards pairing a bordered canvas tier with a cool tonal recommended tier and checkmark list.",
+  "description": "Clean 2-tier editorial pricing cards pairing a bordered canvas tier with a cool tonal recommended tier and checkmark list.",
   "registryDependencies": [
     "tonal-tokens",
     "surface-tile",
