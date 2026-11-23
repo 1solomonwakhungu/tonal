@@ -13,7 +13,7 @@ export interface TonalChipProps extends React.HTMLAttributes<HTMLSpanElement> {
 const chipTones = {
   blue: "bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)]",
   neutral: "bg-[var(--t-surface-muted)] text-[var(--t-ink-secondary)]",
-  mint: "bg-[var(--t-surface-mint)] text-[#137333]",
+  mint: "bg-[var(--t-surface-mint)] text-[var(--t-chip-mint-fg,#137333)]",
   warm: "bg-[var(--t-surface-warm)] text-[var(--t-ink-secondary)]",
 };
 

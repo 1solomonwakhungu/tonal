@@ -22,7 +22,7 @@ export interface SurfaceTileProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const toneMap: Record<SurfaceTone, string> = {
-  white: "bg-[var(--t-bg)]",
+  white: "bg-[var(--t-elevated)]",
   neutral: "bg-[var(--t-surface)]",
   warm: "bg-[var(--t-surface-warm)]",
   cool: "bg-[var(--t-surface-cool)]",
@@ -48,7 +48,7 @@ export function SurfaceTile({
   return (
     <div
       className={cn(
-        "rounded-[var(--t-radius-card)] transition-colors duration-300 [transition-timing-function:var(--t-ease)]",
+        "rounded-[var(--t-radius-card)] text-[var(--t-ink)] transition-colors duration-300 [transition-timing-function:var(--t-ease)]",
         toneMap[tone],
         padMap[padding],
         (bordered || tone === "white") && "border border-[var(--t-border-subtle)]",

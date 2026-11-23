@@ -96,7 +96,7 @@ export default function HardwareDemoPage() {
               dusk without over-sharpening or artificial HDR glow.
             </p>
           </div>
-          <div className="rounded-[20px] bg-white p-5 border border-black/[0.06] flex items-center justify-between">
+          <div className="rounded-[20px] bg-[var(--t-elevated)] p-5 border border-[var(--t-border-subtle)] flex items-center justify-between">
             <div>
               <div className="text-[12px] text-[var(--t-ink-muted)]">Optical Zoom</div>
               <div className="text-[28px] font-medium tracking-[-0.03em]">5× / 30×</div>
@@ -116,7 +116,7 @@ export default function HardwareDemoPage() {
 
         <SurfaceTile tone="mint" padding="lg" className="flex flex-col justify-between gap-10">
           <div>
-            <p className="text-[13px] font-medium text-[#137333] mb-2">
+            <p className="text-[13px] font-medium text-[var(--t-chip-mint-fg)] mb-2">
               All-Day Battery
             </p>
             <h2 className="t-headline text-[30px] sm:text-[34px] mb-3">
@@ -127,13 +127,13 @@ export default function HardwareDemoPage() {
               whisper-quiet so you end the night with energy to spare.
             </p>
           </div>
-          <div className="rounded-[20px] bg-white p-5 border border-black/[0.06] flex flex-col gap-3">
+          <div className="rounded-[20px] bg-[var(--t-elevated)] p-5 border border-[var(--t-border-subtle)] flex flex-col gap-3">
             <div className="flex items-center justify-between text-[13px]">
               <span className="font-medium text-[var(--t-ink)]">Typical mixed use</span>
-              <span className="font-medium text-[#137333]">32 hrs</span>
+              <span className="font-medium text-[var(--t-chip-mint-fg)]">32 hrs</span>
             </div>
-            <div className="h-2.5 w-full rounded-full bg-[#e6f4ea] overflow-hidden">
-              <div className="h-full w-[84%] rounded-full bg-[#188038]" />
+            <div className="h-2.5 w-full rounded-full bg-[var(--t-surface-mint)] overflow-hidden">
+              <div className="h-full w-[84%] rounded-full bg-[var(--t-chip-mint-fg)]" />
             </div>
             <div className="text-[12px] text-[var(--t-ink-muted)]">
               Up to 70% charge in 30 minutes with 45W USB-C charger.
@@ -161,7 +161,7 @@ export default function HardwareDemoPage() {
               className="flex flex-col items-center text-center justify-between gap-6"
             >
               <div className="flex flex-col items-center">
-                <TonalChip tone="neutral" className="mb-4 bg-white">
+                <TonalChip tone="neutral" className="mb-4 bg-[var(--t-bg)] border border-[var(--t-border-subtle)]">
                   {p.badge}
                 </TonalChip>
                 <h3 className="t-headline text-[24px] mb-1.5">{p.name}</h3>
@@ -214,7 +214,7 @@ export default function HardwareDemoPage() {
         <h2 className="t-headline text-[28px] sm:text-[34px]">
           Compare Lumen 10 models
         </h2>
-        <div className="rounded-[var(--t-radius-card)] border border-[var(--t-border-subtle)] overflow-hidden bg-white">
+        <div className="rounded-[var(--t-radius-card)] border border-[var(--t-border-subtle)] overflow-hidden bg-[var(--t-bg)]">
           <div className="grid grid-cols-12 bg-[var(--t-surface)] px-6 py-4 text-[13px] font-medium text-[var(--t-ink-muted)] border-b border-[var(--t-border-subtle)]">
             <div className="col-span-4 sm:col-span-3">Feature</div>
             <div className="col-span-4 sm:col-span-5 text-[var(--t-ink)]">

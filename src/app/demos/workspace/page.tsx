@@ -11,8 +11,8 @@ const APPS = [
   {
     id: "docs",
     name: "Docs",
-    color: "#1967D2",
-    tint: "#E8F0FE",
+    color: "var(--t-blue)",
+    tint: "var(--t-surface-sky)",
     icon: FileText,
     title: "Q4 Product Launch Brief",
     subtitle: "Edited just now · 4 collaborators online",
@@ -25,8 +25,8 @@ const APPS = [
   {
     id: "sheets",
     name: "Sheets",
-    color: "#188038",
-    tint: "#E6F4EA",
+    color: "var(--t-chip-mint-fg)",
+    tint: "var(--t-surface-mint)",
     icon: Table2,
     title: "Q4 Launch Tracker",
     subtitle: "Live metrics · Synced automatically",
@@ -39,8 +39,8 @@ const APPS = [
   {
     id: "slides",
     name: "Slides",
-    color: "#E37400",
-    tint: "#FEF7E0",
+    color: "#F29900",
+    tint: "var(--t-surface-sand)",
     icon: Presentation,
     title: "Design Review Deck",
     subtitle: "12 clean slides · Ready to present",
@@ -53,8 +53,8 @@ const APPS = [
   {
     id: "meet",
     name: "Meet",
-    color: "#1967D2",
-    tint: "#F0F4F9",
+    color: "var(--t-blue)",
+    tint: "var(--t-surface-cool)",
     icon: Video,
     title: "Design Critique · Studio Room",
     subtitle: "HD video · Real-time captions enabled",
@@ -117,7 +117,7 @@ export default function WorkspaceDemoPage() {
                 onClick={() => setSelected(app)}
                 className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-medium cursor-pointer transition-all duration-200 border ${
                   active
-                    ? "bg-white border-[var(--t-ink)] text-[var(--t-ink)]"
+                    ? "bg-[var(--t-elevated)] border-[var(--t-ink)] text-[var(--t-ink)]"
                     : "bg-[var(--t-surface)] border-transparent text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
                 }`}
               >
@@ -135,7 +135,7 @@ export default function WorkspaceDemoPage() {
           className="w-full text-left transition-colors duration-300"
           style={{ backgroundColor: selected.tint }}
         >
-          <div className="rounded-[20px] bg-white border border-black/[0.06] overflow-hidden">
+          <div className="rounded-[20px] bg-[var(--t-bg)] border border-[var(--t-border-subtle)] overflow-hidden">
             <div className="px-6 py-4 border-b border-[var(--t-border-subtle)] flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span
