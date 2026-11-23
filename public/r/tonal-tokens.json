@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tonal-tokens",
+  "type": "registry:style",
+  "title": "Tonal Design Tokens",
+  "description": "Core Google Store–inspired editorial tokens: Google Sans scale, flat tonal surfaces, radii, and motion.",
+  "files": [
+    {
+      "path": "registry/tonal/tokens.css",
+      "type": "registry:file",
+      "target": "styles/tonal-tokens.css",
+      "content": "/* Tonal Design Tokens — Google Store & Editorial Material */\n:root {\n  --t-font: \"Google Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n\n  /* Surfaces (flat tonal steps instead of heavy shadows) */\n  --t-bg: #ffffff;\n  --t-surface: #f8f9fa;\n  --t-surface-muted: #f1f3f4;\n  --t-surface-warm: #f4f2ee;\n  --t-surface-cool: #f0f4f9;\n  --t-surface-sky: #e8f0fe;\n  --t-surface-mint: #e6f4ea;\n  --t-surface-sand: #fef7e0;\n\n  /* Ink & Hairlines */\n  --t-ink: #202124;\n  --t-ink-secondary: #3c4043;\n  --t-ink-muted: #5f6368;\n  --t-border: #dadce0;\n  --t-border-subtle: #e8eaed;\n\n  /* Accent */\n  --t-blue: #1967d2;\n  --t-blue-hover: #174ea6;\n  --t-blue-tint: #e8f0fe;\n\n  /* Shape & Motion */\n  --t-radius-card: 24px;\n  --t-radius-hero: 28px;\n  --t-radius-sm: 14px;\n  --t-radius-btn: 9999px;\n  --t-cta-bg: #1967d2;\n  --t-cta-hover: #174ea6;\n  --t-ease: cubic-bezier(0.2, 0, 0, 1);\n}\n\n/* Switch button shape & primary ink globally for Google Store Commerce mode */\n[data-tonal-mode=\"commerce\"] {\n  --t-radius-btn: 6px;\n  --t-cta-bg: #202124;\n  --t-cta-hover: #3c4043;\n}\n\n.t-display {\n  font-family: var(--t-font);\n  font-weight: 500;\n  line-height: 1.06;\n  letter-spacing: -0.035em;\n  color: var(--t-ink);\n}\n\n.t-headline {\n  font-family: var(--t-font);\n  font-weight: 500;\n  line-height: 1.14;\n  letter-spacing: -0.025em;\n  color: var(--t-ink);\n}\n\n.t-body {\n  font-family: var(--t-font);\n  font-weight: 400;\n  line-height: 1.58;\n  color: var(--t-ink-secondary);\n}\n"
+    }
+  ]
+}

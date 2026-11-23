@@ -1,0 +1,104 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "tonal",
+  "homepage": "http://localhost:3456",
+  "items": [
+    {
+      "name": "tonal-tokens",
+      "type": "registry:style",
+      "title": "Tonal Design Tokens",
+      "description": "Core Google Store–inspired editorial tokens: Google Sans scale, flat tonal surfaces, radii, and motion.",
+      "files": [
+        {
+          "path": "registry/tonal/tokens.css",
+          "type": "registry:file",
+          "target": "styles/tonal-tokens.css"
+        }
+      ]
+    },
+    {
+      "name": "tonal-button",
+      "type": "registry:ui",
+      "title": "Tonal Button",
+      "description": "Quiet primary, dark, outlined, and tonal action buttons with automatic GM3 pill or Store commerce radius.",
+      "registryDependencies": ["tonal-tokens"],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "registry/tonal/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "surface-tile",
+      "type": "registry:ui",
+      "title": "Surface Tile",
+      "description": "Flat 24px tonal container replacing drop shadows with subtle Porcelain, Cool, Neutral, Mint, and Sky surface tiers.",
+      "registryDependencies": ["tonal-tokens"],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "registry/tonal/surface-tile.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tonal-chip",
+      "type": "registry:ui",
+      "title": "Tonal Chip",
+      "description": "Soft tinted category pill and eyebrow badge for editorial sections.",
+      "registryDependencies": ["tonal-tokens"],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "registry/tonal/chip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chevron-link",
+      "type": "registry:ui",
+      "title": "Chevron Link",
+      "description": "Google-style quiet inline text action with subtle animated chevron.",
+      "registryDependencies": ["tonal-tokens"],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/chevron-link.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tonal-accordion",
+      "type": "registry:ui",
+      "title": "Tonal Accordion",
+      "description": "Hairline-divided FAQ accordion with smooth Google decelerating easing.",
+      "registryDependencies": ["tonal-tokens"],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "editorial-hero",
+      "type": "registry:block",
+      "title": "Editorial Finish Hero",
+      "description": "Google Store–style split hero with interactive finish swatches that dynamically tint the tonal backdrop.",
+      "registryDependencies": ["tonal-tokens", "tonal-button", "chevron-link"],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/blocks/editorial-hero.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+/* Tonal Design Tokens — Google Store & Editorial Material */
+:root {
+  --t-font: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Surfaces (flat tonal steps instead of heavy shadows) */
+  --t-bg: #ffffff;
+  --t-surface: #f8f9fa;
+  --t-surface-muted: #f1f3f4;
+  --t-surface-warm: #f4f2ee;
+  --t-surface-cool: #f0f4f9;
+  --t-surface-sky: #e8f0fe;
+  --t-surface-mint: #e6f4ea;
+  --t-surface-sand: #fef7e0;
+
+  /* Ink & Hairlines */
+  --t-ink: #202124;
+  --t-ink-secondary: #3c4043;
+  --t-ink-muted: #5f6368;
+  --t-border: #dadce0;
+  --t-border-subtle: #e8eaed;
+
+  /* Accent */
+  --t-blue: #1967d2;
+  --t-blue-hover: #174ea6;
+  --t-blue-tint: #e8f0fe;
+
+  /* Shape & Motion */
+  --t-radius-card: 24px;
+  --t-radius-hero: 28px;
+  --t-radius-sm: 14px;
+  --t-radius-btn: 9999px;
+  --t-cta-bg: #1967d2;
+  --t-cta-hover: #174ea6;
+  --t-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Switch button shape & primary ink globally for Google Store Commerce mode */
+[data-tonal-mode="commerce"] {
+  --t-radius-btn: 6px;
+  --t-cta-bg: #202124;
+  --t-cta-hover: #3c4043;
+}
+
+.t-display {
+  font-family: var(--t-font);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--t-ink);
+}
+
+.t-headline {
+  font-family: var(--t-font);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  color: var(--t-ink);
+}
+
+.t-body {
+  font-family: var(--t-font);
+  font-weight: 400;
+  line-height: 1.58;
+  color: var(--t-ink-secondary);
+}

@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "../../registry/tonal/tokens.css";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--t-font);
+  background: var(--t-bg);
+  color: var(--t-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
