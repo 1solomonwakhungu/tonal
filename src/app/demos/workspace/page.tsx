@@ -18,7 +18,7 @@ const APPS = [
     subtitle: "Edited just now · 4 collaborators online",
     rows: [
       "Goal: Ship a calm, unified component system across web storefronts.",
-      "Design rule: Flat tonal cards, 24px corners, and DM Sans 500.",
+      "Design rule: Flat tonal cards, 24px corners, and Google Sans 500.",
       "Timeline: Registry live Monday, v1 marketing blocks by Friday.",
     ],
   },

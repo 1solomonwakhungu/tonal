@@ -1,6 +1,6 @@
 /* Tonal Design Tokens — Editorial Tonal Surfaces & Typography */
 :root {
-  --t-font: "DM Sans Variable", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --t-font: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Surfaces (flat tonal steps instead of heavy shadows) */
   --t-bg: #ffffff;
