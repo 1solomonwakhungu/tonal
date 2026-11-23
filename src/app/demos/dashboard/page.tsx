@@ -230,7 +230,7 @@ export default function DashboardDemoPage() {
           <TonalChip tone="blue">Demo Website 4 / 4</TonalChip>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-[12.5px] text-[#137333] bg-[#e6f4ea] px-3 py-1 rounded-full font-medium">
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-[12.5px] text-[var(--t-chip-mint-fg)] bg-[var(--t-surface-mint)] px-3 py-1 rounded-full font-medium">
             <CheckCircle2 className="h-3.5 w-3.5" />
             All systems operational
           </span>
@@ -260,8 +260,8 @@ export default function DashboardDemoPage() {
                   className={cn(
                     "flex items-center gap-3 px-4 py-2.5 rounded-full text-[14px] font-medium cursor-pointer transition-colors duration-180 text-left",
                     active
-                      ? "bg-[#c2e7ff] text-[#001d35]"
-                      : "text-[var(--t-ink-secondary)] hover:bg-black/[0.04]"
+                      ? "bg-[var(--t-nav-active-bg)] text-[var(--t-nav-active-fg)]"
+                      : "text-[var(--t-ink-secondary)] hover:bg-[var(--t-hover-overlay,rgba(32,33,36,0.04))]"
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
@@ -272,7 +272,7 @@ export default function DashboardDemoPage() {
           </div>
 
           {/* Calm Quota Card inside sidebar */}
-          <div className="rounded-[20px] bg-white p-4 border border-black/[0.05] flex flex-col gap-3">
+          <div className="rounded-[20px] bg-[var(--t-elevated)] p-4 border border-[var(--t-border-subtle)] flex flex-col gap-3">
             <div className="flex items-center justify-between text-[12.5px]">
               <span className="font-medium text-[var(--t-ink)]">Monthly Quota</span>
               <span className="text-[var(--t-ink-muted)]">68%</span>
@@ -292,8 +292,8 @@ export default function DashboardDemoPage() {
           </div>
         </aside>
 
-        {/* Main White Rounded App Sheet */}
-        <div className="lg:col-span-9 rounded-[22px] bg-white border border-black/[0.05] p-5 sm:p-7 flex flex-col gap-7">
+        {/* Main Rounded App Sheet */}
+        <div className="lg:col-span-9 rounded-[22px] bg-[var(--t-bg)] border border-[var(--t-border-subtle)] p-5 sm:p-7 flex flex-col gap-7">
           {/* Sheet Header + Time-Range Segmented Pill */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -309,7 +309,7 @@ export default function DashboardDemoPage() {
             </div>
 
             <div
-              className="inline-flex self-start rounded-full bg-[var(--t-surface)] p-1 border border-[var(--t-border-subtle)]"
+              className="inline-flex self-start rounded-full bg-[var(--t-surface-muted)] p-1 border border-[var(--t-border-subtle)]"
               role="tablist"
               aria-label="Date range"
             >
@@ -324,7 +324,7 @@ export default function DashboardDemoPage() {
                   className={cn(
                     "px-3.5 py-1 rounded-full text-[12.5px] font-medium uppercase cursor-pointer transition-all duration-180",
                     range === key
-                      ? "bg-white text-[var(--t-ink)] shadow-[0_1px_2px_rgba(32,33,36,0.1)]"
+                      ? "bg-[var(--t-elevated)] text-[var(--t-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.14)]"
                       : "text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
                   )}
                 >
@@ -391,8 +391,8 @@ export default function DashboardDemoPage() {
                   >
                     <defs>
                       <linearGradient id="tonalBlueGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#1967D2" stopOpacity="0.18" />
-                        <stop offset="100%" stopColor="#1967D2" stopOpacity="0.0" />
+                        <stop offset="0%" stopColor="var(--t-blue)" stopOpacity="0.2" />
+                        <stop offset="100%" stopColor="var(--t-blue)" stopOpacity="0.0" />
                       </linearGradient>
                     </defs>
 
@@ -406,7 +406,7 @@ export default function DashboardDemoPage() {
                           y1={y}
                           x2={chartW - padX}
                           y2={y}
-                          stroke="#E8EAED"
+                          stroke="var(--t-border-subtle)"
                           strokeDasharray="4 4"
                         />
                       );
@@ -416,7 +416,7 @@ export default function DashboardDemoPage() {
                     <path
                       d={linePath}
                       fill="none"
-                      stroke="#1967D2"
+                      stroke="var(--t-blue)"
                       strokeWidth="2.75"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -441,8 +441,8 @@ export default function DashboardDemoPage() {
                             cx={pt.x}
                             cy={pt.y}
                             r={isHovered ? 6 : 4}
-                            fill="#FFFFFF"
-                            stroke="#1967D2"
+                            fill="var(--t-bg)"
+                            stroke="var(--t-blue)"
                             strokeWidth={isHovered ? 3 : 2.5}
                           />
                           <text
@@ -450,7 +450,7 @@ export default function DashboardDemoPage() {
                             y={chartH - 4}
                             textAnchor="middle"
                             fontSize="11.5"
-                            fill={isHovered ? "#202124" : "#5F6368"}
+                            fill={isHovered ? "var(--t-ink)" : "var(--t-ink-muted)"}
                             fontWeight={isHovered ? 600 : 400}
                           >
                             {pt.label}
@@ -479,7 +479,7 @@ export default function DashboardDemoPage() {
                   </p>
                 </div>
 
-                <div className="rounded-[14px] bg-white p-3.5 border border-black/[0.05] flex items-center justify-between text-[12.5px]">
+                <div className="rounded-[14px] bg-[var(--t-elevated)] p-3.5 border border-[var(--t-border-subtle)] flex items-center justify-between text-[12.5px]">
                   <span className="inline-flex items-center gap-1.5 text-[var(--t-ink-muted)]">
                     <Clock className="h-3.5 w-3.5" />
                     Next digest
@@ -494,7 +494,7 @@ export default function DashboardDemoPage() {
           {activeNav === "billing" && (
             <div className="rounded-[20px] bg-[var(--t-surface-sky)] p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <TonalChip tone="blue" className="bg-white mb-2">
+                <TonalChip tone="blue" className="bg-[var(--t-elevated)] border border-[var(--t-border-subtle)] mb-2">
                   Pro Workspace Plan
                 </TonalChip>
                 <h3 className="t-headline text-[22px] mb-1">
@@ -526,7 +526,7 @@ export default function DashboardDemoPage() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Filter projects or region..."
-                    className="rounded-full bg-[var(--t-surface-cool)] pl-9 pr-4 py-1.5 text-[13px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] border border-transparent focus:border-[var(--t-blue)] focus:bg-white focus:outline-none transition-colors w-56"
+                    className="rounded-full bg-[var(--t-surface-cool)] pl-9 pr-4 py-1.5 text-[13px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] border border-transparent focus:border-[var(--t-blue)] focus:bg-[var(--t-elevated)] focus:outline-none transition-colors w-56"
                   />
                 </div>
 
@@ -538,7 +538,7 @@ export default function DashboardDemoPage() {
                     className={cn(
                       "px-3 py-1.5 rounded-full text-[12px] font-medium cursor-pointer transition-colors",
                       statusFilter === st
-                        ? "bg-[var(--t-ink)] text-white"
+                        ? "bg-[var(--t-ink)] text-[var(--t-bg)]"
                         : "bg-[var(--t-surface)] text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
                     )}
                   >
@@ -616,14 +616,14 @@ export default function DashboardDemoPage() {
 
       {/* Minimal Google-style New Project Dialog */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-[2px] flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-[28px] bg-white p-7 shadow-[0_24px_48px_-16px_rgba(32,33,36,0.28)] border border-[var(--t-border-subtle)]">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px] flex items-center justify-center p-4">
+          <div className="w-full max-w-md rounded-[28px] bg-[var(--t-elevated)] p-7 shadow-[0_24px_48px_-16px_rgba(0,0,0,0.4)] border border-[var(--t-border-subtle)]">
             <div className="flex items-center justify-between mb-4">
               <h3 className="t-headline text-[22px]">Create project</h3>
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
-                className="h-8 w-8 rounded-full hover:bg-[var(--t-surface)] grid place-items-center text-[var(--t-ink-muted)] cursor-pointer"
+                className="h-8 w-8 rounded-full hover:bg-[var(--t-surface-muted)] grid place-items-center text-[var(--t-ink-muted)] cursor-pointer"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
@@ -641,7 +641,7 @@ export default function DashboardDemoPage() {
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder="e.g. Tonal Docs Edge"
-                  className="w-full rounded-[12px] border border-[var(--t-border)] px-3.5 py-2.5 text-[14px] text-[var(--t-ink)] focus:border-[var(--t-blue)] focus:outline-none"
+                  className="w-full rounded-[12px] border border-[var(--t-border)] bg-[var(--t-bg)] px-3.5 py-2.5 text-[14px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] focus:border-[var(--t-blue)] focus:outline-none"
                 />
               </div>
               <div>
@@ -651,7 +651,7 @@ export default function DashboardDemoPage() {
                 <select
                   value={newRegion}
                   onChange={(e) => setNewRegion(e.target.value)}
-                  className="w-full rounded-[12px] border border-[var(--t-border)] px-3.5 py-2.5 text-[14px] text-[var(--t-ink)] bg-white focus:border-[var(--t-blue)] focus:outline-none"
+                  className="w-full rounded-[12px] border border-[var(--t-border)] px-3.5 py-2.5 text-[14px] text-[var(--t-ink)] bg-[var(--t-bg)] focus:border-[var(--t-blue)] focus:outline-none"
                 >
                   <option value="us-central1">us-central1 (Iowa)</option>
                   <option value="us-east4">us-east4 (Virginia)</option>
