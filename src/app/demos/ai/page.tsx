@@ -8,30 +8,51 @@ import { TonalChip } from "@registry/tonal/chip";
 import { ChevronLink } from "@registry/tonal/chevron-link";
 import { CapabilityTabs } from "@registry/tonal/blocks/capability-tabs";
 import { PricingGrid } from "@registry/tonal/blocks/pricing-grid";
+import { useTonalToast } from "@registry/tonal/toast";
 
 export default function AiDemoPage() {
+  const { toast } = useTonalToast();
+
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-8 flex flex-col gap-16">
       {/* Sub-header */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-[var(--t-border-subtle)]">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-2 text-[19px] font-medium tracking-[-0.02em] text-[var(--t-ink)]">
-            <Sparkles className="h-5 w-5 text-[var(--t-blue)]" />
+            <Sparkles aria-hidden="true" className="h-5 w-5 text-[var(--t-blue)]" />
             Aura
           </span>
           <TonalChip tone="blue">Demo Website 2 / 4</TonalChip>
         </div>
-        <div className="flex items-center gap-5 text-[13.5px] text-[var(--t-ink-muted)]">
-          <a href="#capabilities" className="hover:text-[var(--t-ink)]">
+        <nav
+          aria-label="Aura sections"
+          className="flex items-center gap-5 text-[13.5px] text-[var(--t-ink-muted)]"
+        >
+          <a
+            href="#capabilities"
+            className="hover:text-[var(--t-ink)] rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
             Capabilities
           </a>
-          <a href="#pricing" className="hover:text-[var(--t-ink)]">
+          <a
+            href="#pricing"
+            className="hover:text-[var(--t-ink)] rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
             Pricing
           </a>
-          <a href="#capabilities">
-            <TonalButton size="sm">Try Aura</TonalButton>
-          </a>
-        </div>
+          <TonalButton
+            size="sm"
+            onClick={() =>
+              toast({
+                title: "Aura 2.5 Studio ready",
+                description: "Explore the interactive capability switcher below.",
+                tone: "info",
+              })
+            }
+          >
+            Try Aura
+          </TonalButton>
+        </nav>
       </div>
 
       {/* Centered Calm AI Studio Hero */}
@@ -47,15 +68,18 @@ export default function AiDemoPage() {
           documents — designed with breathable white space and zero clutter.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <a href="#pricing">
-            <TonalButton size="lg">Start free</TonalButton>
+          <a
+            href="#capabilities"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-[var(--t-cta-bg)] text-[var(--t-cta-fg,#ffffff)] hover:bg-[var(--t-cta-hover)] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            Start free
           </a>
           <ChevronLink href="#pricing">See plans &amp; limits</ChevronLink>
         </div>
       </section>
 
-      {/* Interactive Capability Stage */}
-      <section id="capabilities">
+      {/* Dogfooded CapabilityTabs Registry Block */}
+      <section id="capabilities" className="scroll-mt-28 lg:scroll-mt-20">
         <CapabilityTabs />
       </section>
 
@@ -95,9 +119,17 @@ export default function AiDemoPage() {
         </SurfaceTile>
       </section>
 
-      {/* Clean 2-Tier Pricing */}
-      <div id="pricing">
-        <PricingGrid />
+      {/* Dogfooded PricingGrid Registry Block */}
+      <div id="pricing" className="scroll-mt-28 lg:scroll-mt-20">
+        <PricingGrid
+          onSelectTier={(tier) =>
+            toast({
+              title: `Selected ${tier.name}`,
+              description: `${tier.price} ${tier.period ?? ""} — demo plan action triggered.`,
+              tone: "success",
+            })
+          }
+        />
       </div>
     </div>
   );

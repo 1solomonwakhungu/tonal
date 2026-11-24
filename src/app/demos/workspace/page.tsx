@@ -2,24 +2,39 @@
 
 import * as React from "react";
 import { FileText, Table2, Presentation, Video } from "lucide-react";
-import { SurfaceTile } from "@registry/tonal/surface-tile";
+import { SurfaceTile, type SurfaceTone } from "@registry/tonal/surface-tile";
 import { TonalButton } from "@registry/tonal/button";
 import { TonalChip } from "@registry/tonal/chip";
 import { ChevronLink } from "@registry/tonal/chevron-link";
+import { TonalSegmentedControl } from "@registry/tonal/segmented-control";
+import { TonalDialog } from "@registry/tonal/dialog";
+import { TonalInput } from "@registry/tonal/input";
+import { useTonalToast } from "@registry/tonal/toast";
 
-const APPS = [
+const APPS: Array<{
+  id: "docs" | "sheets" | "slides" | "meet";
+  name: string;
+  color: string;
+  tint: string;
+  surfaceTone: SurfaceTone;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  title: string;
+  subtitle: string;
+  rows: string[];
+}> = [
   {
     id: "docs",
     name: "Docs",
     color: "var(--t-blue)",
     tint: "var(--t-surface-sky)",
+    surfaceTone: "sky",
     icon: FileText,
     title: "Q4 Product Launch Brief",
     subtitle: "Edited just now · 4 collaborators online",
     rows: [
       "Goal: Ship a calm, unified component system across web storefronts.",
       "Design rule: Flat tonal cards, 24px corners, and Google Sans 500.",
-      "Timeline: Registry live Monday, v1 marketing blocks by Friday.",
+      "Timeline: Registry live Monday, v0.2 interactive primitives by Friday.",
     ],
   },
   {
@@ -27,6 +42,7 @@ const APPS = [
     name: "Sheets",
     color: "var(--t-chip-mint-fg)",
     tint: "var(--t-surface-mint)",
+    surfaceTone: "mint",
     icon: Table2,
     title: "Q4 Launch Tracker",
     subtitle: "Live metrics · Synced automatically",
@@ -39,8 +55,9 @@ const APPS = [
   {
     id: "slides",
     name: "Slides",
-    color: "#F29900",
+    color: "var(--t-warning,#9c5300)",
     tint: "var(--t-surface-sand)",
+    surfaceTone: "sand",
     icon: Presentation,
     title: "Design Review Deck",
     subtitle: "12 clean slides · Ready to present",
@@ -55,6 +72,7 @@ const APPS = [
     name: "Meet",
     color: "var(--t-blue)",
     tint: "var(--t-surface-cool)",
+    surfaceTone: "cool",
     icon: Video,
     title: "Design Critique · Studio Room",
     subtitle: "HD video · Real-time captions enabled",
@@ -66,8 +84,27 @@ const APPS = [
   },
 ];
 
+type AppId = (typeof APPS)[number]["id"];
+
 export default function WorkspaceDemoPage() {
-  const [selected, setSelected] = React.useState(APPS[0]);
+  const { toast } = useTonalToast();
+  const [selectedId, setSelectedId] = React.useState<AppId>("docs");
+  const [shareOpen, setShareOpen] = React.useState(false);
+  const [inviteEmail, setInviteEmail] = React.useState("");
+
+  const selected = APPS.find((a) => a.id === selectedId) ?? APPS[0];
+
+  const handleShareSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inviteEmail.trim()) return;
+    toast({
+      title: `Shared "${selected.title}"`,
+      description: `Invite sent to ${inviteEmail.trim()}.`,
+      tone: "success",
+    });
+    setInviteEmail("");
+    setShareOpen(false);
+  };
 
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-8 flex flex-col gap-16">
@@ -80,14 +117,31 @@ export default function WorkspaceDemoPage() {
           <TonalChip tone="mint">Demo Website 3 / 4</TonalChip>
         </div>
         <div className="flex items-center gap-3">
-          <a href="#workspace-stage">
-            <TonalButton variant="ghost" size="sm">
-              Sign in
-            </TonalButton>
-          </a>
-          <a href="#workspace-stage">
-            <TonalButton size="sm">Start free trial</TonalButton>
-          </a>
+          <TonalButton
+            variant="ghost"
+            size="sm"
+            onClick={() =>
+              toast({
+                title: "Sign in",
+                description: "SSO and passkey sign-in preview.",
+                tone: "info",
+              })
+            }
+          >
+            Sign in
+          </TonalButton>
+          <TonalButton
+            size="sm"
+            onClick={() =>
+              toast({
+                title: "14-day free trial ready",
+                description: "Create a Canvas workspace in under 30 seconds.",
+                tone: "success",
+              })
+            }
+          >
+            Start free trial
+          </TonalButton>
         </div>
       </div>
 
@@ -102,57 +156,57 @@ export default function WorkspaceDemoPage() {
             — built with crisp visual hierarchy so your work stays in focus.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <a href="#workspace-stage">
-              <TonalButton size="lg">Get started free</TonalButton>
-            </a>
-            <a href="#workspace-stage">
-              <TonalButton variant="outline" size="lg">
-                Contact sales
-              </TonalButton>
-            </a>
+            <TonalButton
+              size="lg"
+              onClick={() =>
+                toast({
+                  title: "Workspace trial started",
+                  description: "Explore Docs, Sheets, Slides, and Meet below.",
+                  tone: "success",
+                })
+              }
+            >
+              Get started free
+            </TonalButton>
+            <TonalButton
+              variant="outline"
+              size="lg"
+              onClick={() =>
+                toast({
+                  title: "Sales inquiry received",
+                  description: "Our enterprise team responds within 1 business day.",
+                  tone: "info",
+                })
+              }
+            >
+              Contact sales
+            </TonalButton>
           </div>
         </div>
 
-        {/* App Switcher Pills */}
-        <div
-          id="workspace-stage"
-          role="group"
-          aria-label="Workspace apps"
-          className="inline-flex flex-wrap justify-center gap-2"
-        >
-          {APPS.map((app) => {
-            const Icon = app.icon;
-            const active = app.id === selected.id;
-            return (
-              <button
-                key={app.id}
-                type="button"
-                aria-pressed={active}
-                onClick={() => setSelected(app)}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-medium cursor-pointer transition-all duration-200 border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)] ${
-                  active
-                    ? "bg-[var(--t-elevated)] border-[var(--t-ink)] text-[var(--t-ink)]"
-                    : "bg-[var(--t-surface)] border-transparent text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
-                }`}
-              >
-                <Icon className="h-4 w-4" style={{ color: app.color }} />
-                {app.name}
-              </button>
-            );
-          })}
-        </div>
+        {/* Dogfooded TonalSegmentedControl */}
+        <TonalSegmentedControl
+          ariaLabel="Workspace app preview"
+          value={selectedId}
+          onValueChange={setSelectedId}
+          options={APPS.map((app) => ({
+            value: app.id,
+            label: app.name,
+            icon: app.icon,
+          }))}
+        />
 
         {/* Clean Browser Stage */}
         <SurfaceTile
-          tone="neutral"
+          tone={selected.surfaceTone}
           padding="lg"
-          className="w-full text-left transition-colors duration-300"
-          style={{ backgroundColor: selected.tint }}
+          className="w-full text-left"
         >
           <div className="rounded-[20px] bg-[var(--t-bg)] border border-[var(--t-border-subtle)] overflow-hidden">
             <div className="px-6 py-4 border-b border-[var(--t-border-subtle)] flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span
+                  aria-hidden="true"
                   className="h-9 w-9 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: selected.tint }}
                 >
@@ -170,7 +224,13 @@ export default function WorkspaceDemoPage() {
                   </div>
                 </div>
               </div>
-              <TonalChip tone="blue">Share</TonalChip>
+              <TonalButton
+                size="sm"
+                variant="tonal"
+                onClick={() => setShareOpen(true)}
+              >
+                Share
+              </TonalButton>
             </div>
 
             <div className="p-6 flex flex-col gap-3">
@@ -192,17 +252,28 @@ export default function WorkspaceDemoPage() {
 
       {/* Customer Quote Bento */}
       <section className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <SurfaceTile tone="warm" padding="lg" className="md:col-span-7 flex flex-col justify-between gap-6">
-          <p className="t-headline text-[24px] sm:text-[28px] leading-[1.25]">
+        <SurfaceTile
+          tone="warm"
+          padding="lg"
+          className="md:col-span-7 flex flex-col justify-between gap-6"
+        >
+          <blockquote className="t-headline text-[24px] sm:text-[28px] leading-[1.25]">
             “Switching to Canvas cut our weekly status meetings in half. The
             interface feels so quiet that everyone actually reads the doc.”
-          </p>
+          </blockquote>
           <div className="text-[13.5px] text-[var(--t-ink-muted)]">
-            <strong className="font-medium text-[var(--t-ink)]">Elena Park</strong> · VP of Product, Northstar Labs
+            <strong className="font-medium text-[var(--t-ink)]">
+              Elena Park
+            </strong>{" "}
+            · VP of Product, Northstar Labs
           </div>
         </SurfaceTile>
 
-        <SurfaceTile tone="cool" padding="lg" className="md:col-span-5 flex flex-col justify-between gap-6">
+        <SurfaceTile
+          tone="cool"
+          padding="lg"
+          className="md:col-span-5 flex flex-col justify-between gap-6"
+        >
           <div>
             <p className="text-[13px] font-medium text-[var(--t-ink-muted)] mb-2">
               Enterprise Ready
@@ -218,6 +289,36 @@ export default function WorkspaceDemoPage() {
           <ChevronLink href="/">Back to Tonal Registry</ChevronLink>
         </SurfaceTile>
       </section>
+
+      {/* Share Dialog */}
+      <TonalDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        title={`Share ${selected.title}`}
+        description="Invite teammates with edit or view access."
+      >
+        <form onSubmit={handleShareSubmit} className="flex flex-col gap-4">
+          <TonalInput
+            label="Teammate email"
+            type="email"
+            required
+            data-autofocus
+            placeholder="maya@northstar.dev"
+            value={inviteEmail}
+            onChange={(e) => setInviteEmail(e.target.value)}
+          />
+          <div className="flex justify-end gap-2 pt-2">
+            <TonalButton
+              type="button"
+              variant="ghost"
+              onClick={() => setShareOpen(false)}
+            >
+              Cancel
+            </TonalButton>
+            <TonalButton type="submit">Send invite</TonalButton>
+          </div>
+        </form>
+      </TonalDialog>
     </div>
   );
 }
