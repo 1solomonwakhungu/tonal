@@ -84,6 +84,7 @@ export function CapabilityTabs({
   className,
 }: CapabilityTabsProps) {
   const baseId = React.useId();
+  const tabRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const [activeId, setActiveId] = React.useState<string>(
     defaultActiveId ?? items[0]?.id ?? ""
   );
@@ -95,6 +96,37 @@ export function CapabilityTabs({
 
   const badges = activeItem.badges ?? DEFAULT_BADGES;
   const panelId = `${baseId}-panel`;
+
+  const selectIndex = (index: number, focus = false) => {
+    const next = items[index];
+    if (!next) return;
+    setActiveId(next.id);
+    onSelect?.(next);
+    if (focus) {
+      tabRefs.current[index]?.focus();
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    index: number
+  ) => {
+    if (items.length <= 1) return;
+    let nextIndex: number | null = null;
+    if (e.key === "ArrowRight") {
+      nextIndex = (index + 1) % items.length;
+    } else if (e.key === "ArrowLeft") {
+      nextIndex = (index - 1 + items.length) % items.length;
+    } else if (e.key === "Home") {
+      nextIndex = 0;
+    } else if (e.key === "End") {
+      nextIndex = items.length - 1;
+    }
+    if (nextIndex !== null) {
+      e.preventDefault();
+      selectIndex(nextIndex, true);
+    }
+  };
 
   return (
     <SurfaceTile
@@ -108,21 +140,23 @@ export function CapabilityTabs({
           aria-label="Capabilities"
           className="inline-flex flex-wrap gap-2"
         >
-          {items.map((cap) => {
+          {items.map((cap, index) => {
             const Icon = cap.icon;
             const active = cap.id === activeItem.id;
             return (
               <button
                 key={cap.id}
+                ref={(el) => {
+                  tabRefs.current[index] = el;
+                }}
                 id={`${baseId}-tab-${cap.id}`}
                 type="button"
                 role="tab"
+                tabIndex={active ? 0 : -1}
                 aria-selected={active}
                 aria-controls={panelId}
-                onClick={() => {
-                  setActiveId(cap.id);
-                  onSelect?.(cap);
-                }}
+                onClick={() => selectIndex(index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
                 className={cn(
                   "inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-medium cursor-pointer transition-all duration-200 [transition-timing-function:var(--t-ease)]",
                   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",

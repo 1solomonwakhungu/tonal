@@ -414,11 +414,16 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
 
         <button
           type="button"
-          onClick={() => {
-            const liveCmd = `npx shadcn@latest add ${getLiveOrigin()}/r/editorial-hero.json`;
-            navigator.clipboard?.writeText(liveCmd).catch(() => {});
-            setCopiedInstall(true);
-            setTimeout(() => setCopiedInstall(false), 1600);
+          onClick={async () => {
+            if (!navigator.clipboard?.writeText) return;
+            try {
+              const liveCmd = `npx shadcn@latest add ${getLiveOrigin()}/r/editorial-hero.json`;
+              await navigator.clipboard.writeText(liveCmd);
+              setCopiedInstall(true);
+              setTimeout(() => setCopiedInstall(false), 1600);
+            } catch {
+              // Clipboard unavailable
+            }
           }}
           className="inline-flex items-center gap-3 rounded-full bg-[var(--t-surface)] hover:bg-[var(--t-surface-muted)] border border-[var(--t-border-subtle)] px-5 py-2.5 text-[13px] font-mono text-[var(--t-ink-secondary)] cursor-pointer transition-colors"
         >
@@ -508,11 +513,16 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
             <button
               key={s.token}
               type="button"
-              onClick={() => {
-                const value = `var(${s.token})`;
-                navigator.clipboard?.writeText(value).catch(() => {});
-                setCopiedToken(value);
-                setTimeout(() => setCopiedToken(null), 1500);
+              onClick={async () => {
+                if (!navigator.clipboard?.writeText) return;
+                try {
+                  const value = `var(${s.token})`;
+                  await navigator.clipboard.writeText(value);
+                  setCopiedToken(value);
+                  setTimeout(() => setCopiedToken(null), 1500);
+                } catch {
+                  // Clipboard unavailable
+                }
               }}
               className="text-left rounded-[16px] border border-[var(--t-border-subtle)] bg-[var(--t-bg)] p-3 cursor-pointer hover:border-[var(--t-blue)] transition-colors"
             >

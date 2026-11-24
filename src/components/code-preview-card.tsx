@@ -53,6 +53,7 @@ export function CodePreviewCard({
   const [origin, setOrigin] = React.useState<string>(DEFAULT_ORIGIN);
   const [copiedCli, setCopiedCli] = React.useState(false);
   const [copiedCode, setCopiedCode] = React.useState(false);
+  const [statusMessage, setStatusMessage] = React.useState("");
   const cliTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const codeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -75,15 +76,27 @@ export function CodePreviewCard({
   const activeViewport =
     VIEWPORTS.find((v) => v.id === viewport) ?? VIEWPORTS[0];
 
-  const copyText = (
+  const copyText = async (
     text: string,
     setter: (v: boolean) => void,
-    timerRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>
+    timerRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>,
+    announcement: string
   ) => {
-    navigator.clipboard?.writeText(text).catch(() => {});
-    setter(true);
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => setter(false), 1600);
+    if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setter(true);
+      setStatusMessage(announcement);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
+        setter(false);
+        setStatusMessage("");
+      }, 1600);
+    } catch {
+      // Clipboard write unavailable or denied
+    }
   };
 
   return (
@@ -141,10 +154,11 @@ export function CodePreviewCard({
           <button
             type="button"
             onClick={() =>
-              copyText(
+              void copyText(
                 `npx shadcn@latest add ${getLiveOrigin()}/r/${registryName}.json`,
                 setCopiedCli,
-                cliTimerRef
+                cliTimerRef,
+                `Copied CLI command for ${title}`
               )
             }
             className="inline-flex items-center gap-1.5 rounded-full bg-[var(--t-surface)] hover:bg-[var(--t-surface-muted)] border border-[var(--t-border-subtle)] px-3 py-1.5 text-[12px] font-mono text-[var(--t-ink-secondary)] cursor-pointer transition-colors"
@@ -159,16 +173,19 @@ export function CodePreviewCard({
             )}
           </button>
 
+          <span className="sr-only" role="status" aria-live="polite">
+            {statusMessage}
+          </span>
+
           {/* Preview / Code Switcher */}
           <div
-            role="tablist"
+            role="group"
             aria-label={`${title} view`}
             className="inline-flex rounded-full bg-[var(--t-surface)] p-0.5 border border-[var(--t-border-subtle)]"
           >
             <button
               type="button"
-              role="tab"
-              aria-selected={tab === "preview"}
+              aria-pressed={tab === "preview"}
               onClick={() => setTab("preview")}
               className={cn(
                 "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-colors duration-200 [transition-timing-function:cubic-bezier(0.2,0,0,1)]",
@@ -181,8 +198,7 @@ export function CodePreviewCard({
             </button>
             <button
               type="button"
-              role="tab"
-              aria-selected={tab === "code"}
+              aria-pressed={tab === "code"}
               onClick={() => setTab("code")}
               className={cn(
                 "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-colors duration-200 [transition-timing-function:cubic-bezier(0.2,0,0,1)]",
@@ -241,7 +257,14 @@ export function CodePreviewCard({
             </div>
             <button
               type="button"
-              onClick={() => copyText(code, setCopiedCode, codeTimerRef)}
+              onClick={() =>
+                void copyText(
+                  code,
+                  setCopiedCode,
+                  codeTimerRef,
+                  `Copied source code for ${title}`
+                )
+              }
               className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/15 px-3 py-1 text-[11.5px] font-medium text-white cursor-pointer transition-colors shrink-0"
             >
               {copiedCode ? (

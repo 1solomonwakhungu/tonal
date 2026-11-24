@@ -21,22 +21,31 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     try {
+      const current = document.documentElement.dataset.tonalTheme;
+      if (current === "dark" || current === "light") {
+        setTheme(current);
+        return;
+      }
       const saved = window.localStorage.getItem("tonal-theme");
       if (saved === "light" || saved === "dark") {
+        document.documentElement.dataset.tonalTheme = saved;
         setTheme(saved);
+      } else if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.dataset.tonalTheme = "dark";
+        setTheme("dark");
       }
     } catch {
       // Ignore storage access errors
     }
   }, []);
 
-  React.useEffect(() => {
-    document.documentElement.dataset.tonalTheme = theme;
-  }, [theme]);
-
   const toggleTheme = React.useCallback(() => {
     setTheme((prev) => {
       const next = prev === "dark" ? "light" : "dark";
+      document.documentElement.dataset.tonalTheme = next;
       try {
         window.localStorage.setItem("tonal-theme", next);
       } catch {
@@ -49,7 +58,6 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
   return (
     <div
       data-tonal-mode={mode}
-      data-tonal-theme={theme}
       className="min-h-screen bg-[var(--t-bg)] text-[var(--t-ink)] flex flex-col transition-colors duration-200"
     >
       <header className="sticky top-0 z-40 bg-[var(--t-bg)]/90 backdrop-blur-md border-b border-[var(--t-border-subtle)] transition-colors duration-200">
