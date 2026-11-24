@@ -72,6 +72,9 @@ export function CodePreviewCard({
   const [copiedCode, setCopiedCode] = React.useState(false);
   const [frameTheme, setFrameTheme] = React.useState<"light" | "dark">("light");
   const [frameMode, setFrameMode] = React.useState<"pill" | "commerce">("pill");
+  const [statusMessage, setStatusMessage] = React.useState("");
+  const cliTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const codeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && window.location.origin) {
@@ -90,7 +93,11 @@ export function CodePreviewCard({
       attributes: true,
       attributeFilter: ["data-tonal-theme", "data-tonal-mode"],
     });
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (cliTimerRef.current) clearTimeout(cliTimerRef.current);
+      if (codeTimerRef.current) clearTimeout(codeTimerRef.current);
+    };
   }, []);
 
   const getLiveOrigin = () =>
@@ -102,10 +109,27 @@ export function CodePreviewCard({
   const activeViewport =
     VIEWPORTS.find((v) => v.id === viewport) ?? VIEWPORTS[0];
 
-  const copyText = (text: string, setter: (v: boolean) => void) => {
-    navigator.clipboard?.writeText(text).catch(() => {});
-    setter(true);
-    setTimeout(() => setter(false), 1600);
+  const copyText = async (
+    text: string,
+    setter: (v: boolean) => void,
+    timerRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>,
+    announcement: string
+  ) => {
+    if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setter(true);
+      setStatusMessage(announcement);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => {
+        setter(false);
+        setStatusMessage("");
+      }, 1600);
+    } catch {
+      // Clipboard write unavailable or denied
+    }
   };
 
   const iframeSrc = `/preview/${registryName}?theme=${frameTheme}&mode=${frameMode}`;
@@ -202,9 +226,11 @@ export function CodePreviewCard({
           <button
             type="button"
             onClick={() =>
-              copyText(
+              void copyText(
                 `npx shadcn@latest add ${getLiveOrigin()}/r/${registryName}.json`,
-                setCopiedCli
+                setCopiedCli,
+                cliTimerRef,
+                `Copied CLI command for ${title}`
               )
             }
             className="inline-flex items-center gap-1.5 rounded-full bg-[var(--t-surface)] hover:bg-[var(--t-surface-muted)] border border-[var(--t-border-subtle)] px-3 py-1.5 text-[12px] font-mono text-[var(--t-ink-secondary)] cursor-pointer transition-colors"
@@ -219,8 +245,16 @@ export function CodePreviewCard({
             )}
           </button>
 
+          <span className="sr-only" role="status" aria-live="polite">
+            {statusMessage}
+          </span>
+
           {/* Preview / Code Switcher */}
-          <div className="inline-flex rounded-full bg-[var(--t-surface)] p-0.5 border border-[var(--t-border-subtle)]">
+          <div
+            role="group"
+            aria-label={`${title} view`}
+            className="inline-flex rounded-full bg-[var(--t-surface)] p-0.5 border border-[var(--t-border-subtle)]"
+          >
             <button
               type="button"
               aria-pressed={tab === "preview"}
@@ -292,7 +326,14 @@ export function CodePreviewCard({
             </div>
             <button
               type="button"
-              onClick={() => copyText(code, setCopiedCode)}
+              onClick={() =>
+                void copyText(
+                  code,
+                  setCopiedCode,
+                  codeTimerRef,
+                  `Copied source code for ${title}`
+                )
+              }
               className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/15 px-3 py-1 text-[11.5px] font-medium text-white cursor-pointer transition-colors shrink-0"
             >
               {copiedCode ? (

@@ -67,9 +67,7 @@ const APPS = [
 ];
 
 export default function WorkspaceDemoPage() {
-  const baseId = React.useId();
   const [selected, setSelected] = React.useState(APPS[0]);
-  const panelId = `${baseId}-stage`;
 
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-8 flex flex-col gap-16">
@@ -118,7 +116,7 @@ export default function WorkspaceDemoPage() {
         {/* App Switcher Pills */}
         <div
           id="workspace-stage"
-          role="tablist"
+          role="group"
           aria-label="Workspace apps"
           className="inline-flex flex-wrap justify-center gap-2"
         >
@@ -128,11 +126,8 @@ export default function WorkspaceDemoPage() {
             return (
               <button
                 key={app.id}
-                id={`${baseId}-tab-${app.id}`}
                 type="button"
-                role="tab"
-                aria-selected={active}
-                aria-controls={panelId}
+                aria-pressed={active}
                 onClick={() => setSelected(app)}
                 className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-medium cursor-pointer transition-all duration-200 border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)] ${
                   active
@@ -149,9 +144,6 @@ export default function WorkspaceDemoPage() {
 
         {/* Clean Browser Stage */}
         <SurfaceTile
-          id={panelId}
-          role="tabpanel"
-          aria-labelledby={`${baseId}-tab-${selected.id}`}
           tone="neutral"
           padding="lg"
           className="w-full text-left transition-colors duration-300"
@@ -215,9 +207,9 @@ export default function WorkspaceDemoPage() {
             <p className="text-[13px] font-medium text-[var(--t-ink-muted)] mb-2">
               Enterprise Ready
             </p>
-            <h3 className="t-headline text-[24px] mb-2">
+            <h2 className="t-headline text-[24px] mb-2">
               99.9% uptime SLA included.
-            </h3>
+            </h2>
             <p className="t-body text-[14px]">
               Zero-trust SSO, audit logs, and granular sharing rules without
               complex admin setup.

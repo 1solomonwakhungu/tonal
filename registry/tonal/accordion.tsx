@@ -64,6 +64,8 @@ export function TonalAccordion({
               id={panelId}
               role="region"
               aria-labelledby={buttonId}
+              aria-hidden={!isOpen}
+              inert={!isOpen}
               className={cn(
                 "grid transition-all duration-250 [transition-timing-function:var(--t-ease)]",
                 isOpen
