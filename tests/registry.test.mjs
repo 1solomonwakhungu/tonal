@@ -319,14 +319,22 @@ test("every TS/TSX import resolves on disk, in package.json, and in simulated co
 });
 
 test("every registry item is showcased in ShowcaseClient and SEO routes match production origin", () => {
+  const catalogSrc = fs.readFileSync(
+    path.join(root, "src/lib/registry-catalog.ts"),
+    "utf8"
+  );
   const showcaseSrc = fs.readFileSync(
     path.join(root, "src/components/showcase-client.tsx"),
     "utf8"
   );
+  assert.ok(
+    showcaseSrc.includes("REGISTRY_CATALOG"),
+    "src/components/showcase-client.tsx must render REGISTRY_CATALOG"
+  );
   for (const item of registry.items) {
     assert.ok(
-      showcaseSrc.includes(`registryName: "${item.name}"`),
-      `Registry item "${item.name}" is not rendered in src/components/showcase-client.tsx`
+      catalogSrc.includes(`slug: "${item.name}"`),
+      `Registry item "${item.name}" is missing from src/lib/registry-catalog.ts`
     );
   }
 

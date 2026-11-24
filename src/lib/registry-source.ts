@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { codeToHtml } from "shiki";
 
 interface RegistryFileDef {
   path: string;
@@ -39,6 +40,7 @@ export interface RegistryItemSource {
   registryDependencies: string[];
   files: RegistryFileSource[];
   code: string;
+  highlightedHtml?: string;
 }
 
 export type RegistrySourceMap = Record<string, RegistryItemSource>;
@@ -55,6 +57,23 @@ function formatCombinedCode(files: RegistryFileSource[]): string {
       return `${header}\n${file.content}`;
     })
     .join("\n\n");
+}
+
+function detectLanguage(files: RegistryFileSource[]): "css" | "tsx" {
+  if (files.length > 0 && files[0].path.endsWith(".css")) {
+    return "css";
+  }
+  return "tsx";
+}
+
+export async function highlightCode(
+  code: string,
+  lang: "css" | "tsx" | "bash" = "tsx"
+): Promise<string> {
+  return codeToHtml(code, {
+    lang,
+    theme: "github-dark-default",
+  });
 }
 
 /**
@@ -97,9 +116,35 @@ export function getRegistrySources(): RegistrySourceMap {
   return sources;
 }
 
+export async function getRegistrySourcesWithHighlight(): Promise<RegistrySourceMap> {
+  const sources = getRegistrySources();
+  const entries = await Promise.all(
+    Object.entries(sources).map(async ([name, item]) => {
+      const highlightedHtml = await highlightCode(
+        item.code,
+        detectLanguage(item.files)
+      );
+      return [name, { ...item, highlightedHtml }] as const;
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
 export function getRegistryItemSource(
   name: string
 ): RegistryItemSource | undefined {
   const sources = getRegistrySources();
   return sources[name];
+}
+
+export async function getRegistryItemSourceWithHighlight(
+  name: string
+): Promise<RegistryItemSource | undefined> {
+  const item = getRegistryItemSource(name);
+  if (!item) return undefined;
+  const highlightedHtml = await highlightCode(
+    item.code,
+    detectLanguage(item.files)
+  );
+  return { ...item, highlightedHtml };
 }

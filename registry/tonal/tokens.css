@@ -1,5 +1,7 @@
-/* Tonal Design Tokens — Editorial Tonal Surfaces & Typography */
-:root {
+/* Tonal Design Tokens — Editorial Tonal Surfaces, Semantic Status & Typography */
+:root,
+[data-tonal-theme="light"] {
+  color-scheme: light;
   --t-font: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Surfaces (flat tonal steps instead of heavy shadows) */
@@ -20,14 +22,23 @@
   --t-border: #dadce0;
   --t-border-subtle: #e8eaed;
 
-  /* Accent */
+  /* Accent & Focus */
   --t-blue: #1967d2;
   --t-blue-hover: #174ea6;
   --t-blue-tint: #e8f0fe;
   --t-blue-tint-hover: #d2e3fc;
+  --t-ring: #1967d2;
   --t-chip-mint-fg: #137333;
   --t-nav-active-bg: #c2e7ff;
   --t-nav-active-fg: #001d35;
+
+  /* Semantic Status (all pairs >= 4.5:1 WCAG AA) */
+  --t-success: #137333;
+  --t-success-surface: #e6f4ea;
+  --t-warning: #9c5300;
+  --t-warning-surface: #fef7e0;
+  --t-danger: #c5221f;
+  --t-danger-surface: #fce8e6;
 
   /* Shape & Motion */
   --t-radius-card: 24px;
@@ -42,6 +53,14 @@
   --t-dark-btn-hover: #3c4043;
   --t-hover-overlay: rgba(32, 33, 36, 0.04);
   --t-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Explicit Soft Pill reset when nested inside a Commerce ancestor */
+[data-tonal-mode="pill"] {
+  --t-radius-btn: 9999px;
+  --t-cta-bg: var(--t-blue);
+  --t-cta-fg: #ffffff;
+  --t-cta-hover: var(--t-blue-hover);
 }
 
 /* Switch button shape & primary ink globally for Commerce mode */
@@ -77,9 +96,17 @@
   --t-blue-hover: #aecbfa;
   --t-blue-tint: #1f3352;
   --t-blue-tint-hover: #284169;
+  --t-ring: #8ab4f8;
   --t-chip-mint-fg: #81c995;
   --t-nav-active-bg: #004a77;
   --t-nav-active-fg: #c2e7ff;
+
+  --t-success: #81c995;
+  --t-success-surface: #18291f;
+  --t-warning: #fdd663;
+  --t-warning-surface: #2a2417;
+  --t-danger: #f28b82;
+  --t-danger-surface: #3c1e1e;
 
   --t-cta-bg: #8ab4f8;
   --t-cta-fg: #062e6f;
@@ -90,13 +117,61 @@
   --t-hover-overlay: rgba(227, 227, 227, 0.08);
 }
 
+[data-tonal-theme="dark"][data-tonal-mode="pill"],
+[data-tonal-theme="dark"] [data-tonal-mode="pill"]:not([data-tonal-theme="light"]),
+.dark[data-tonal-mode="pill"],
+.dark [data-tonal-mode="pill"]:not([data-tonal-theme="light"]) {
+  --t-cta-bg: #8ab4f8;
+  --t-cta-fg: #062e6f;
+  --t-cta-hover: #aecbfa;
+}
+
 [data-tonal-theme="dark"][data-tonal-mode="commerce"],
-[data-tonal-theme="dark"] [data-tonal-mode="commerce"],
+[data-tonal-theme="dark"] [data-tonal-mode="commerce"]:not([data-tonal-theme="light"]),
 .dark[data-tonal-mode="commerce"],
-.dark [data-tonal-mode="commerce"] {
+.dark [data-tonal-mode="commerce"]:not([data-tonal-theme="light"]) {
   --t-cta-bg: #e3e3e3;
   --t-cta-fg: #131314;
   --t-cta-hover: #ffffff;
+}
+
+/* Tailwind CSS v4 @theme inline bridge (enables bg-t-surface, text-t-ink, rounded-t-card, etc.) */
+@theme inline {
+  --color-t-bg: var(--t-bg);
+  --color-t-surface: var(--t-surface);
+  --color-t-surface-muted: var(--t-surface-muted);
+  --color-t-surface-warm: var(--t-surface-warm);
+  --color-t-surface-cool: var(--t-surface-cool);
+  --color-t-surface-sky: var(--t-surface-sky);
+  --color-t-surface-mint: var(--t-surface-mint);
+  --color-t-surface-sand: var(--t-surface-sand);
+  --color-t-elevated: var(--t-elevated);
+
+  --color-t-ink: var(--t-ink);
+  --color-t-ink-secondary: var(--t-ink-secondary);
+  --color-t-ink-muted: var(--t-ink-muted);
+  --color-t-border: var(--t-border);
+  --color-t-border-subtle: var(--t-border-subtle);
+
+  --color-t-blue: var(--t-blue);
+  --color-t-blue-hover: var(--t-blue-hover);
+  --color-t-blue-tint: var(--t-blue-tint);
+  --color-t-ring: var(--t-ring);
+
+  --color-t-success: var(--t-success);
+  --color-t-success-surface: var(--t-success-surface);
+  --color-t-warning: var(--t-warning);
+  --color-t-warning-surface: var(--t-warning-surface);
+  --color-t-danger: var(--t-danger);
+  --color-t-danger-surface: var(--t-danger-surface);
+
+  --radius-t-card: var(--t-radius-card);
+  --radius-t-hero: var(--t-radius-hero);
+  --radius-t-sm: var(--t-radius-sm);
+  --radius-t-btn: var(--t-radius-btn);
+
+  --font-t-sans: var(--t-font);
+  --ease-tonal: var(--t-ease);
 }
 
 .t-display {
@@ -120,4 +195,16 @@
   font-weight: 400;
   line-height: 1.58;
   color: var(--t-ink-secondary);
+}
+
+/* Respect user reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,8 +1,8 @@
-import { getRegistrySources } from "@/lib/registry-source";
+import { getRegistrySourcesWithHighlight } from "@/lib/registry-source";
 import { ShowcaseClient } from "@/components/showcase-client";
 
-export default function HomePage() {
-  const sources = getRegistrySources();
+export default async function HomePage() {
+  const sources = await getRegistrySourcesWithHighlight();
 
   return <ShowcaseClient sources={sources} />;
 }
