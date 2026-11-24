@@ -98,10 +98,10 @@ The Next.js app at [tonal.harlo.dev](https://tonal.harlo.dev) includes the inter
 | `/` | Registry Showcase | All 19 items with live preview, true-viewport iframe toggles, Shiki-highlighted source, and CLI commands |
 | `/studio` | Live Theme Studio | Curated presets, custom accent picker, surface warmth, card radius slider, WCAG contrast checks & `tokens.css` export |
 | `/components/[slug]` | Component Docs | Deep-linkable docs for all 19 items with `npx`/`pnpm`/`bun` install tabs, Props API, and dependency links |
-| `/demos/hardware` | Lumen Store | Hardware storefront with `EditorialHero`, `SpecsTable`, and `TonalAccordion` |
-| `/demos/ai` | Aura Studio | AI product page powered by `CapabilityTabs` and `PricingGrid` |
-| `/demos/workspace` | Canvas Workspace | Productivity SaaS page with interactive app-tab stage and customer quote bento |
-| `/demos/dashboard` | Pulse Console | Analytics console with `TonalAppShell`, `KpiGrid`, throughput chart, and `TonalTable` |
+| `/demos/hardware` | Lumen Store | Hardware storefront with `EditorialHero`, slide-over `TonalDialog` bag drawer, `SpecsTable`, `TonalAccordion`, and toast feedback |
+| `/demos/ai` | Aura Studio | AI product page powered by `CapabilityTabs`, `PricingGrid`, and toast feedback |
+| `/demos/workspace` | Canvas Workspace | Productivity SaaS page with `TonalSegmentedControl` app switcher, Share `TonalDialog`, and customer quote bento |
+| `/demos/dashboard` | Pulse Console | Analytics console built with `TonalAppShell`, `KpiGrid`, `TonalAreaChart`, `TonalTable`, and Create Project `TonalDialog` |
 
 ## Architecture
 
