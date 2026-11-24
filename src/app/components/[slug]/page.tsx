@@ -8,6 +8,7 @@ import { CodePreviewCard } from "@/components/code-preview-card";
 import { RegistryPreview } from "@/components/registry-preview";
 import { ComponentInstallTabs } from "@/components/component-install-tabs";
 import { getCatalogItem, REGISTRY_CATALOG } from "@/lib/registry-catalog";
+import { createPageMetadata } from "@/lib/page-metadata";
 import {
   getRegistryItemSourceWithHighlight,
   highlightCode,
@@ -26,16 +27,12 @@ export async function generateMetadata({
   const meta = getCatalogItem(slug);
   if (!meta) return { title: "Component not found" };
 
-  return {
+  return createPageMetadata({
     title: meta.title,
+    ogTitle: `${meta.title} — Tonal`,
     description: meta.description,
-    alternates: { canonical: `/components/${meta.slug}` },
-    openGraph: {
-      title: `${meta.title} — Tonal`,
-      description: meta.description,
-      url: `/components/${meta.slug}`,
-    },
-  };
+    path: `/components/${meta.slug}`,
+  });
 }
 
 export default async function ComponentDetailPage({

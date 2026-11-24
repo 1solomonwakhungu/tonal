@@ -1,19 +1,11 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/page-metadata";
 
-const title = "Canvas Workspace — Productivity SaaS Demo";
-const description =
-  "Productivity workspace landing page built with Tonal: live app-tab stage switcher, tonal feature tiles, and editorial customer quote layout.";
-
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/demos/workspace" },
-  openGraph: {
-    title,
-    description,
-    url: "/demos/workspace",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Canvas Workspace — Productivity SaaS Demo",
+  description:
+    "Productivity workspace landing page built with Tonal: live app-tab stage switcher, tonal feature tiles, and editorial customer quote layout.",
+  path: "/demos/workspace",
+});
 
 export default function WorkspaceDemoLayout({
   children,

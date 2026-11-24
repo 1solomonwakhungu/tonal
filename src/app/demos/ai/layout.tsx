@@ -1,19 +1,11 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/page-metadata";
 
-const title = "Aura Studio — AI Product Demo";
-const description =
-  "Calm AI product landing page built with Tonal: cool tonal surfaces, interactive capability prompt switcher, and 2-tier editorial pricing.";
-
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/demos/ai" },
-  openGraph: {
-    title,
-    description,
-    url: "/demos/ai",
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Aura Studio — AI Product Demo",
+  description:
+    "Calm AI product landing page built with Tonal: cool tonal surfaces, interactive capability prompt switcher, and 2-tier editorial pricing.",
+  path: "/demos/ai",
+});
 
 export default function AiDemoLayout({
   children,

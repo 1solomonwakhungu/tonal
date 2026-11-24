@@ -145,6 +145,16 @@ npm run build                           # Rebuild registry and run next build
 node scripts/verify-shadcn-install.mjs  # Verify real `shadcn add` install in an isolated temp project
 ```
 
+## Measured Stats
+
+Measured from a clean production build (`npm run build` on Next.js 15.5.29, React 19, Tailwind CSS v4):
+
+- **Registry items**: 19 total (1 token sheet, 10 primitives, 8 blocks), 2,996 lines / 94.7 kB unminified source across all files.
+- **Design tokens**: 41 `:root` CSS custom properties in `registry/tonal/tokens.css` (210 lines / 5.7 kB), including light/dark parity (`[data-tonal-theme="dark"]` and `.dark`), WCAG AA semantic status tokens, Tailwind v4 `@theme inline` mappings, and Soft Pill / Commerce mode overrides.
+- **Automated tests**: 27 passing tests (6 Node registry integrity tests + 21 Vitest contrast, Theme Studio, and component interaction tests).
+- **Next.js static output**: 51/51 prerendered static routes, `103 kB` shared First Load JS (`/` `3.42 kB` route JS, `/studio` `4.38 kB`, `/components/[slug]` `1.26 kB`).
+- **Registry dependencies**: Tonal items themselves add only `clsx`, `tailwind-merge`, and `lucide-react`.
+
 ## License & Credits
 
 Licensed under the [MIT License](./LICENSE).
