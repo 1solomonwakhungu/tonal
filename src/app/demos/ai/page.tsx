@@ -19,16 +19,25 @@ export default function AiDemoPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-[var(--t-border-subtle)]">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-2 text-[19px] font-medium tracking-[-0.02em] text-[var(--t-ink)]">
-            <Sparkles className="h-5 w-5 text-[var(--t-blue)]" />
+            <Sparkles aria-hidden="true" className="h-5 w-5 text-[var(--t-blue)]" />
             Aura
           </span>
           <TonalChip tone="blue">Demo Website 2 / 4</TonalChip>
         </div>
-        <div className="flex items-center gap-5 text-[13.5px] text-[var(--t-ink-muted)]">
-          <a href="#capabilities" className="hover:text-[var(--t-ink)]">
+        <nav
+          aria-label="Aura sections"
+          className="flex items-center gap-5 text-[13.5px] text-[var(--t-ink-muted)]"
+        >
+          <a
+            href="#capabilities"
+            className="hover:text-[var(--t-ink)] rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
             Capabilities
           </a>
-          <a href="#pricing" className="hover:text-[var(--t-ink)]">
+          <a
+            href="#pricing"
+            className="hover:text-[var(--t-ink)] rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
             Pricing
           </a>
           <TonalButton
@@ -43,7 +52,7 @@ export default function AiDemoPage() {
           >
             Try Aura
           </TonalButton>
-        </div>
+        </nav>
       </div>
 
       {/* Centered Calm AI Studio Hero */}
@@ -70,7 +79,7 @@ export default function AiDemoPage() {
       </section>
 
       {/* Dogfooded CapabilityTabs Registry Block */}
-      <section id="capabilities">
+      <section id="capabilities" className="scroll-mt-28 lg:scroll-mt-20">
         <CapabilityTabs />
       </section>
 
@@ -111,7 +120,7 @@ export default function AiDemoPage() {
       </section>
 
       {/* Dogfooded PricingGrid Registry Block */}
-      <div id="pricing">
+      <div id="pricing" className="scroll-mt-28 lg:scroll-mt-20">
         <PricingGrid
           onSelectTier={(tier) =>
             toast({

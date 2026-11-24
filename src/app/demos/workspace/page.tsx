@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { FileText, Table2, Presentation, Video } from "lucide-react";
-import { SurfaceTile } from "@registry/tonal/surface-tile";
+import { SurfaceTile, type SurfaceTone } from "@registry/tonal/surface-tile";
 import { TonalButton } from "@registry/tonal/button";
 import { TonalChip } from "@registry/tonal/chip";
 import { ChevronLink } from "@registry/tonal/chevron-link";
@@ -11,12 +11,23 @@ import { TonalDialog } from "@registry/tonal/dialog";
 import { TonalInput } from "@registry/tonal/input";
 import { useTonalToast } from "@registry/tonal/toast";
 
-const APPS = [
+const APPS: Array<{
+  id: "docs" | "sheets" | "slides" | "meet";
+  name: string;
+  color: string;
+  tint: string;
+  surfaceTone: SurfaceTone;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  title: string;
+  subtitle: string;
+  rows: string[];
+}> = [
   {
-    id: "docs" as const,
+    id: "docs",
     name: "Docs",
     color: "var(--t-blue)",
     tint: "var(--t-surface-sky)",
+    surfaceTone: "sky",
     icon: FileText,
     title: "Q4 Product Launch Brief",
     subtitle: "Edited just now · 4 collaborators online",
@@ -27,10 +38,11 @@ const APPS = [
     ],
   },
   {
-    id: "sheets" as const,
+    id: "sheets",
     name: "Sheets",
     color: "var(--t-chip-mint-fg)",
     tint: "var(--t-surface-mint)",
+    surfaceTone: "mint",
     icon: Table2,
     title: "Q4 Launch Tracker",
     subtitle: "Live metrics · Synced automatically",
@@ -41,10 +53,11 @@ const APPS = [
     ],
   },
   {
-    id: "slides" as const,
+    id: "slides",
     name: "Slides",
-    color: "var(--t-warning,#b06000)",
+    color: "var(--t-warning,#9c5300)",
     tint: "var(--t-surface-sand)",
+    surfaceTone: "sand",
     icon: Presentation,
     title: "Design Review Deck",
     subtitle: "12 clean slides · Ready to present",
@@ -55,10 +68,11 @@ const APPS = [
     ],
   },
   {
-    id: "meet" as const,
+    id: "meet",
     name: "Meet",
     color: "var(--t-blue)",
     tint: "var(--t-surface-cool)",
+    surfaceTone: "cool",
     icon: Video,
     title: "Design Critique · Studio Room",
     subtitle: "HD video · Real-time captions enabled",
@@ -103,10 +117,29 @@ export default function WorkspaceDemoPage() {
           <TonalChip tone="mint">Demo Website 3 / 4</TonalChip>
         </div>
         <div className="flex items-center gap-3">
-          <TonalButton variant="ghost" size="sm">
+          <TonalButton
+            variant="ghost"
+            size="sm"
+            onClick={() =>
+              toast({
+                title: "Sign in",
+                description: "SSO and passkey sign-in preview.",
+                tone: "info",
+              })
+            }
+          >
             Sign in
           </TonalButton>
-          <TonalButton size="sm" onClick={() => setShareOpen(true)}>
+          <TonalButton
+            size="sm"
+            onClick={() =>
+              toast({
+                title: "14-day free trial ready",
+                description: "Create a Canvas workspace in under 30 seconds.",
+                tone: "success",
+              })
+            }
+          >
             Start free trial
           </TonalButton>
         </div>
@@ -123,10 +156,29 @@ export default function WorkspaceDemoPage() {
             — built with crisp visual hierarchy so your work stays in focus.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <TonalButton size="lg" onClick={() => setShareOpen(true)}>
+            <TonalButton
+              size="lg"
+              onClick={() =>
+                toast({
+                  title: "Workspace trial started",
+                  description: "Explore Docs, Sheets, Slides, and Meet below.",
+                  tone: "success",
+                })
+              }
+            >
               Get started free
             </TonalButton>
-            <TonalButton variant="outline" size="lg">
+            <TonalButton
+              variant="outline"
+              size="lg"
+              onClick={() =>
+                toast({
+                  title: "Sales inquiry received",
+                  description: "Our enterprise team responds within 1 business day.",
+                  tone: "info",
+                })
+              }
+            >
               Contact sales
             </TonalButton>
           </div>
@@ -146,15 +198,15 @@ export default function WorkspaceDemoPage() {
 
         {/* Clean Browser Stage */}
         <SurfaceTile
-          tone="neutral"
+          tone={selected.surfaceTone}
           padding="lg"
-          className="w-full text-left transition-colors duration-300"
-          style={{ backgroundColor: selected.tint }}
+          className="w-full text-left"
         >
           <div className="rounded-[20px] bg-[var(--t-bg)] border border-[var(--t-border-subtle)] overflow-hidden">
             <div className="px-6 py-4 border-b border-[var(--t-border-subtle)] flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span
+                  aria-hidden="true"
                   className="h-9 w-9 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: selected.tint }}
                 >
@@ -205,10 +257,10 @@ export default function WorkspaceDemoPage() {
           padding="lg"
           className="md:col-span-7 flex flex-col justify-between gap-6"
         >
-          <p className="t-headline text-[24px] sm:text-[28px] leading-[1.25]">
+          <blockquote className="t-headline text-[24px] sm:text-[28px] leading-[1.25]">
             “Switching to Canvas cut our weekly status meetings in half. The
             interface feels so quiet that everyone actually reads the doc.”
-          </p>
+          </blockquote>
           <div className="text-[13.5px] text-[var(--t-ink-muted)]">
             <strong className="font-medium text-[var(--t-ink)]">
               Elena Park
@@ -250,6 +302,7 @@ export default function WorkspaceDemoPage() {
             label="Teammate email"
             type="email"
             required
+            data-autofocus
             placeholder="maya@northstar.dev"
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}

@@ -205,18 +205,18 @@ export default function DashboardDemoPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-[var(--t-border-subtle)]">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-2 text-[19px] font-medium tracking-[-0.02em] text-[var(--t-ink)]">
-            <Activity className="h-5 w-5 text-[var(--t-blue)]" />
+            <Activity aria-hidden="true" className="h-5 w-5 text-[var(--t-blue)]" />
             Pulse Console
           </span>
           <TonalChip tone="blue">Demo Website 4 / 4</TonalChip>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-[12.5px] text-[var(--t-chip-mint-fg)] bg-[var(--t-surface-mint)] px-3 py-1 rounded-full font-medium">
-            <CheckCircle2 className="h-3.5 w-3.5" />
+          <TonalChip tone="mint" className="hidden sm:inline-flex">
+            <CheckCircle2 aria-hidden="true" className="h-3.5 w-3.5" />
             All systems operational
-          </span>
+          </TonalChip>
           <TonalButton size="sm" onClick={() => setShowModal(true)}>
-            <Plus className="h-4 w-4" />
+            <Plus aria-hidden="true" className="h-4 w-4" />
             New project
           </TonalButton>
         </div>
@@ -280,12 +280,12 @@ export default function DashboardDemoPage() {
             <div className="xl:col-span-4 rounded-[20px] bg-[var(--t-surface-warm)] p-5 flex flex-col justify-between gap-5">
               <div>
                 <div className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[var(--t-blue-hover)] mb-2.5">
-                  <Sparkles className="h-3.5 w-3.5" />
+                  <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
                   Automated insight
                 </div>
-                <h3 className="text-[18px] font-medium tracking-[-0.02em] text-[var(--t-ink)] leading-[1.25] mb-2">
+                <h2 className="text-[18px] font-medium tracking-[-0.02em] text-[var(--t-ink)] leading-[1.25] mb-2">
                   Latency dropped 14% after enabling edge caching.
-                </h3>
+                </h2>
                 <p className="text-[13px] leading-[1.55] text-[var(--t-ink-secondary)]">
                   <strong>Lumen Storefront Web</strong> saw the sharpest
                   improvement across EU and US West regions with zero cold
@@ -295,7 +295,7 @@ export default function DashboardDemoPage() {
 
               <div className="rounded-[14px] bg-[var(--t-elevated)] p-3.5 border border-[var(--t-border-subtle)] flex items-center justify-between text-[12.5px]">
                 <span className="inline-flex items-center gap-1.5 text-[var(--t-ink-muted)]">
-                  <Clock className="h-3.5 w-3.5" />
+                  <Clock aria-hidden="true" className="h-3.5 w-3.5" />
                   Next digest
                 </span>
                 <span className="font-medium text-[var(--t-ink)]">
@@ -316,9 +316,9 @@ export default function DashboardDemoPage() {
               >
                 Pro Workspace Plan
               </TonalChip>
-              <h3 className="t-headline text-[22px] mb-1">
-                $418 accrued this billing period
-              </h3>
+              <h2 className="t-headline text-[22px] mb-1">
+                {data.kpis[3]?.value ?? "$418"} accrued ({data.label.toLowerCase()})
+              </h2>
               <p className="text-[13.5px] text-[var(--t-ink-secondary)]">
                 Next invoice on December 1 · Auto-pay via Visa ending in 4242.
               </p>
