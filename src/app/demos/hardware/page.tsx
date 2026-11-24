@@ -23,6 +23,17 @@ interface ProductItem {
   badge: string;
 }
 
+const FLAGSHIP_PRODUCT: ProductItem = {
+  id: "lumen-10-pro",
+  name: "Lumen 10 Pro",
+  tagline: "Sculpted matte glass flagship.",
+  price: 999,
+  priceLabel: "From $999",
+  tone: "warm",
+  shape: "phone",
+  badge: "Flagship",
+};
+
 const PRODUCTS: ProductItem[] = [
   {
     id: "lumen-10",
@@ -56,6 +67,8 @@ const PRODUCTS: ProductItem[] = [
   },
 ];
 
+const ALL_CATALOG_PRODUCTS: ProductItem[] = [FLAGSHIP_PRODUCT, ...PRODUCTS];
+
 export default function HardwareDemoPage() {
   const { toast } = useTonalToast();
   const [bag, setBag] = React.useState<Record<string, number>>({});
@@ -66,7 +79,7 @@ export default function HardwareDemoPage() {
       Object.entries(bag)
         .filter(([, qty]) => qty > 0)
         .map(([id, qty]) => ({
-          product: PRODUCTS.find((p) => p.id === id)!,
+          product: ALL_CATALOG_PRODUCTS.find((p) => p.id === id)!,
           qty,
         }))
         .filter((entry) => Boolean(entry.product)),
@@ -79,13 +92,17 @@ export default function HardwareDemoPage() {
     0
   );
 
-  const addToBag = (product: ProductItem) => {
+  const addToBag = (product: ProductItem, openDrawer = false) => {
     setBag((prev) => ({ ...prev, [product.id]: (prev[product.id] ?? 0) + 1 }));
-    toast({
-      title: `Added ${product.name}`,
-      description: `${product.priceLabel} · Tap Bag to review your items.`,
-      tone: "success",
-    });
+    if (openDrawer) {
+      setBagOpen(true);
+    } else {
+      toast({
+        title: `Added ${product.name}`,
+        description: `${product.priceLabel} · Tap Bag to review your items.`,
+        tone: "success",
+      });
+    }
   };
 
   const removeFromBag = (id: string) => {
@@ -106,25 +123,37 @@ export default function HardwareDemoPage() {
           </span>
           <TonalChip tone="neutral">Demo Website 1 / 4</TonalChip>
         </div>
-        <div className="flex items-center gap-4 text-[13.5px] text-[var(--t-ink-muted)]">
-          <a href="#lineup" className="hover:text-[var(--t-ink)]">
+        <nav
+          aria-label="Storefront sections"
+          className="flex items-center gap-4 text-[13.5px] text-[var(--t-ink-muted)]"
+        >
+          <a
+            href="#lineup"
+            className="hover:text-[var(--t-ink)] rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
             Lineup
           </a>
-          <a href="#specs" className="hover:text-[var(--t-ink)]">
+          <a
+            href="#specs"
+            className="hover:text-[var(--t-ink)] rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
             Compare
           </a>
-          <a href="#faq" className="hover:text-[var(--t-ink)]">
+          <a
+            href="#faq"
+            className="hover:text-[var(--t-ink)] rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
             FAQ
           </a>
-          <button
-            type="button"
+          <TonalButton
+            size="sm"
+            variant="tonal"
             onClick={() => setBagOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-full bg-[var(--t-surface)] hover:bg-[var(--t-surface-muted)] border border-[var(--t-border-subtle)] px-3.5 py-1.5 text-[12.5px] font-medium text-[var(--t-ink)] cursor-pointer transition-colors"
           >
-            <ShoppingBag className="h-3.5 w-3.5" />
+            <ShoppingBag aria-hidden="true" className="h-3.5 w-3.5" />
             Bag ({cartCount})
-          </button>
-        </div>
+          </TonalButton>
+        </nav>
       </div>
 
       {/* Hero with interactive finish switcher */}
@@ -134,6 +163,7 @@ export default function HardwareDemoPage() {
         subtitle="Sculpted matte glass in Porcelain, Bay, Aloe, and Obsidian. Tap any finish below to see the surface adapt."
         ctaLabel="Buy from $999"
         secondaryLabel="Compare specs"
+        onPrimaryClick={() => addToBag(FLAGSHIP_PRODUCT, true)}
       />
 
       {/* 2-Column Editorial Bento */}
@@ -155,30 +185,30 @@ export default function HardwareDemoPage() {
               dusk without over-sharpening or artificial HDR glow.
             </p>
           </div>
-          <div className="rounded-[20px] bg-[var(--t-elevated)] p-5 border border-[var(--t-border-subtle)] flex items-center justify-between">
+          <div className="rounded-[20px] bg-[var(--t-elevated)] p-4 sm:p-5 border border-[var(--t-border-subtle)] flex items-center justify-between gap-3">
             <div>
-              <div className="text-[12px] text-[var(--t-ink-muted)]">
+              <div className="text-[11.5px] sm:text-[12px] text-[var(--t-ink-muted)]">
                 Optical Zoom
               </div>
-              <div className="text-[28px] font-medium tracking-[-0.03em]">
+              <div className="text-[20px] sm:text-[28px] font-medium tracking-[-0.03em]">
                 5× / 30×
               </div>
             </div>
-            <div className="h-12 w-px bg-[var(--t-border-subtle)]" />
+            <div className="h-10 sm:h-12 w-px bg-[var(--t-border-subtle)] shrink-0" />
             <div>
-              <div className="text-[12px] text-[var(--t-ink-muted)]">
+              <div className="text-[11.5px] sm:text-[12px] text-[var(--t-ink-muted)]">
                 Main Sensor
               </div>
-              <div className="text-[28px] font-medium tracking-[-0.03em]">
+              <div className="text-[20px] sm:text-[28px] font-medium tracking-[-0.03em]">
                 50 MP
               </div>
             </div>
-            <div className="h-12 w-px bg-[var(--t-border-subtle)]" />
+            <div className="h-10 sm:h-12 w-px bg-[var(--t-border-subtle)] shrink-0" />
             <div>
-              <div className="text-[12px] text-[var(--t-ink-muted)]">
+              <div className="text-[11.5px] sm:text-[12px] text-[var(--t-ink-muted)]">
                 Aperture
               </div>
-              <div className="text-[28px] font-medium tracking-[-0.03em]">
+              <div className="text-[20px] sm:text-[28px] font-medium tracking-[-0.03em]">
                 ƒ/1.68
               </div>
             </div>
@@ -222,7 +252,10 @@ export default function HardwareDemoPage() {
       </section>
 
       {/* 3-Up Product Lineup */}
-      <section id="lineup" className="flex flex-col gap-6">
+      <section
+        id="lineup"
+        className="scroll-mt-28 lg:scroll-mt-20 flex flex-col gap-6"
+      >
         <div className="text-center max-w-xl mx-auto">
           <p className="text-[13px] font-medium text-[var(--t-ink-muted)] mb-1">
             The Lumen Ecosystem
@@ -289,12 +322,15 @@ export default function HardwareDemoPage() {
       </section>
 
       {/* Dogfooded Specs Comparison Table Registry Block */}
-      <div id="specs">
+      <div id="specs" className="scroll-mt-28 lg:scroll-mt-20">
         <SpecsTable />
       </div>
 
       {/* FAQ */}
-      <section id="faq" className="max-w-3xl mx-auto w-full flex flex-col gap-6">
+      <section
+        id="faq"
+        className="scroll-mt-28 lg:scroll-mt-20 max-w-3xl mx-auto w-full flex flex-col gap-6"
+      >
         <h2 className="t-headline text-[28px] sm:text-[34px] text-center">
           Frequently asked questions
         </h2>
@@ -380,9 +416,9 @@ export default function HardwareDemoPage() {
                   type="button"
                   onClick={() => removeFromBag(product.id)}
                   aria-label={`Remove ${product.name}`}
-                  className="h-8 w-8 rounded-full hover:bg-[var(--t-surface-muted)] grid place-items-center text-[var(--t-ink-muted)] hover:text-[var(--t-danger,#c5221f)] cursor-pointer"
+                  className="h-8 w-8 rounded-full hover:bg-[var(--t-surface-muted)] grid place-items-center text-[var(--t-ink-muted)] hover:text-[var(--t-danger,#c5221f)] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 aria-hidden="true" className="h-4 w-4" />
                 </button>
               </div>
             ))}
