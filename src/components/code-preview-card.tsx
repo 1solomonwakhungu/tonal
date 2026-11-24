@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 type ViewportMode = "desktop" | "tablet" | "mobile";
 
-const DEFAULT_ORIGIN = "http://localhost:3456";
+const DEFAULT_ORIGIN = "https://tonal.harlo.dev";
 
 const VIEWPORTS: Array<{
   id: ViewportMode;

@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
 
 type GalleryCategory = "all" | "primitives" | "blocks" | "tokens";
 
-const DEFAULT_ORIGIN = "http://localhost:3456";
+const DEFAULT_ORIGIN = "https://tonal.harlo.dev";
 
 const DEMO_SITES = [
   {

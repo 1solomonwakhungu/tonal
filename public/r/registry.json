@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "tonal",
-  "homepage": "http://localhost:3456",
+  "homepage": "https://tonal.harlo.dev",
   "items": [
     {
       "name": "tonal-tokens",
