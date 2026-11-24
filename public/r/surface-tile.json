@@ -3,7 +3,7 @@
   "name": "surface-tile",
   "type": "registry:ui",
   "title": "Surface Tile",
-  "description": "Flat 24px tonal container replacing drop shadows with subtle Porcelain, Cool, Neutral, Mint, and Sky surface tiers.",
+  "description": "Flat 24px tonal container replacing drop shadows with subtle White, Neutral, Porcelain, Cool, Sky, Mint, and Sand surface tiers.",
   "registryDependencies": [
     "https://tonal.harlo.dev/r/tonal-tokens.json"
   ],
