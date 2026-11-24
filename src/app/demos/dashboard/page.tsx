@@ -161,6 +161,15 @@ export default function DashboardDemoPage() {
   const [newName, setNewName] = React.useState("");
   const [newRegion, setNewRegion] = React.useState("us-central1");
 
+  React.useEffect(() => {
+    if (!showModal) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowModal(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showModal]);
+
   const data = DATASETS[range];
 
   const filteredProjects = projects.filter((p) => {
@@ -245,7 +254,7 @@ export default function DashboardDemoPage() {
       <div className="rounded-[var(--t-radius-hero)] bg-[var(--t-surface-cool)] p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left Navigation Rail (Flat Tonal Pill Style) */}
         <aside className="lg:col-span-3 flex flex-col justify-between gap-6 p-2">
-          <div className="flex flex-col gap-1">
+          <nav aria-label="Workspace navigation" className="flex flex-col gap-1">
             <div className="px-3 pb-2 text-[11.5px] font-medium uppercase tracking-wider text-[var(--t-ink-muted)]">
               Workspace
             </div>
@@ -256,9 +265,10 @@ export default function DashboardDemoPage() {
                 <button
                   key={item.id}
                   type="button"
+                  aria-current={active ? "page" : undefined}
                   onClick={() => setActiveNav(item.id)}
                   className={cn(
-                    "flex items-center gap-3 px-4 py-2.5 rounded-full text-[14px] font-medium cursor-pointer transition-colors duration-180 text-left",
+                    "flex items-center gap-3 px-4 py-2.5 rounded-full text-[14px] font-medium cursor-pointer transition-colors duration-180 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                     active
                       ? "bg-[var(--t-nav-active-bg)] text-[var(--t-nav-active-fg)]"
                       : "text-[var(--t-ink-secondary)] hover:bg-[var(--t-hover-overlay,rgba(32,33,36,0.04))]"
@@ -269,7 +279,7 @@ export default function DashboardDemoPage() {
                 </button>
               );
             })}
-          </div>
+          </nav>
 
           {/* Calm Quota Card inside sidebar */}
           <div className="rounded-[20px] bg-[var(--t-elevated)] p-4 border border-[var(--t-border-subtle)] flex flex-col gap-3">
@@ -277,14 +287,25 @@ export default function DashboardDemoPage() {
               <span className="font-medium text-[var(--t-ink)]">Monthly Quota</span>
               <span className="text-[var(--t-ink-muted)]">68%</span>
             </div>
-            <div className="h-2 w-full rounded-full bg-[var(--t-surface-sky)] overflow-hidden">
+            <div
+              className="h-2 w-full rounded-full bg-[var(--t-surface-sky)] overflow-hidden"
+              role="progressbar"
+              aria-valuenow={68}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Monthly Quota"
+            >
               <div className="h-full w-[68%] rounded-full bg-[var(--t-blue)]" />
             </div>
             <p className="text-[12px] text-[var(--t-ink-muted)] leading-[1.45]">
               7.42M of 11M included edge requests used this cycle.
             </p>
             <ChevronLink
-              onClick={() => setActiveNav("billing")}
+              href="#billing"
+              onClick={(e) => {
+                e.preventDefault();
+                setActiveNav("billing");
+              }}
               className="text-[12.5px]"
             >
               Manage plan
@@ -298,7 +319,7 @@ export default function DashboardDemoPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="t-headline text-[26px] sm:text-[30px]">
-                {activeNav === "overview" && "Good afternoon, Solomon"}
+                {activeNav === "overview" && "Good afternoon, Maya"}
                 {activeNav === "projects" && "Deployments & Services"}
                 {activeNav === "usage" && "Usage & Edge Quotas"}
                 {activeNav === "billing" && "Plan & Billing Summary"}
@@ -317,12 +338,14 @@ export default function DashboardDemoPage() {
                 <button
                   key={key}
                   type="button"
+                  role="tab"
+                  aria-selected={range === key}
                   onClick={() => {
                     setRange(key);
                     setHoveredIdx(null);
                   }}
                   className={cn(
-                    "px-3.5 py-1 rounded-full text-[12.5px] font-medium uppercase cursor-pointer transition-all duration-180",
+                    "px-3.5 py-1 rounded-full text-[12.5px] font-medium uppercase cursor-pointer transition-all duration-180 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                     range === key
                       ? "bg-[var(--t-elevated)] text-[var(--t-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.14)]"
                       : "text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
@@ -427,9 +450,14 @@ export default function DashboardDemoPage() {
                       return (
                         <g
                           key={pt.label}
+                          tabIndex={0}
+                          role="button"
+                          aria-label={`${pt.label}: ${pt.requests}K requests, ${pt.latency} ms median latency`}
                           onMouseEnter={() => setHoveredIdx(idx)}
                           onMouseLeave={() => setHoveredIdx(null)}
-                          className="cursor-pointer"
+                          onFocus={() => setHoveredIdx(idx)}
+                          onBlur={() => setHoveredIdx(null)}
+                          className="cursor-pointer focus:outline-none"
                         >
                           <circle
                             cx={pt.x}
@@ -520,12 +548,16 @@ export default function DashboardDemoPage() {
               <div className="flex flex-wrap items-center gap-2">
                 {/* Pill Search Field */}
                 <div className="relative">
-                  <Search className="h-4 w-4 text-[var(--t-ink-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Search
+                    aria-hidden="true"
+                    className="h-4 w-4 text-[var(--t-ink-muted)] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                  />
                   <input
-                    type="text"
+                    type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Filter projects or region..."
+                    aria-label="Filter projects or region"
                     className="rounded-full bg-[var(--t-surface-cool)] pl-9 pr-4 py-1.5 text-[13px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] border border-transparent focus:border-[var(--t-blue)] focus:bg-[var(--t-elevated)] focus:outline-none transition-colors w-56"
                   />
                 </div>
@@ -534,9 +566,10 @@ export default function DashboardDemoPage() {
                   <button
                     key={st}
                     type="button"
+                    aria-pressed={statusFilter === st}
                     onClick={() => setStatusFilter(st)}
                     className={cn(
-                      "px-3 py-1.5 rounded-full text-[12px] font-medium cursor-pointer transition-colors",
+                      "px-3 py-1.5 rounded-full text-[12px] font-medium cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                       statusFilter === st
                         ? "bg-[var(--t-ink)] text-[var(--t-bg)]"
                         : "bg-[var(--t-surface)] text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
@@ -603,7 +636,23 @@ export default function DashboardDemoPage() {
                         colSpan={5}
                         className="py-8 text-center text-[13.5px] text-[var(--t-ink-muted)]"
                       >
-                        No services match “{query}”.
+                        <div>
+                          {query.trim()
+                            ? `No services match “${query.trim()}”.`
+                            : `No services with status “${statusFilter}”.`}
+                        </div>
+                        {(query.trim() || statusFilter !== "All") && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setQuery("");
+                              setStatusFilter("All");
+                            }}
+                            className="mt-2 text-[12.5px] font-medium text-[var(--t-blue)] hover:underline cursor-pointer"
+                          >
+                            Reset filters
+                          </button>
+                        )}
                       </td>
                     </tr>
                   )}
@@ -616,14 +665,26 @@ export default function DashboardDemoPage() {
 
       {/* Minimal Tonal New Project Dialog */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px] flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-[28px] bg-[var(--t-elevated)] p-7 shadow-[0_24px_48px_-16px_rgba(0,0,0,0.4)] border border-[var(--t-border-subtle)]">
+        <div
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px] flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowModal(false);
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="create-project-title"
+            className="w-full max-w-md rounded-[28px] bg-[var(--t-elevated)] p-7 shadow-[0_24px_48px_-16px_rgba(0,0,0,0.4)] border border-[var(--t-border-subtle)]"
+          >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="t-headline text-[22px]">Create project</h3>
+              <h3 id="create-project-title" className="t-headline text-[22px]">
+                Create project
+              </h3>
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
-                className="h-8 w-8 rounded-full hover:bg-[var(--t-surface-muted)] grid place-items-center text-[var(--t-ink-muted)] cursor-pointer"
+                className="h-8 w-8 rounded-full hover:bg-[var(--t-surface-muted)] grid place-items-center text-[var(--t-ink-muted)] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" />
@@ -631,10 +692,14 @@ export default function DashboardDemoPage() {
             </div>
             <form onSubmit={handleCreateProject} className="flex flex-col gap-4">
               <div>
-                <label className="block text-[12.5px] font-medium text-[var(--t-ink-secondary)] mb-1.5">
+                <label
+                  htmlFor="new-project-name"
+                  className="block text-[12.5px] font-medium text-[var(--t-ink-secondary)] mb-1.5"
+                >
                   Project name
                 </label>
                 <input
+                  id="new-project-name"
                   type="text"
                   required
                   autoFocus
@@ -645,10 +710,14 @@ export default function DashboardDemoPage() {
                 />
               </div>
               <div>
-                <label className="block text-[12.5px] font-medium text-[var(--t-ink-secondary)] mb-1.5">
+                <label
+                  htmlFor="new-project-region"
+                  className="block text-[12.5px] font-medium text-[var(--t-ink-secondary)] mb-1.5"
+                >
                   Primary region
                 </label>
                 <select
+                  id="new-project-region"
                   value={newRegion}
                   onChange={(e) => setNewRegion(e.target.value)}
                   className="w-full rounded-[12px] border border-[var(--t-border)] px-3.5 py-2.5 text-[14px] text-[var(--t-ink)] bg-[var(--t-bg)] focus:border-[var(--t-blue)] focus:outline-none"
