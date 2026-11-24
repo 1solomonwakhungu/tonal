@@ -67,7 +67,9 @@ const APPS = [
 ];
 
 export default function WorkspaceDemoPage() {
+  const baseId = React.useId();
   const [selected, setSelected] = React.useState(APPS[0]);
+  const panelId = `${baseId}-stage`;
 
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-8 flex flex-col gap-16">
@@ -77,13 +79,17 @@ export default function WorkspaceDemoPage() {
           <span className="text-[19px] font-medium tracking-[-0.02em] text-[var(--t-ink)]">
             Canvas Workspace
           </span>
-          <TonalChip tone="mint">Demo Website 3 / 3</TonalChip>
+          <TonalChip tone="mint">Demo Website 3 / 4</TonalChip>
         </div>
         <div className="flex items-center gap-3">
-          <TonalButton variant="ghost" size="sm">
-            Sign in
-          </TonalButton>
-          <TonalButton size="sm">Start free trial</TonalButton>
+          <a href="#workspace-stage">
+            <TonalButton variant="ghost" size="sm">
+              Sign in
+            </TonalButton>
+          </a>
+          <a href="#workspace-stage">
+            <TonalButton size="sm">Start free trial</TonalButton>
+          </a>
         </div>
       </div>
 
@@ -98,24 +104,37 @@ export default function WorkspaceDemoPage() {
             — built with crisp visual hierarchy so your work stays in focus.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <TonalButton size="lg">Get started free</TonalButton>
-            <TonalButton variant="outline" size="lg">
-              Contact sales
-            </TonalButton>
+            <a href="#workspace-stage">
+              <TonalButton size="lg">Get started free</TonalButton>
+            </a>
+            <a href="#workspace-stage">
+              <TonalButton variant="outline" size="lg">
+                Contact sales
+              </TonalButton>
+            </a>
           </div>
         </div>
 
         {/* App Switcher Pills */}
-        <div className="inline-flex flex-wrap justify-center gap-2">
+        <div
+          id="workspace-stage"
+          role="tablist"
+          aria-label="Workspace apps"
+          className="inline-flex flex-wrap justify-center gap-2"
+        >
           {APPS.map((app) => {
             const Icon = app.icon;
             const active = app.id === selected.id;
             return (
               <button
                 key={app.id}
+                id={`${baseId}-tab-${app.id}`}
                 type="button"
+                role="tab"
+                aria-selected={active}
+                aria-controls={panelId}
                 onClick={() => setSelected(app)}
-                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-medium cursor-pointer transition-all duration-200 border ${
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13.5px] font-medium cursor-pointer transition-all duration-200 border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)] ${
                   active
                     ? "bg-[var(--t-elevated)] border-[var(--t-ink)] text-[var(--t-ink)]"
                     : "bg-[var(--t-surface)] border-transparent text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
@@ -130,6 +149,9 @@ export default function WorkspaceDemoPage() {
 
         {/* Clean Browser Stage */}
         <SurfaceTile
+          id={panelId}
+          role="tabpanel"
+          aria-labelledby={`${baseId}-tab-${selected.id}`}
           tone="neutral"
           padding="lg"
           className="w-full text-left transition-colors duration-300"

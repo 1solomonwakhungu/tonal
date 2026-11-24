@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { EditorialHero } from "@registry/tonal/blocks/editorial-hero";
+import { SpecsTable } from "@registry/tonal/blocks/specs-table";
 import { SurfaceTile } from "@registry/tonal/surface-tile";
 import { TonalButton } from "@registry/tonal/button";
 import { TonalChip } from "@registry/tonal/chip";
@@ -35,14 +36,6 @@ const PRODUCTS = [
   },
 ];
 
-const SPECS = [
-  { label: "Display", pro: '6.7" Pro LTPO OLED · 1–120Hz', base: '6.3" LTPO OLED · 60–120Hz' },
-  { label: "Camera", pro: "Triple Pro · 50MP + 48MP + 5x Tele", base: "Dual Advanced · 50MP + 48MP" },
-  { label: "Chip", pro: "Lumen Silicon G5 · 16 GB RAM", base: "Lumen Silicon G5 · 12 GB RAM" },
-  { label: "Battery", pro: "Up to 32 hours · 45W fast charge", base: "Up to 28 hours · 35W fast charge" },
-  { label: "Build", pro: "Matte satin glass · Recycled aluminum", base: "Polished glass · Recycled aluminum" },
-];
-
 export default function HardwareDemoPage() {
   const [cartCount, setCartCount] = React.useState(0);
 
@@ -54,7 +47,7 @@ export default function HardwareDemoPage() {
           <span className="text-[19px] font-medium tracking-[-0.02em] text-[var(--t-ink)]">
             Lumen Store
           </span>
-          <TonalChip tone="neutral">Demo Website 1 / 3</TonalChip>
+          <TonalChip tone="neutral">Demo Website 1 / 4</TonalChip>
         </div>
         <div className="flex items-center gap-4 text-[13.5px] text-[var(--t-ink-muted)]">
           <a href="#lineup" className="hover:text-[var(--t-ink)]">
@@ -79,6 +72,8 @@ export default function HardwareDemoPage() {
         subtitle="Sculpted matte glass in Porcelain, Bay, Aloe, and Obsidian. Tap any finish below to see the surface adapt."
         ctaLabel="Buy from $999"
         secondaryLabel="Compare specs"
+        secondaryHref="#specs"
+        onPrimaryClick={() => setCartCount((c) => c + 1)}
       />
 
       {/* 2-Column Editorial Bento */}
@@ -96,20 +91,20 @@ export default function HardwareDemoPage() {
               dusk without over-sharpening or artificial HDR glow.
             </p>
           </div>
-          <div className="rounded-[20px] bg-[var(--t-elevated)] p-5 border border-[var(--t-border-subtle)] flex items-center justify-between">
+          <div className="rounded-[20px] bg-[var(--t-elevated)] p-5 border border-[var(--t-border-subtle)] flex flex-wrap sm:flex-nowrap items-center justify-between gap-4">
             <div>
               <div className="text-[12px] text-[var(--t-ink-muted)]">Optical Zoom</div>
-              <div className="text-[28px] font-medium tracking-[-0.03em]">5× / 30×</div>
+              <div className="text-[22px] sm:text-[28px] font-medium tracking-[-0.03em]">5× / 30×</div>
             </div>
-            <div className="h-12 w-px bg-[var(--t-border-subtle)]" />
+            <div className="hidden sm:block h-12 w-px bg-[var(--t-border-subtle)]" />
             <div>
               <div className="text-[12px] text-[var(--t-ink-muted)]">Main Sensor</div>
-              <div className="text-[28px] font-medium tracking-[-0.03em]">50 MP</div>
+              <div className="text-[22px] sm:text-[28px] font-medium tracking-[-0.03em]">50 MP</div>
             </div>
-            <div className="h-12 w-px bg-[var(--t-border-subtle)]" />
+            <div className="hidden sm:block h-12 w-px bg-[var(--t-border-subtle)]" />
             <div>
               <div className="text-[12px] text-[var(--t-ink-muted)]">Aperture</div>
-              <div className="text-[28px] font-medium tracking-[-0.03em]">ƒ/1.68</div>
+              <div className="text-[22px] sm:text-[28px] font-medium tracking-[-0.03em]">ƒ/1.68</div>
             </div>
           </div>
         </SurfaceTile>
@@ -210,38 +205,9 @@ export default function HardwareDemoPage() {
       </section>
 
       {/* Clean Hairline Comparison Table */}
-      <section id="specs" className="flex flex-col gap-6">
-        <h2 className="t-headline text-[28px] sm:text-[34px]">
-          Compare Lumen 10 models
-        </h2>
-        <div className="rounded-[var(--t-radius-card)] border border-[var(--t-border-subtle)] overflow-hidden bg-[var(--t-bg)]">
-          <div className="grid grid-cols-12 bg-[var(--t-surface)] px-6 py-4 text-[13px] font-medium text-[var(--t-ink-muted)] border-b border-[var(--t-border-subtle)]">
-            <div className="col-span-4 sm:col-span-3">Feature</div>
-            <div className="col-span-4 sm:col-span-5 text-[var(--t-ink)]">
-              Lumen 10 Pro
-            </div>
-            <div className="col-span-4 text-[var(--t-ink)]">Lumen 10</div>
-          </div>
-          <div className="divide-y divide-[var(--t-border-subtle)]">
-            {SPECS.map((row) => (
-              <div
-                key={row.label}
-                className="grid grid-cols-12 px-6 py-4 text-[14px] items-center"
-              >
-                <div className="col-span-4 sm:col-span-3 font-medium text-[var(--t-ink-muted)]">
-                  {row.label}
-                </div>
-                <div className="col-span-4 sm:col-span-5 text-[var(--t-ink)] pr-3">
-                  {row.pro}
-                </div>
-                <div className="col-span-4 text-[var(--t-ink-secondary)]">
-                  {row.base}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div id="specs">
+        <SpecsTable />
+      </div>
 
       {/* FAQ */}
       <section id="faq" className="max-w-3xl mx-auto w-full flex flex-col gap-6">

@@ -16,12 +16,17 @@ export interface AccordionItemData {
 
 export function TonalAccordion({
   items,
+  defaultOpenIndex = 0,
   className,
 }: {
   items: AccordionItemData[];
+  defaultOpenIndex?: number | null;
   className?: string;
 }) {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  const baseId = React.useId();
+  const [openIndex, setOpenIndex] = React.useState<number | null>(
+    defaultOpenIndex
+  );
 
   return (
     <div
@@ -32,18 +37,23 @@ export function TonalAccordion({
     >
       {items.map((item, idx) => {
         const isOpen = openIndex === idx;
+        const buttonId = `${baseId}-trigger-${idx}`;
+        const panelId = `${baseId}-panel-${idx}`;
         return (
           <div key={item.question}>
             <button
+              id={buttonId}
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : idx)}
               aria-expanded={isOpen}
-              className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer group"
+              aria-controls={panelId}
+              className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer group rounded-[8px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
             >
               <span className="text-[16px] font-medium tracking-[-0.015em] text-[var(--t-ink)] group-hover:text-[var(--t-blue)] transition-colors">
                 {item.question}
               </span>
               <ChevronDown
+                aria-hidden="true"
                 className={cn(
                   "h-5 w-5 shrink-0 text-[var(--t-ink-muted)] transition-transform duration-250 [transition-timing-function:var(--t-ease)]",
                   isOpen && "rotate-180 text-[var(--t-ink)]"
@@ -51,6 +61,9 @@ export function TonalAccordion({
               />
             </button>
             <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
               className={cn(
                 "grid transition-all duration-250 [transition-timing-function:var(--t-ease)]",
                 isOpen
