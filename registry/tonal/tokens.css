@@ -71,8 +71,9 @@
   --t-cta-hover: #3c4043;
 }
 
-/* Dark Mode tonal surfaces */
-[data-tonal-theme="dark"] {
+/* Dark Mode tonal surfaces (supports both data-tonal-theme="dark" and .dark) */
+[data-tonal-theme="dark"],
+.dark {
   color-scheme: dark;
 
   --t-bg: #131314;
@@ -117,14 +118,18 @@
 }
 
 [data-tonal-theme="dark"][data-tonal-mode="pill"],
-[data-tonal-theme="dark"] [data-tonal-mode="pill"]:not([data-tonal-theme="light"]) {
+[data-tonal-theme="dark"] [data-tonal-mode="pill"]:not([data-tonal-theme="light"]),
+.dark[data-tonal-mode="pill"],
+.dark [data-tonal-mode="pill"]:not([data-tonal-theme="light"]) {
   --t-cta-bg: #8ab4f8;
   --t-cta-fg: #062e6f;
   --t-cta-hover: #aecbfa;
 }
 
 [data-tonal-theme="dark"][data-tonal-mode="commerce"],
-[data-tonal-theme="dark"] [data-tonal-mode="commerce"]:not([data-tonal-theme="light"]) {
+[data-tonal-theme="dark"] [data-tonal-mode="commerce"]:not([data-tonal-theme="light"]),
+.dark[data-tonal-mode="commerce"],
+.dark [data-tonal-mode="commerce"]:not([data-tonal-theme="light"]) {
   --t-cta-bg: #e3e3e3;
   --t-cta-fg: #131314;
   --t-cta-hover: #ffffff;

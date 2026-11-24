@@ -47,10 +47,12 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
       } else {
         const savedTheme = window.localStorage.getItem("tonal-theme");
         if (savedTheme === "dark" || savedTheme === "light") {
+          document.documentElement.dataset.tonalTheme = savedTheme;
           setTheme(savedTheme);
         } else if (
           window.matchMedia?.("(prefers-color-scheme: dark)").matches
         ) {
+          document.documentElement.dataset.tonalTheme = "dark";
           setTheme("dark");
         }
       }
@@ -60,6 +62,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
       } else {
         const savedMode = window.localStorage.getItem("tonal-mode");
         if (savedMode === "commerce" || savedMode === "pill") {
+          document.documentElement.dataset.tonalMode = savedMode;
           setMode(savedMode);
         }
       }
@@ -78,16 +81,17 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
 
   const updateMode = React.useCallback((next: "pill" | "commerce") => {
     setMode(next);
+    document.documentElement.dataset.tonalMode = next;
     try {
       window.localStorage.setItem("tonal-mode", next);
     } catch {
       // Ignore
     }
   }, []);
-
   const toggleTheme = React.useCallback(() => {
     setTheme((prev) => {
       const next = prev === "dark" ? "light" : "dark";
+      document.documentElement.dataset.tonalTheme = next;
       try {
         window.localStorage.setItem("tonal-theme", next);
       } catch {

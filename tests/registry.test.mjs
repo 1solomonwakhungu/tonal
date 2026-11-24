@@ -13,6 +13,7 @@ const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf8"));
 const baseUrl = registry.homepage.replace(/\/+$/, "");
 
 const VALID_ITEM_TYPES = new Set([
+  "registry:item",
   "registry:style",
   "registry:ui",
   "registry:block",

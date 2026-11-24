@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
 };
 
-const THEME_INIT_SCRIPT = `(function(){try{var d=document.documentElement;var p=new URLSearchParams(window.location.search);var qT=p.get('theme');var qM=p.get('mode');var t=(qT==='dark'||qT==='light')?qT:localStorage.getItem('tonal-theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var m=(qM==='commerce'||qM==='pill')?qM:localStorage.getItem('tonal-mode');if(m!=='commerce'&&m!=='pill'){m='pill';}d.dataset.tonalTheme=t;d.dataset.tonalMode=m;}catch(e){}})();`;
+const THEME_INIT_SCRIPT = `(function(){try{var d=document.documentElement;var p=new URLSearchParams(window.location.search);var qT=p.get('theme');var qM=p.get('mode');var t=(qT==='dark'||qT==='light')?qT:localStorage.getItem('tonal-theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var m=(qM==='commerce'||qM==='pill')?qM:localStorage.getItem('tonal-mode');if(m!=='commerce'&&m!=='pill'){m='pill';}d.dataset.tonalTheme=t;d.dataset.tonalMode=m;}catch(e){}})();`;
 
 export default function RootLayout({
   children,

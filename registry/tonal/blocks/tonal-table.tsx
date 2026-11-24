@@ -126,7 +126,9 @@ export function TonalTable({
   const [statusFilter, setStatusFilter] = React.useState<string>("All");
 
   const filterOptions = React.useMemo(() => {
-    if (statuses && statuses.length > 0) return statuses;
+    if (statuses && statuses.length > 0) {
+      return statuses.includes("All") ? statuses : ["All", ...statuses];
+    }
     const unique = Array.from(new Set(rows.map((r) => r.status)));
     return ["All", ...unique];
   }, [rows, statuses]);
@@ -242,7 +244,7 @@ export function TonalTable({
                 className={cn(
                   "hover:bg-[var(--t-surface)] transition-colors duration-150",
                   onRowClick &&
-                    "cursor-pointer focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[var(--t-blue)]"
+                    "cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[var(--t-blue)]"
                 )}
               >
                 <td className="py-3.5 px-4">
