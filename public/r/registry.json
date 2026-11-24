@@ -21,7 +21,7 @@
         "tailwind-merge"
       ],
       "registryDependencies": [
-        "tonal-tokens"
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
       ]
     },
     {
@@ -34,7 +34,7 @@
         "tailwind-merge"
       ],
       "registryDependencies": [
-        "tonal-tokens"
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
       ]
     },
     {
@@ -47,7 +47,7 @@
         "tailwind-merge"
       ],
       "registryDependencies": [
-        "tonal-tokens"
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
       ]
     },
     {
@@ -61,7 +61,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "tonal-tokens"
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
       ]
     },
     {
@@ -75,7 +75,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "tonal-tokens"
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
       ]
     },
     {
@@ -85,13 +85,12 @@
       "description": "Flagship hardware storefront split hero with interactive finish swatches that dynamically tint the tonal backdrop.",
       "dependencies": [
         "clsx",
-        "tailwind-merge",
-        "lucide-react"
+        "tailwind-merge"
       ],
       "registryDependencies": [
-        "tonal-tokens",
-        "tonal-button",
-        "chevron-link"
+        "https://tonal.harlo.dev/r/tonal-tokens.json",
+        "https://tonal.harlo.dev/r/tonal-button.json",
+        "https://tonal.harlo.dev/r/chevron-link.json"
       ]
     },
     {
@@ -105,8 +104,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "tonal-tokens",
-        "chevron-link"
+        "https://tonal.harlo.dev/r/tonal-tokens.json",
+        "https://tonal.harlo.dev/r/chevron-link.json"
       ]
     },
     {
@@ -119,8 +118,8 @@
         "tailwind-merge"
       ],
       "registryDependencies": [
-        "tonal-tokens",
-        "tonal-chip"
+        "https://tonal.harlo.dev/r/tonal-tokens.json",
+        "https://tonal.harlo.dev/r/tonal-chip.json"
       ]
     },
     {
@@ -134,8 +133,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "tonal-tokens",
-        "tonal-chip"
+        "https://tonal.harlo.dev/r/tonal-tokens.json",
+        "https://tonal.harlo.dev/r/tonal-chip.json"
       ]
     },
     {
@@ -149,9 +148,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "tonal-tokens",
-        "surface-tile",
-        "tonal-chip"
+        "https://tonal.harlo.dev/r/tonal-tokens.json",
+        "https://tonal.harlo.dev/r/surface-tile.json",
+        "https://tonal.harlo.dev/r/tonal-chip.json"
       ]
     },
     {
@@ -165,10 +164,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "tonal-tokens",
-        "surface-tile",
-        "tonal-button",
-        "tonal-chip"
+        "https://tonal.harlo.dev/r/tonal-tokens.json",
+        "https://tonal.harlo.dev/r/surface-tile.json",
+        "https://tonal.harlo.dev/r/tonal-button.json",
+        "https://tonal.harlo.dev/r/tonal-chip.json"
       ]
     },
     {
@@ -181,7 +180,7 @@
         "tailwind-merge"
       ],
       "registryDependencies": [
-        "tonal-tokens"
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
       ]
     }
   ]

@@ -21,7 +21,7 @@ export function ChevronLink({
   return (
     <a
       className={cn(
-        "group inline-flex items-center gap-1 text-[14px] font-medium tracking-[-0.01em] cursor-pointer",
+        "group inline-flex items-center gap-1 text-[14px] font-medium tracking-[-0.01em] cursor-pointer rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
         tone === "blue"
           ? "text-[var(--t-blue)] hover:text-[var(--t-blue-hover)]"
           : "text-[var(--t-ink)] hover:text-[var(--t-ink-secondary)]",

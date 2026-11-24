@@ -53,7 +53,7 @@ export function TonalQuotaCard({
   return (
     <div
       className={cn(
-        "rounded-[20px] bg-[var(--t-bg)] p-4 border border-[var(--t-border-subtle)] flex flex-col gap-3",
+        "rounded-[20px] bg-[var(--t-elevated)] p-4 border border-[var(--t-border-subtle)] flex flex-col gap-3",
         className
       )}
     >
@@ -83,12 +83,12 @@ export function TonalQuotaCard({
       )}
       {actionLabel && (
         <ChevronLink
-          href={actionHref}
+          href={actionHref ?? "#"}
           onClick={
-            onAction
+            !actionHref || onAction
               ? (e) => {
                   if (!actionHref) e.preventDefault();
-                  onAction();
+                  onAction?.();
                 }
               : undefined
           }

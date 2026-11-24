@@ -228,9 +228,21 @@ export function TonalTable({
               <tr
                 key={row.id}
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          onRowClick(row);
+                        }
+                      }
+                    : undefined
+                }
                 className={cn(
                   "hover:bg-[var(--t-surface)] transition-colors duration-150",
-                  onRowClick && "cursor-pointer"
+                  onRowClick &&
+                    "cursor-pointer focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[var(--t-blue)]"
                 )}
               >
                 <td className="py-3.5 px-4">
