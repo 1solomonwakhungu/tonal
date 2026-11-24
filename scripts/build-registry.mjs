@@ -8,11 +8,70 @@ const outDir = path.join(root, "public", "r");
 fs.mkdirSync(outDir, { recursive: true });
 
 const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
+
+if (
+  typeof registry.homepage !== "string" ||
+  !registry.homepage.startsWith("https://") ||
+  /localhost|127\.0\.0\.1/i.test(registry.homepage)
+) {
+  throw new Error(
+    `registry.json homepage must be a production https:// URL, got: ${registry.homepage}`
+  );
+}
+
+const baseUrl = registry.homepage.replace(/\/+$/, "");
+const itemNames = new Set(registry.items.map((item) => item.name));
+
+if (itemNames.size !== registry.items.length) {
+  throw new Error("registry.json contains duplicate item names.");
+}
+
+function normalizeRegistryDep(dep, ownerName) {
+  if (/localhost|127\.0\.0\.1/i.test(dep)) {
+    throw new Error(
+      `Registry item "${ownerName}" has a localhost dependency: ${dep}`
+    );
+  }
+
+  if (itemNames.has(dep)) {
+    return `${baseUrl}/r/${dep}.json`;
+  }
+
+  const internalPrefix = `${baseUrl}/r/`;
+  if (dep.startsWith(internalPrefix) && dep.endsWith(".json")) {
+    const depName = dep.slice(internalPrefix.length, -".json".length);
+    if (!itemNames.has(depName)) {
+      throw new Error(
+        `Registry item "${ownerName}" references unknown internal dependency: ${dep}`
+      );
+    }
+    return dep;
+  }
+
+  if (dep.startsWith("https://")) {
+    return dep;
+  }
+
+  throw new Error(
+    `Registry item "${ownerName}" has an unresolved registryDependency: ${dep}`
+  );
+}
+
 const indexItems = [];
+const writtenFiles = new Set(["registry.json"]);
 
 for (const item of registry.items) {
+  const registryDependencies = (item.registryDependencies ?? []).map((dep) =>
+    normalizeRegistryDep(dep, item.name)
+  );
+
   const files = item.files.map((fileDef) => {
     const absPath = path.join(root, fileDef.path);
+    if (!fs.existsSync(absPath)) {
+      throw new Error(
+        `Registry item "${item.name}" references missing file: ${fileDef.path}`
+      );
+    }
     const content = fs.readFileSync(absPath, "utf8");
     return {
       ...fileDef,
@@ -23,12 +82,16 @@ for (const item of registry.items) {
   const compiled = {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     ...item,
+    ...(registryDependencies.length > 0 ? { registryDependencies } : {}),
     files,
   };
 
+  const outFile = `${item.name}.json`;
+  writtenFiles.add(outFile);
+
   fs.writeFileSync(
-    path.join(outDir, `${item.name}.json`),
-    JSON.stringify(compiled, null, 2)
+    path.join(outDir, outFile),
+    `${JSON.stringify(compiled, null, 2)}\n`
   );
 
   indexItems.push({
@@ -37,22 +100,29 @@ for (const item of registry.items) {
     title: item.title,
     description: item.description,
     dependencies: item.dependencies ?? [],
-    registryDependencies: item.registryDependencies ?? [],
+    registryDependencies,
   });
 }
 
 fs.writeFileSync(
   path.join(outDir, "registry.json"),
-  JSON.stringify(
+  `${JSON.stringify(
     {
       $schema: "https://ui.shadcn.com/schema/registry.json",
       name: registry.name,
-      homepage: registry.homepage,
+      homepage: baseUrl,
       items: indexItems,
     },
     null,
     2
-  )
+  )}\n`
 );
+
+// Clean up any stale compiled JSON files from removed or renamed items.
+for (const entry of fs.readdirSync(outDir)) {
+  if (entry.endsWith(".json") && !writtenFiles.has(entry)) {
+    fs.unlinkSync(path.join(outDir, entry));
+  }
+}
 
 console.log(`Built ${indexItems.length} Tonal registry items into public/r/`);

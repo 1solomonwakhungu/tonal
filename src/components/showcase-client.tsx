@@ -145,7 +145,9 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         description:
           "Split hero with dynamic finish swatches that tint the surrounding tonal surface.",
         fullWidth: true,
-        preview: <EditorialHero />,
+        preview: (
+          <EditorialHero headingLevel="h2" secondaryHref="#primitives" />
+        ),
       },
       {
         registryName: "tonal-button",
@@ -424,7 +426,7 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
             {installCmd}
           </span>
           {copiedInstall ? (
-            <Check className="h-4 w-4 text-[#188038] shrink-0" />
+            <Check className="h-4 w-4 text-[var(--t-chip-mint-fg)] shrink-0" />
           ) : (
             <Copy className="h-4 w-4 text-[var(--t-ink-muted)] shrink-0" />
           )}

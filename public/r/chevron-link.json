@@ -5,7 +5,7 @@
   "title": "Chevron Link",
   "description": "Quiet editorial inline text action with subtle animated chevron.",
   "registryDependencies": [
-    "tonal-tokens"
+    "https://tonal.harlo.dev/r/tonal-tokens.json"
   ],
   "dependencies": [
     "clsx",
@@ -16,7 +16,8 @@
     {
       "path": "registry/tonal/chevron-link.tsx",
       "type": "registry:ui",
-      "content": "import * as React from \"react\";\nimport { ChevronRight } from \"lucide-react\";\nimport { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nfunction cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n\nexport interface ChevronLinkProps\n  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {\n  tone?: \"blue\" | \"ink\";\n}\n\nexport function ChevronLink({\n  tone = \"blue\",\n  className,\n  children,\n  ...props\n}: ChevronLinkProps) {\n  return (\n    <a\n      className={cn(\n        \"group inline-flex items-center gap-1 text-[14px] font-medium tracking-[-0.01em] cursor-pointer\",\n        tone === \"blue\"\n          ? \"text-[var(--t-blue)] hover:text-[var(--t-blue-hover)]\"\n          : \"text-[var(--t-ink)] hover:text-[var(--t-ink-secondary)]\",\n        className\n      )}\n      {...props}\n    >\n      <span className=\"group-hover:underline underline-offset-4\">{children}</span>\n      <ChevronRight className=\"h-4 w-4 transition-transform duration-200 [transition-timing-function:var(--t-ease)] group-hover:translate-x-0.5\" />\n    </a>\n  );\n}\n"
+      "target": "components/tonal/chevron-link.tsx",
+      "content": "import * as React from \"react\";\nimport { ChevronRight } from \"lucide-react\";\nimport { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nfunction cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n\nexport interface ChevronLinkProps\n  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {\n  tone?: \"blue\" | \"ink\";\n}\n\nexport function ChevronLink({\n  tone = \"blue\",\n  className,\n  children,\n  ...props\n}: ChevronLinkProps) {\n  return (\n    <a\n      className={cn(\n        \"group inline-flex items-center gap-1 text-[14px] font-medium tracking-[-0.01em] cursor-pointer rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]\",\n        tone === \"blue\"\n          ? \"text-[var(--t-blue)] hover:text-[var(--t-blue-hover)]\"\n          : \"text-[var(--t-ink)] hover:text-[var(--t-ink-secondary)]\",\n        className\n      )}\n      {...props}\n    >\n      <span className=\"group-hover:underline underline-offset-4\">{children}</span>\n      <ChevronRight className=\"h-4 w-4 transition-transform duration-200 [transition-timing-function:var(--t-ease)] group-hover:translate-x-0.5\" />\n    </a>\n  );\n}\n"
     }
   ]
 }

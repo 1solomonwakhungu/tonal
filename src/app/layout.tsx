@@ -2,10 +2,42 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { TonalShell } from "@/components/tonal-shell";
 
+const SITE_URL = "https://tonal.harlo.dev";
+
 export const metadata: Metadata = {
-  title: "Tonal — Editorial Tonal UI Registry",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Tonal — Editorial Tonal UI Registry",
+    template: "%s | Tonal",
+  },
   description:
-    "Flat tonal surfaces, open-source Google Sans typography, and zero bloat — shipped as a shadcn-compatible registry.",
+    "Flat tonal surfaces, open-source Google Sans typography, and zero framework bloat — 13 shadcn-compatible primitives, blocks, and design tokens.",
+  keywords: [
+    "shadcn registry",
+    "react components",
+    "tailwind css v4",
+    "editorial ui",
+    "tonal design system",
+    "google sans",
+    "next.js ui blocks",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Tonal",
+    title: "Tonal — Editorial Tonal UI Registry",
+    description:
+      "Flat tonal surfaces, open-source Google Sans typography, and 13 shadcn-compatible primitives, blocks, and design tokens.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tonal — Editorial Tonal UI Registry",
+    description:
+      "Flat tonal surfaces, open-source Google Sans typography, and 13 shadcn-compatible primitives, blocks, and design tokens.",
+  },
 };
 
 export default function RootLayout({

@@ -83,6 +83,7 @@ export function CapabilityTabs({
   onSelect,
   className,
 }: CapabilityTabsProps) {
+  const baseId = React.useId();
   const [activeId, setActiveId] = React.useState<string>(
     defaultActiveId ?? items[0]?.id ?? ""
   );
@@ -93,6 +94,7 @@ export function CapabilityTabs({
   if (!activeItem) return null;
 
   const badges = activeItem.badges ?? DEFAULT_BADGES;
+  const panelId = `${baseId}-panel`;
 
   return (
     <SurfaceTile
@@ -112,9 +114,11 @@ export function CapabilityTabs({
             return (
               <button
                 key={cap.id}
+                id={`${baseId}-tab-${cap.id}`}
                 type="button"
                 role="tab"
                 aria-selected={active}
+                aria-controls={panelId}
                 onClick={() => {
                   setActiveId(cap.id);
                   onSelect?.(cap);
@@ -124,7 +128,7 @@ export function CapabilityTabs({
                   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                   active
                     ? "bg-[var(--t-ink)] text-[var(--t-bg)]"
-                    : "bg-[var(--t-bg)] text-[var(--t-ink-secondary)] hover:bg-[var(--t-blue-tint)] hover:text-[var(--t-ink)]"
+                    : "bg-[var(--t-elevated)] text-[var(--t-ink-secondary)] border border-[var(--t-border-subtle)] hover:bg-[var(--t-blue-tint)] hover:text-[var(--t-ink)]"
                 )}
               >
                 {Icon && <Icon className="h-4 w-4" />}
@@ -142,11 +146,12 @@ export function CapabilityTabs({
       </div>
 
       <div
+        id={panelId}
         role="tabpanel"
-        aria-label={activeItem.label}
+        aria-labelledby={`${baseId}-tab-${activeItem.id}`}
         className="grid grid-cols-1 md:grid-cols-12 gap-5"
       >
-        <div className="md:col-span-5 rounded-[20px] bg-[var(--t-bg)] p-6 border border-[var(--t-border-subtle)] flex flex-col justify-between gap-4">
+        <div className="md:col-span-5 rounded-[20px] bg-[var(--t-elevated)] p-6 border border-[var(--t-border-subtle)] flex flex-col justify-between gap-4">
           <div>
             <div className="text-[11.5px] font-medium uppercase tracking-wider text-[var(--t-ink-muted)] mb-2">
               {promptLabel}
@@ -160,7 +165,7 @@ export function CapabilityTabs({
           </div>
         </div>
 
-        <div className="md:col-span-7 rounded-[20px] bg-[var(--t-bg)] p-6 border border-[var(--t-border-subtle)] flex flex-col justify-between gap-4">
+        <div className="md:col-span-7 rounded-[20px] bg-[var(--t-elevated)] p-6 border border-[var(--t-border-subtle)] flex flex-col justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-[11.5px] font-medium uppercase tracking-wider text-[var(--t-blue)] mb-2">
               <Sparkles className="h-3.5 w-3.5" />

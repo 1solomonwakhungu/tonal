@@ -76,15 +76,16 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
               <span>Tonal</span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-1">
+            <nav aria-label="Primary" className="hidden md:flex items-center gap-1">
               {NAV_ITEMS.map((item) => {
                 const active = pathname === item.href;
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
-                      "px-3.5 py-1.5 rounded-full text-[13.5px] font-medium transition-colors duration-200",
+                      "px-3.5 py-1.5 rounded-full text-[13.5px] font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                       active
                         ? "bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)]"
                         : "text-[var(--t-ink-muted)] hover:text-[var(--t-ink)] hover:bg-[var(--t-surface)]"
@@ -105,9 +106,10 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
             >
               <button
                 type="button"
+                aria-pressed={mode === "pill"}
                 onClick={() => setMode("pill")}
                 className={cn(
-                  "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-all duration-200",
+                  "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                   mode === "pill"
                     ? "bg-[var(--t-elevated)] text-[var(--t-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.14)]"
                     : "text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
@@ -117,9 +119,10 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
               </button>
               <button
                 type="button"
+                aria-pressed={mode === "commerce"}
                 onClick={() => setMode("commerce")}
                 className={cn(
-                  "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-all duration-200",
+                  "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                   mode === "commerce"
                     ? "bg-[var(--t-elevated)] text-[var(--t-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.14)]"
                     : "text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]"
@@ -142,7 +145,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
                   ? "Switch to light mode"
                   : "Switch to dark mode"
               }
-              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full bg-[var(--t-surface)] border border-[var(--t-border-subtle)] text-[var(--t-ink-secondary)] hover:text-[var(--t-ink)] hover:bg-[var(--t-surface-muted)] cursor-pointer transition-colors duration-200"
+              className="inline-flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full bg-[var(--t-surface)] border border-[var(--t-border-subtle)] text-[var(--t-ink-secondary)] hover:text-[var(--t-ink)] hover:bg-[var(--t-surface-muted)] cursor-pointer transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
             >
               {theme === "dark" ? (
                 <Sun className="h-4 w-4" />
@@ -154,13 +157,17 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Mobile route switcher */}
-        <div className="md:hidden flex items-center gap-1.5 overflow-x-auto px-5 pb-2.5">
+        <nav
+          aria-label="Mobile navigation"
+          className="md:hidden flex items-center gap-1.5 overflow-x-auto px-5 pb-2.5"
+        >
           {NAV_ITEMS.map((item) => {
             const active = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
                   "shrink-0 px-3 py-1 rounded-full text-[12.5px] font-medium",
                   active
@@ -172,7 +179,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
               </Link>
             );
           })}
-        </div>
+        </nav>
       </header>
 
       <main className="flex-1">{children}</main>
@@ -185,6 +192,14 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
             <span>Editorial tonal UI · shadcn registry</span>
           </div>
           <div className="flex flex-wrap items-center gap-5">
+            <a
+              href="https://github.com/1solomonwakhungu/tonal"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-[var(--t-ink)] transition-colors"
+            >
+              GitHub
+            </a>
             <a
               href="/r/registry.json"
               target="_blank"

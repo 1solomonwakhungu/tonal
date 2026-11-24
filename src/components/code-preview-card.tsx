@@ -53,11 +53,17 @@ export function CodePreviewCard({
   const [origin, setOrigin] = React.useState<string>(DEFAULT_ORIGIN);
   const [copiedCli, setCopiedCli] = React.useState(false);
   const [copiedCode, setCopiedCode] = React.useState(false);
+  const cliTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const codeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && window.location.origin) {
       setOrigin(window.location.origin);
     }
+    return () => {
+      if (cliTimerRef.current) clearTimeout(cliTimerRef.current);
+      if (codeTimerRef.current) clearTimeout(codeTimerRef.current);
+    };
   }, []);
 
   const getLiveOrigin = () =>
@@ -69,10 +75,15 @@ export function CodePreviewCard({
   const activeViewport =
     VIEWPORTS.find((v) => v.id === viewport) ?? VIEWPORTS[0];
 
-  const copyText = (text: string, setter: (v: boolean) => void) => {
+  const copyText = (
+    text: string,
+    setter: (v: boolean) => void,
+    timerRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>
+  ) => {
     navigator.clipboard?.writeText(text).catch(() => {});
     setter(true);
-    setTimeout(() => setter(false), 1600);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setter(false), 1600);
   };
 
   return (
@@ -132,7 +143,8 @@ export function CodePreviewCard({
             onClick={() =>
               copyText(
                 `npx shadcn@latest add ${getLiveOrigin()}/r/${registryName}.json`,
-                setCopiedCli
+                setCopiedCli,
+                cliTimerRef
               )
             }
             className="inline-flex items-center gap-1.5 rounded-full bg-[var(--t-surface)] hover:bg-[var(--t-surface-muted)] border border-[var(--t-border-subtle)] px-3 py-1.5 text-[12px] font-mono text-[var(--t-ink-secondary)] cursor-pointer transition-colors"
@@ -141,16 +153,22 @@ export function CodePreviewCard({
             <Terminal className="h-3.5 w-3.5 text-[var(--t-ink-muted)] shrink-0" />
             <span>{copiedCli ? "Copied CLI!" : `/r/${registryName}.json`}</span>
             {copiedCli ? (
-              <Check className="h-3.5 w-3.5 text-[#188038] shrink-0" />
+              <Check className="h-3.5 w-3.5 text-[var(--t-chip-mint-fg)] shrink-0" />
             ) : (
               <Copy className="h-3.5 w-3.5 text-[var(--t-ink-muted)] shrink-0" />
             )}
           </button>
 
           {/* Preview / Code Switcher */}
-          <div className="inline-flex rounded-full bg-[var(--t-surface)] p-0.5 border border-[var(--t-border-subtle)]">
+          <div
+            role="tablist"
+            aria-label={`${title} view`}
+            className="inline-flex rounded-full bg-[var(--t-surface)] p-0.5 border border-[var(--t-border-subtle)]"
+          >
             <button
               type="button"
+              role="tab"
+              aria-selected={tab === "preview"}
               onClick={() => setTab("preview")}
               className={cn(
                 "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-colors duration-200 [transition-timing-function:cubic-bezier(0.2,0,0,1)]",
@@ -163,6 +181,8 @@ export function CodePreviewCard({
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={tab === "code"}
               onClick={() => setTab("code")}
               className={cn(
                 "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-colors duration-200 [transition-timing-function:cubic-bezier(0.2,0,0,1)]",
@@ -221,7 +241,7 @@ export function CodePreviewCard({
             </div>
             <button
               type="button"
-              onClick={() => copyText(code, setCopiedCode)}
+              onClick={() => copyText(code, setCopiedCode, codeTimerRef)}
               className="inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/15 px-3 py-1 text-[11.5px] font-medium text-white cursor-pointer transition-colors shrink-0"
             >
               {copiedCode ? (

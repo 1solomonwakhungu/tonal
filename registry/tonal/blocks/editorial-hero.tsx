@@ -1,8 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { TonalButton } from "../button";
 import { ChevronLink } from "../chevron-link";
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export interface FinishOption {
   id: string;
@@ -58,63 +64,88 @@ const DEFAULT_FINISHES: FinishOption[] = [
   },
 ];
 
+export interface EditorialHeroProps {
+  eyebrow?: string;
+  headline?: string;
+  subtitle?: string;
+  ctaLabel?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  onPrimaryClick?: () => void;
+  headingLevel?: "h1" | "h2";
+  finishes?: FinishOption[];
+  className?: string;
+}
+
 export function EditorialHero({
   eyebrow = "New · Lumen 10 Pro",
   headline = "Designed to get out of the way.",
   subtitle = "Precision-milled glass, all-day adaptive battery, and our quietest camera system yet.",
   ctaLabel = "Buy from $999",
   secondaryLabel = "Compare models",
+  secondaryHref = "#specs",
+  onPrimaryClick,
+  headingLevel = "h1",
   finishes = DEFAULT_FINISHES,
-}: {
-  eyebrow?: string;
-  headline?: string;
-  subtitle?: string;
-  ctaLabel?: string;
-  secondaryLabel?: string;
-  finishes?: FinishOption[];
-}) {
-  const [selected, setSelected] = React.useState<FinishOption>(finishes[0]);
+  className,
+}: EditorialHeroProps) {
+  const safeFinishes = finishes.length > 0 ? finishes : DEFAULT_FINISHES;
+  const [selectedId, setSelectedId] = React.useState<string>(safeFinishes[0].id);
+  const selected =
+    safeFinishes.find((f) => f.id === selectedId) ?? safeFinishes[0];
+  const Heading = headingLevel;
 
   return (
     <section
       style={{ backgroundColor: selected.surface }}
-      className="rounded-[var(--t-radius-hero)] px-7 py-10 sm:px-12 sm:py-14 transition-colors duration-300 [transition-timing-function:var(--t-ease)]"
+      className={cn(
+        "rounded-[var(--t-radius-hero)] px-7 py-10 sm:px-12 sm:py-14 transition-colors duration-300 [transition-timing-function:var(--t-ease)]",
+        className
+      )}
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
         <div className="md:col-span-7 flex flex-col items-start">
           <span className="text-[13px] font-medium text-[var(--t-ink-muted)] mb-3">
             {eyebrow}
           </span>
-          <h1 className="t-display text-[36px] sm:text-[52px] mb-4">
+          <Heading className="t-display text-[36px] sm:text-[52px] mb-4">
             {headline}
-          </h1>
+          </Heading>
           <p className="t-body text-[16px] max-w-md mb-7">{subtitle}</p>
 
           <div className="flex flex-wrap items-center gap-4 mb-8">
-            <TonalButton size="lg">{ctaLabel}</TonalButton>
-            <ChevronLink href="#specs">{secondaryLabel}</ChevronLink>
+            <TonalButton size="lg" onClick={onPrimaryClick}>
+              {ctaLabel}
+            </TonalButton>
+            <ChevronLink href={secondaryHref}>{secondaryLabel}</ChevronLink>
           </div>
 
           <div className="flex items-center gap-3">
             <span className="text-[12.5px] font-medium text-[var(--t-ink-muted)] min-w-[68px]">
               {selected.label}
             </span>
-            <div className="flex items-center gap-2.5">
-              {finishes.map((f) => {
+            <div
+              className="flex items-center gap-2.5"
+              role="group"
+              aria-label="Product finish"
+            >
+              {safeFinishes.map((f) => {
                 const active = f.id === selected.id;
                 return (
                   <button
                     key={f.id}
                     type="button"
                     aria-label={f.label}
+                    aria-pressed={active}
                     title={f.label}
-                    onClick={() => setSelected(f)}
+                    onClick={() => setSelectedId(f.id)}
                     style={{ backgroundColor: f.swatch }}
-                    className={`h-6 w-6 rounded-full border border-[var(--t-border)] cursor-pointer transition-all duration-200 ${
+                    className={cn(
+                      "h-6 w-6 rounded-full border border-[var(--t-border)] cursor-pointer transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
                       active
                         ? "ring-2 ring-[var(--t-ink)] ring-offset-2 ring-offset-[var(--t-bg)] scale-105"
                         : "hover:scale-105"
-                    }`}
+                    )}
                   />
                 );
               })}
