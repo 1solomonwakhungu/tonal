@@ -8,8 +8,11 @@ import { TonalChip } from "@registry/tonal/chip";
 import { ChevronLink } from "@registry/tonal/chevron-link";
 import { CapabilityTabs } from "@registry/tonal/blocks/capability-tabs";
 import { PricingGrid } from "@registry/tonal/blocks/pricing-grid";
+import { useTonalToast } from "@registry/tonal/toast";
 
 export default function AiDemoPage() {
+  const { toast } = useTonalToast();
+
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-8 flex flex-col gap-16">
       {/* Sub-header */}
@@ -28,9 +31,18 @@ export default function AiDemoPage() {
           <a href="#pricing" className="hover:text-[var(--t-ink)]">
             Pricing
           </a>
-          <a href="#capabilities">
-            <TonalButton size="sm">Try Aura</TonalButton>
-          </a>
+          <TonalButton
+            size="sm"
+            onClick={() =>
+              toast({
+                title: "Aura 2.5 Studio ready",
+                description: "Explore the interactive capability switcher below.",
+                tone: "info",
+              })
+            }
+          >
+            Try Aura
+          </TonalButton>
         </div>
       </div>
 
@@ -47,14 +59,17 @@ export default function AiDemoPage() {
           documents — designed with breathable white space and zero clutter.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <a href="#pricing">
-            <TonalButton size="lg">Start free</TonalButton>
+          <a
+            href="#capabilities"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-[var(--t-cta-bg)] text-[var(--t-cta-fg,#ffffff)] hover:bg-[var(--t-cta-hover)] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            Start free
           </a>
           <ChevronLink href="#pricing">See plans &amp; limits</ChevronLink>
         </div>
       </section>
 
-      {/* Interactive Capability Stage */}
+      {/* Dogfooded CapabilityTabs Registry Block */}
       <section id="capabilities">
         <CapabilityTabs />
       </section>
@@ -95,9 +110,17 @@ export default function AiDemoPage() {
         </SurfaceTile>
       </section>
 
-      {/* Clean 2-Tier Pricing */}
+      {/* Dogfooded PricingGrid Registry Block */}
       <div id="pricing">
-        <PricingGrid />
+        <PricingGrid
+          onSelectTier={(tier) =>
+            toast({
+              title: `Selected ${tier.name}`,
+              description: `${tier.price} ${tier.period ?? ""} — demo plan action triggered.`,
+              tone: "success",
+            })
+          }
+        />
       </div>
     </div>
   );
