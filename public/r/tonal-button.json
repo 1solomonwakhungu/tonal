@@ -3,7 +3,7 @@
   "name": "tonal-button",
   "type": "registry:ui",
   "title": "Tonal Button",
-  "description": "Quiet primary, dark, outlined, and tonal action buttons with automatic Soft Pill or Commerce radius.",
+  "description": "Quiet primary, dark, outlined, tonal, and ghost action buttons with automatic Soft Pill or Commerce radius.",
   "registryDependencies": [
     "https://tonal.harlo.dev/r/tonal-tokens.json"
   ],

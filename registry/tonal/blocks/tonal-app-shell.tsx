@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   BarChart3,
+  ChevronRight,
   CreditCard,
   FolderKanban,
   LayoutGrid,
@@ -81,22 +82,30 @@ export function TonalQuotaCard({
           {description}
         </p>
       )}
-      {actionLabel && (
-        <ChevronLink
-          href={actionHref ?? "#"}
-          onClick={
-            !actionHref || onAction
-              ? (e) => {
-                  if (!actionHref) e.preventDefault();
-                  onAction?.();
-                }
-              : undefined
-          }
-          className="text-[12.5px]"
-        >
-          {actionLabel}
-        </ChevronLink>
-      )}
+      {actionLabel &&
+        (actionHref ? (
+          <ChevronLink
+            href={actionHref}
+            onClick={onAction ? () => onAction() : undefined}
+            className="text-[12.5px]"
+          >
+            {actionLabel}
+          </ChevronLink>
+        ) : (
+          <button
+            type="button"
+            onClick={onAction}
+            className="group inline-flex items-center gap-1 self-start text-[12.5px] font-medium tracking-[-0.01em] text-[var(--t-blue)] hover:text-[var(--t-blue-hover)] cursor-pointer rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            <span className="group-hover:underline underline-offset-4">
+              {actionLabel}
+            </span>
+            <ChevronRight
+              aria-hidden="true"
+              className="h-4 w-4 transition-transform duration-200 [transition-timing-function:var(--t-ease)] group-hover:translate-x-0.5"
+            />
+          </button>
+        ))}
     </div>
   );
 }
@@ -166,7 +175,7 @@ export function TonalAppShell({
                 <button
                   key={item.id}
                   type="button"
-                  aria-current={isActive ? "page" : undefined}
+                  aria-pressed={isActive}
                   onClick={() => handleSelect(item.id)}
                   className={cn(
                     "flex items-center justify-between gap-3 px-4 py-2.5 rounded-full text-[14px] font-medium cursor-pointer transition-colors duration-200 [transition-timing-function:var(--t-ease)] text-left",
