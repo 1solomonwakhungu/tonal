@@ -27,6 +27,15 @@ export function TonalAccordion({
   const [openIndex, setOpenIndex] = React.useState<number | null>(
     defaultOpenIndex
   );
+  const panelRefs = React.useRef<Array<HTMLDivElement | null>>([]);
+
+  React.useEffect(() => {
+    panelRefs.current.forEach((el, idx) => {
+      if (el) {
+        el.inert = openIndex !== idx;
+      }
+    });
+  }, [openIndex, items.length]);
 
   return (
     <div
@@ -61,11 +70,13 @@ export function TonalAccordion({
               />
             </button>
             <div
+              ref={(el) => {
+                panelRefs.current[idx] = el;
+              }}
               id={panelId}
               role="region"
               aria-labelledby={buttonId}
               aria-hidden={!isOpen}
-              inert={!isOpen}
               className={cn(
                 "grid transition-all duration-250 [transition-timing-function:var(--t-ease)]",
                 isOpen
