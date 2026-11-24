@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tonal-segmented-control",
+  "type": "registry:ui",
+  "title": "Tonal Segmented Control",
+  "description": "Accessible pill switcher with roving keyboard navigation (Arrow, Home, End) and optional icons or badges.",
+  "registryDependencies": [
+    "https://tonal.harlo.dev/r/tonal-tokens.json"
+  ],
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "registry/tonal/segmented-control.tsx",
+      "type": "registry:ui",
+      "target": "components/tonal/segmented-control.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { clsx, type ClassValue } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nfunction cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n\nexport interface SegmentedOption<T extends string = string> {\n  value: T;\n  label: string;\n  icon?: React.ComponentType<{ className?: string }>;\n  badge?: string | number;\n}\n\nexport interface TonalSegmentedControlProps<T extends string = string> {\n  options: SegmentedOption<T>[];\n  value?: T;\n  defaultValue?: T;\n  onValueChange?: (value: T) => void;\n  ariaLabel?: string;\n  size?: \"sm\" | \"md\";\n  className?: string;\n}\n\nexport function TonalSegmentedControl<T extends string = string>({\n  options,\n  value,\n  defaultValue,\n  onValueChange,\n  ariaLabel = \"Options\",\n  size = \"md\",\n  className,\n}: TonalSegmentedControlProps<T>) {\n  const [internal, setInternal] = React.useState<T>(\n    defaultValue ?? options[0]?.value\n  );\n  const current = value ?? internal;\n  const buttonRefs = React.useRef<Array<HTMLButtonElement | null>>([]);\n  const activeIdx = Math.max(\n    0,\n    options.findIndex((o) => o.value === current)\n  );\n\n  const select = (next: T) => {\n    if (value === undefined) setInternal(next);\n    onValueChange?.(next);\n  };\n\n  const handleKeyDown = (e: React.KeyboardEvent, idx: number) => {\n    if (options.length === 0) return;\n    let nextIdx: number | null = null;\n    if (e.key === \"ArrowRight\") nextIdx = (idx + 1) % options.length;\n    else if (e.key === \"ArrowLeft\")\n      nextIdx = (idx - 1 + options.length) % options.length;\n    else if (e.key === \"Home\") nextIdx = 0;\n    else if (e.key === \"End\") nextIdx = options.length - 1;\n\n    if (nextIdx !== null) {\n      e.preventDefault();\n      select(options[nextIdx].value);\n      buttonRefs.current[nextIdx]?.focus();\n    }\n  };\n\n  return (\n    <div\n      role=\"radiogroup\"\n      aria-label={ariaLabel}\n      className={cn(\n        \"inline-flex flex-wrap items-center gap-0.5 rounded-full bg-[var(--t-surface-muted)] p-1 border border-[var(--t-border-subtle)]\",\n        className\n      )}\n    >\n      {options.map((opt, idx) => {\n        const Icon = opt.icon;\n        const active = opt.value === current;\n        return (\n          <button\n            key={opt.value}\n            ref={(el) => {\n              buttonRefs.current[idx] = el;\n            }}\n            type=\"button\"\n            role=\"radio\"\n            aria-checked={active}\n            tabIndex={idx === activeIdx ? 0 : -1}\n            onClick={() => select(opt.value)}\n            onKeyDown={(e) => handleKeyDown(e, idx)}\n            className={cn(\n              \"inline-flex items-center gap-1.5 rounded-full font-medium cursor-pointer transition-all duration-200 [transition-timing-function:var(--t-ease)]\",\n              \"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-ring,var(--t-blue))]\",\n              size === \"sm\" ? \"px-3 py-1 text-[12px]\" : \"px-3.5 py-1.5 text-[13px]\",\n              active\n                ? \"bg-[var(--t-elevated)] text-[var(--t-ink)] shadow-[0_1px_2px_rgba(0,0,0,0.12)]\"\n                : \"text-[var(--t-ink-muted)] hover:text-[var(--t-ink)]\"\n            )}\n          >\n            {Icon && <Icon className=\"h-3.5 w-3.5 shrink-0\" />}\n            <span>{opt.label}</span>\n            {opt.badge !== undefined && (\n              <span className=\"text-[11px] font-mono text-[var(--t-ink-muted)]\">\n                {opt.badge}\n              </span>\n            )}\n          </button>\n        );\n      })}\n    </div>\n  );\n}\n"
+    }
+  ]
+}

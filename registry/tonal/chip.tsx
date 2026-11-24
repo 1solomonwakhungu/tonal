@@ -7,7 +7,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 export interface TonalChipProps extends React.HTMLAttributes<HTMLSpanElement> {
-  tone?: "blue" | "neutral" | "mint" | "warm";
+  tone?: "blue" | "neutral" | "mint" | "warm" | "warning" | "danger";
 }
 
 const chipTones = {
@@ -15,6 +15,8 @@ const chipTones = {
   neutral: "bg-[var(--t-surface-muted)] text-[var(--t-ink-secondary)]",
   mint: "bg-[var(--t-surface-mint)] text-[var(--t-chip-mint-fg,#137333)]",
   warm: "bg-[var(--t-surface-warm)] text-[var(--t-ink-secondary)]",
+  warning: "bg-[var(--t-warning-surface,#fef7e0)] text-[var(--t-warning,#9c5300)]",
+  danger: "bg-[var(--t-danger-surface,#fce8e6)] text-[var(--t-danger,#c5221f)]",
 };
 
 export function TonalChip({

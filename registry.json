@@ -7,7 +7,7 @@
       "name": "tonal-tokens",
       "type": "registry:item",
       "title": "Tonal Design Tokens",
-      "description": "Core editorial tonal tokens: Google Sans (SIL OFL-1.1) type scale, flat tonal surfaces, radii, and motion.",
+      "description": "Core editorial tonal tokens: Google Sans (SIL OFL-1.1) type scale, flat tonal surfaces, semantic status tokens, Tailwind v4 @theme bridge, radii, and reduced-motion rules.",
       "files": [
         {
           "path": "registry/tonal/tokens.css",
@@ -54,7 +54,7 @@
       "name": "tonal-chip",
       "type": "registry:ui",
       "title": "Tonal Chip",
-      "description": "Soft tinted category pill and eyebrow badge for editorial sections.",
+      "description": "Soft tinted category pill and semantic status badge for editorial sections and tables.",
       "registryDependencies": [
         "https://tonal.harlo.dev/r/tonal-tokens.json"
       ],
@@ -98,6 +98,91 @@
           "path": "registry/tonal/accordion.tsx",
           "type": "registry:ui",
           "target": "components/tonal/accordion.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tonal-dialog",
+      "type": "registry:ui",
+      "title": "Tonal Dialog & Drawer",
+      "description": "Accessible tonal modal and slide-over drawer with ESC close, backdrop dismiss, scroll lock, and focus restoration.",
+      "registryDependencies": [
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
+      ],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/dialog.tsx",
+          "type": "registry:ui",
+          "target": "components/tonal/dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tonal-input",
+      "type": "registry:ui",
+      "title": "Tonal Form Controls",
+      "description": "Calm labeled input (default & pill search), select, and textarea with semantic error states and focus rings.",
+      "registryDependencies": [
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
+      ],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/input.tsx",
+          "type": "registry:ui",
+          "target": "components/tonal/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tonal-segmented-control",
+      "type": "registry:ui",
+      "title": "Tonal Segmented Control",
+      "description": "Accessible pill switcher with roving keyboard navigation (Arrow, Home, End) and optional icons or badges.",
+      "registryDependencies": [
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
+      ],
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [
+        {
+          "path": "registry/tonal/segmented-control.tsx",
+          "type": "registry:ui",
+          "target": "components/tonal/segmented-control.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tonal-toast",
+      "type": "registry:ui",
+      "title": "Tonal Toast",
+      "description": "Calm floating notification system with semantic tones, auto-dismiss timers, and polite aria-live announcements.",
+      "registryDependencies": [
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
+      ],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/toast.tsx",
+          "type": "registry:ui",
+          "target": "components/tonal/toast.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tonal-command",
+      "type": "registry:ui",
+      "title": "Tonal Command Palette",
+      "description": "Keyboard-first ⌘K command menu with grouped results, instant filtering, and Arrow/Enter/Escape navigation.",
+      "registryDependencies": [
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
+      ],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/command.tsx",
+          "type": "registry:ui",
+          "target": "components/tonal/command.tsx"
         }
       ]
     },
@@ -153,6 +238,23 @@
           "path": "registry/tonal/blocks/kpi-grid.tsx",
           "type": "registry:component",
           "target": "components/tonal/blocks/kpi-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tonal-area-chart",
+      "type": "registry:block",
+      "title": "Tonal Area Chart",
+      "description": "Zero-dependency responsive SVG throughput & trend area chart with hover and keyboard-focusable data points.",
+      "registryDependencies": [
+        "https://tonal.harlo.dev/r/tonal-tokens.json"
+      ],
+      "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+      "files": [
+        {
+          "path": "registry/tonal/blocks/tonal-area-chart.tsx",
+          "type": "registry:component",
+          "target": "components/tonal/blocks/tonal-area-chart.tsx"
         }
       ]
     },

@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
+  ArrowUpRight,
   Check,
   Copy,
   FileCode2,
@@ -20,11 +22,18 @@ const VIEWPORTS: Array<{
   id: ViewportMode;
   label: string;
   width: string;
+  height: number;
   icon: React.ComponentType<{ className?: string }>;
 }> = [
-  { id: "desktop", label: "Desktop", width: "100%", icon: Monitor },
-  { id: "tablet", label: "Tablet", width: "768px", icon: Tablet },
-  { id: "mobile", label: "Mobile", width: "390px", icon: Smartphone },
+  { id: "desktop", label: "Desktop", width: "100%", height: 520, icon: Monitor },
+  { id: "tablet", label: "Tablet", width: "768px", height: 540, icon: Tablet },
+  {
+    id: "mobile",
+    label: "Mobile",
+    width: "390px",
+    height: 560,
+    icon: Smartphone,
+  },
 ];
 
 export interface CodePreviewCardProps {
@@ -32,7 +41,11 @@ export interface CodePreviewCardProps {
   description: string;
   registryName: string;
   code: string;
+  highlightedHtml?: string;
   filePath?: string;
+  dependencies?: string[];
+  registryDependencies?: string[];
+  showDocsLink?: boolean;
   defaultTab?: "preview" | "code";
   className?: string;
   children: React.ReactNode;
@@ -43,7 +56,11 @@ export function CodePreviewCard({
   description,
   registryName,
   code,
+  highlightedHtml,
   filePath,
+  dependencies = [],
+  registryDependencies = [],
+  showDocsLink = true,
   defaultTab = "preview",
   className,
   children,
@@ -53,6 +70,8 @@ export function CodePreviewCard({
   const [origin, setOrigin] = React.useState<string>(DEFAULT_ORIGIN);
   const [copiedCli, setCopiedCli] = React.useState(false);
   const [copiedCode, setCopiedCode] = React.useState(false);
+  const [frameTheme, setFrameTheme] = React.useState<"light" | "dark">("light");
+  const [frameMode, setFrameMode] = React.useState<"pill" | "commerce">("pill");
   const [statusMessage, setStatusMessage] = React.useState("");
   const cliTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const codeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -61,7 +80,21 @@ export function CodePreviewCard({
     if (typeof window !== "undefined" && window.location.origin) {
       setOrigin(window.location.origin);
     }
+
+    const syncDataset = () => {
+      const ds = document.documentElement.dataset;
+      setFrameTheme(ds.tonalTheme === "dark" ? "dark" : "light");
+      setFrameMode(ds.tonalMode === "commerce" ? "commerce" : "pill");
+    };
+    syncDataset();
+
+    const observer = new MutationObserver(syncDataset);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-tonal-theme", "data-tonal-mode"],
+    });
     return () => {
+      observer.disconnect();
       if (cliTimerRef.current) clearTimeout(cliTimerRef.current);
       if (codeTimerRef.current) clearTimeout(codeTimerRef.current);
     };
@@ -99,6 +132,8 @@ export function CodePreviewCard({
     }
   };
 
+  const iframeSrc = `/preview/${registryName}?theme=${frameTheme}&mode=${frameMode}`;
+
   return (
     <div
       className={cn(
@@ -107,17 +142,54 @@ export function CodePreviewCard({
       )}
     >
       {/* Header & Toolbar */}
-      <div className="px-5 sm:px-6 py-4 border-b border-[var(--t-border-subtle)] bg-[var(--t-bg)] flex flex-col @[720px]:flex-row @[720px]:items-center justify-between gap-3.5">
+      <div className="px-5 sm:px-6 py-4 border-b border-[var(--t-border-subtle)] bg-[var(--t-bg)] flex flex-col @[740px]:flex-row @[740px]:items-center justify-between gap-3.5">
         <div className="min-w-0 flex-1">
-          <h3 className="text-[16px] font-medium tracking-[-0.015em] text-[var(--t-ink)] leading-snug">
-            {title}
-          </h3>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="text-[16px] font-medium tracking-[-0.015em] text-[var(--t-ink)] leading-snug">
+              {title}
+            </h3>
+            {showDocsLink && (
+              <Link
+                href={`/components/${registryName}`}
+                className="inline-flex items-center gap-0.5 text-[12px] font-medium text-[var(--t-blue)] hover:underline underline-offset-4"
+              >
+                Docs
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+          </div>
           <p className="text-[13px] text-[var(--t-ink-muted)] mt-1 leading-relaxed">
             {description}
           </p>
+          {(registryDependencies.length > 0 || dependencies.length > 0) && (
+            <div className="flex flex-wrap items-center gap-1.5 mt-2">
+              {registryDependencies.map((dep) => {
+                const slug = dep
+                  .replace(/^https?:\/\/.*\/r\//, "")
+                  .replace(/\.json$/, "");
+                return (
+                  <Link
+                    key={dep}
+                    href={`/components/${slug}`}
+                    className="inline-flex items-center rounded-full bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)] px-2 py-0.5 text-[11px] font-mono hover:underline"
+                  >
+                    @{slug}
+                  </Link>
+                );
+              })}
+              {dependencies.map((pkg) => (
+                <span
+                  key={pkg}
+                  className="inline-flex items-center rounded-full bg-[var(--t-surface)] border border-[var(--t-border-subtle)] text-[var(--t-ink-muted)] px-2 py-0.5 text-[11px] font-mono"
+                >
+                  {pkg}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 @[720px]:shrink-0">
+        <div className="flex flex-wrap items-center gap-2 @[740px]:shrink-0">
           {/* Responsive Viewport Toggles */}
           {tab === "preview" && (
             <div
@@ -167,7 +239,7 @@ export function CodePreviewCard({
             <Terminal className="h-3.5 w-3.5 text-[var(--t-ink-muted)] shrink-0" />
             <span>{copiedCli ? "Copied CLI!" : `/r/${registryName}.json`}</span>
             {copiedCli ? (
-              <Check className="h-3.5 w-3.5 text-[var(--t-chip-mint-fg)] shrink-0" />
+              <Check className="h-3.5 w-3.5 text-[var(--t-success,#188038)] shrink-0" />
             ) : (
               <Copy className="h-3.5 w-3.5 text-[var(--t-ink-muted)] shrink-0" />
             )}
@@ -223,31 +295,28 @@ export function CodePreviewCard({
               : "p-4 sm:p-6 bg-[var(--t-surface)]"
           )}
         >
-          <div
-            style={{
-              width: activeViewport.width,
-              maxWidth: "100%",
-              transition:
-                "width 320ms cubic-bezier(0.2, 0, 0, 1), padding 320ms cubic-bezier(0.2, 0, 0, 1), border-color 320ms cubic-bezier(0.2, 0, 0, 1)",
-            }}
-            className={cn(
-              "mx-auto overflow-x-auto",
-              viewport === "desktop"
-                ? "border border-transparent bg-transparent p-0 rounded-none"
-                : "border border-[var(--t-border-subtle)] bg-[var(--t-bg)] rounded-[18px] p-4 sm:p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
-            )}
-          >
-            {viewport !== "desktop" && (
-              <div className="mb-3 pb-2.5 border-b border-[var(--t-border-subtle)] flex items-center justify-between text-[11px] font-mono text-[var(--t-ink-muted)]">
-                <span>{activeViewport.label} frame</span>
+          {viewport === "desktop" ? (
+            <div className="w-full">{children}</div>
+          ) : (
+            <div
+              style={{ width: activeViewport.width, maxWidth: "100%" }}
+              className="mx-auto border border-[var(--t-border-subtle)] bg-[var(--t-bg)] rounded-[18px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
+            >
+              <div className="px-4 py-2 border-b border-[var(--t-border-subtle)] flex items-center justify-between text-[11px] font-mono text-[var(--t-ink-muted)] bg-[var(--t-surface)]/50">
+                <span>{activeViewport.label} iframe (real breakpoints)</span>
                 <span>{activeViewport.width}</span>
               </div>
-            )}
-            {children}
-          </div>
+              <iframe
+                title={`${title} — ${activeViewport.label} preview`}
+                src={iframeSrc}
+                style={{ width: "100%", height: `${activeViewport.height}px` }}
+                className="block border-0 bg-[var(--t-bg)]"
+              />
+            </div>
+          )}
         </div>
       ) : (
-        <div className="flex-1 flex flex-col bg-[#16181c] text-[#e8eaed]">
+        <div className="flex-1 flex flex-col bg-[#0d1117] text-[#e6edf3]">
           <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-2.5 border-b border-white/10 bg-white/[0.03]">
             <div className="flex items-center gap-2 min-w-0 text-[12px] font-mono text-[#bdc1c6]">
               <FileCode2 className="h-3.5 w-3.5 text-[#8ab4f8] shrink-0" />
@@ -280,10 +349,17 @@ export function CodePreviewCard({
               )}
             </button>
           </div>
-          <div className="p-4 sm:p-5 overflow-auto max-h-[520px]">
-            <pre className="text-[12.5px] leading-[1.6] font-mono">
-              <code>{code}</code>
-            </pre>
+          <div className="p-4 sm:p-5 overflow-auto max-h-[520px] tonal-shiki-wrap">
+            {highlightedHtml ? (
+              <div
+                className="text-[12.5px] leading-[1.6] font-mono [&>pre]:!bg-transparent [&>pre]:!m-0 [&>pre]:!p-0"
+                dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+              />
+            ) : (
+              <pre className="text-[12.5px] leading-[1.6] font-mono">
+                <code>{code}</code>
+              </pre>
+            )}
           </div>
         </div>
       )}

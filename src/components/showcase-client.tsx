@@ -8,22 +8,15 @@ import {
   Check,
   Copy,
   Layers,
+  Palette,
   Smartphone,
   Sparkles,
 } from "lucide-react";
-import { TonalButton } from "@registry/tonal/button";
 import { SurfaceTile } from "@registry/tonal/surface-tile";
 import { TonalChip } from "@registry/tonal/chip";
-import { ChevronLink } from "@registry/tonal/chevron-link";
-import { TonalAccordion } from "@registry/tonal/accordion";
-import { EditorialHero } from "@registry/tonal/blocks/editorial-hero";
-import { TonalAppShell } from "@registry/tonal/blocks/tonal-app-shell";
-import { KpiGrid } from "@registry/tonal/blocks/kpi-grid";
-import { TonalTable } from "@registry/tonal/blocks/tonal-table";
-import { CapabilityTabs } from "@registry/tonal/blocks/capability-tabs";
-import { PricingGrid } from "@registry/tonal/blocks/pricing-grid";
-import { SpecsTable } from "@registry/tonal/blocks/specs-table";
 import { CodePreviewCard } from "@/components/code-preview-card";
+import { RegistryPreview } from "@/components/registry-preview";
+import { REGISTRY_CATALOG } from "@/lib/registry-catalog";
 import type { RegistrySourceMap } from "@/lib/registry-source";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +29,7 @@ const DEMO_SITES = [
     href: "/demos/hardware",
     tag: "Hardware Storefront",
     title: "Lumen Store",
-    desc: "Flagship hardware storefront with dynamic finish backdrops, editorial bento tiles, comparison specs, and FAQ.",
+    desc: "Flagship hardware storefront with dynamic finish backdrops, slide-over bag drawer, editorial bento tiles, specs table, and FAQ.",
     tone: "warm" as const,
     icon: Smartphone,
   },
@@ -44,7 +37,7 @@ const DEMO_SITES = [
     href: "/demos/ai",
     tag: "AI Product Site",
     title: "Aura Studio",
-    desc: "Calm AI studio aesthetic with cool tonal surfaces, interactive capability prompt switcher, and clean 2-tier pricing.",
+    desc: "Calm AI studio aesthetic powered by CapabilityTabs, PricingGrid, and tonal surface steps.",
     tone: "cool" as const,
     icon: Sparkles,
   },
@@ -52,7 +45,7 @@ const DEMO_SITES = [
     href: "/demos/workspace",
     tag: "Productivity SaaS",
     title: "Canvas Workspace",
-    desc: "Productivity workspace editorial landing page with live app-tab mockup previews, feature spotlights, and customer quotes.",
+    desc: "Productivity workspace editorial landing page with segmented app switcher, share dialog, and customer quote bento.",
     tone: "mint" as const,
     icon: Layers,
   },
@@ -60,44 +53,19 @@ const DEMO_SITES = [
     href: "/demos/dashboard",
     tag: "App & Analytics Console",
     title: "Pulse Dashboard",
-    desc: "Cloud console tonal app shell with KPI tiles, interactive SVG throughput chart, and filterable service table.",
+    desc: "Cloud console powered by TonalAppShell, KpiGrid, TonalAreaChart, TonalTable, TonalDialog, and form controls.",
     tone: "sky" as const,
     icon: Activity,
   },
 ];
 
 const SWATCHES = [
-  { name: "Canvas", token: "--t-bg", hex: "#FFFFFF" },
-  { name: "Neutral", token: "--t-surface", hex: "#F8F9FA" },
-  { name: "Porcelain", token: "--t-surface-warm", hex: "#F4F2EE" },
-  { name: "Workspace", token: "--t-surface-cool", hex: "#F0F4F9" },
-  { name: "Ink", token: "--t-ink", hex: "#202124" },
-  { name: "Action Blue", token: "--t-blue", hex: "#1967D2" },
-];
-
-const TOKEN_SPEC_GROUPS = [
-  {
-    label: "Surface Steps",
-    tokens: [
-      { name: "--t-bg", label: "Canvas" },
-      { name: "--t-surface", label: "Neutral" },
-      { name: "--t-surface-muted", label: "Muted" },
-      { name: "--t-surface-warm", label: "Porcelain" },
-      { name: "--t-surface-cool", label: "Workspace" },
-      { name: "--t-surface-sky", label: "Sky" },
-      { name: "--t-surface-mint", label: "Mint" },
-      { name: "--t-surface-sand", label: "Sand" },
-    ],
-  },
-  {
-    label: "Ink & Accent",
-    tokens: [
-      { name: "--t-ink", label: "Primary Ink" },
-      { name: "--t-ink-secondary", label: "Secondary Ink" },
-      { name: "--t-ink-muted", label: "Muted Ink" },
-      { name: "--t-blue", label: "Action Blue" },
-    ],
-  },
+  { name: "Canvas", token: "--t-bg" },
+  { name: "Neutral", token: "--t-surface" },
+  { name: "Porcelain", token: "--t-surface-warm" },
+  { name: "Workspace", token: "--t-surface-cool" },
+  { name: "Ink", token: "--t-ink" },
+  { name: "Action Blue", token: "--t-blue" },
 ];
 
 const CATEGORY_TABS: Array<{ id: GalleryCategory; label: string }> = [
@@ -106,15 +74,6 @@ const CATEGORY_TABS: Array<{ id: GalleryCategory; label: string }> = [
   { id: "blocks", label: "Blocks" },
   { id: "tokens", label: "Tokens" },
 ];
-
-interface GalleryEntry {
-  registryName: string;
-  category: Exclude<GalleryCategory, "all">;
-  title: string;
-  description: string;
-  fullWidth?: boolean;
-  preview: React.ReactNode;
-}
 
 export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
   const [origin, setOrigin] = React.useState<string>(DEFAULT_ORIGIN);
@@ -136,261 +95,28 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
 
   const installCmd = `npx shadcn@latest add ${origin}/r/editorial-hero.json`;
 
-  const galleryItems: GalleryEntry[] = React.useMemo(
-    () => [
-      {
-        registryName: "editorial-hero",
-        category: "blocks",
-        title: "Editorial Finish Hero",
-        description:
-          "Split hero with dynamic finish swatches that tint the surrounding tonal surface.",
-        fullWidth: true,
-        preview: (
-          <EditorialHero headingLevel="h2" secondaryHref="#primitives" />
-        ),
-      },
-      {
-        registryName: "tonal-button",
-        category: "primitives",
-        title: "Tonal Button",
-        description:
-          "Automatically adapts between Soft Pill and Commerce corners.",
-        preview: (
-          <div className="flex flex-wrap items-center gap-3">
-            <TonalButton>Primary CTA</TonalButton>
-            <TonalButton variant="dark">Dark Store</TonalButton>
-            <TonalButton variant="outline">Outlined</TonalButton>
-            <TonalButton variant="tonal">Tonal</TonalButton>
-          </div>
-        ),
-      },
-      {
-        registryName: "surface-tile",
-        category: "primitives",
-        title: "Surface Tiles",
-        description:
-          "Depth via flat tonal steps instead of muddy drop shadows.",
-        preview: (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <SurfaceTile tone="warm" padding="sm">
-              <div className="text-[13px] font-medium text-[var(--t-ink)]">
-                Porcelain
-              </div>
-              <div className="text-[11px] font-mono text-[var(--t-ink-muted)] mt-0.5">
-                --t-surface-warm
-              </div>
-            </SurfaceTile>
-            <SurfaceTile tone="cool" padding="sm">
-              <div className="text-[13px] font-medium text-[var(--t-ink)]">
-                Workspace
-              </div>
-              <div className="text-[11px] font-mono text-[var(--t-ink-muted)] mt-0.5">
-                --t-surface-cool
-              </div>
-            </SurfaceTile>
-            <SurfaceTile tone="mint" padding="sm">
-              <div className="text-[13px] font-medium text-[var(--t-ink)]">
-                Aloe
-              </div>
-              <div className="text-[11px] font-mono text-[var(--t-ink-muted)] mt-0.5">
-                --t-surface-mint
-              </div>
-            </SurfaceTile>
-          </div>
-        ),
-      },
-      {
-        registryName: "tonal-chip",
-        category: "primitives",
-        title: "Tonal Chip",
-        description:
-          "Soft tinted category pills and eyebrow badges for editorial sections.",
-        preview: (
-          <div className="flex flex-wrap items-center gap-2.5">
-            <TonalChip tone="blue">New release</TonalChip>
-            <TonalChip tone="mint">In stock</TonalChip>
-            <TonalChip tone="warm">Porcelain</TonalChip>
-            <TonalChip tone="neutral">Registry v0.1</TonalChip>
-          </div>
-        ),
-      },
-      {
-        registryName: "chevron-link",
-        category: "primitives",
-        title: "Chevron Link",
-        description:
-          "Quiet editorial inline text action with subtle animated chevron.",
-        preview: (
-          <div className="flex flex-wrap items-center gap-6">
-            <ChevronLink href="#primitives">Learn more</ChevronLink>
-            <ChevronLink href="#primitives" tone="ink">
-              Compare specs
-            </ChevronLink>
-          </div>
-        ),
-      },
-      {
-        registryName: "tonal-accordion",
-        category: "primitives",
-        title: "Hairline Accordion",
-        description:
-          "Minimal editorial FAQ section with decelerating spring motion.",
-        fullWidth: true,
-        preview: (
-          <TonalAccordion
-            items={[
-              {
-                question: "Do I need a heavy UI framework installed?",
-                answer:
-                  "No. Tonal is pure React + Tailwind CSS powered by ~12 CSS variables and open-source Google Sans (SIL OFL-1.1).",
-              },
-              {
-                question:
-                  "How do I install a Tonal component in another project?",
-                answer: `Run npx shadcn@latest add ${origin}/r/editorial-hero.json. You own 100% of the copied source code directly in your repository.`,
-              },
-              {
-                question: "How does Soft Pill vs. Commerce mode work?",
-                answer:
-                  "It only swaps two CSS custom properties (--t-radius-btn and --t-cta-bg) on a parent data-tonal-mode attribute.",
-              },
-            ]}
-          />
-        ),
-      },
-      {
-        registryName: "tonal-app-shell",
-        category: "blocks",
-        title: "Tonal App Shell",
-        description:
-          "Cool tonal outer workspace frame with interactive pill navigation rail, quota card, and elevated content sheet.",
-        fullWidth: true,
-        preview: <TonalAppShell />,
-      },
-      {
-        registryName: "kpi-grid",
-        category: "blocks",
-        title: "KPI Metric Grid",
-        description:
-          "Calm 4-column analytics KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
-        fullWidth: true,
-        preview: <KpiGrid />,
-      },
-      {
-        registryName: "tonal-table",
-        category: "blocks",
-        title: "Tonal Data Table",
-        description:
-          "Interactive pill search field, status filter chips, and hairline data table with hover highlights and resettable empty state.",
-        fullWidth: true,
-        preview: <TonalTable />,
-      },
-      {
-        registryName: "capability-tabs",
-        category: "blocks",
-        title: "Capability Switcher",
-        description:
-          "Interactive calm AI studio capability switcher inside a cool tonal stage with prompt and grounded response panels.",
-        fullWidth: true,
-        preview: <CapabilityTabs />,
-      },
-      {
-        registryName: "pricing-grid",
-        category: "blocks",
-        title: "Tonal Pricing Grid",
-        description:
-          "Clean 2-tier editorial pricing cards pairing a bordered canvas tier with a cool tonal recommended tier and checkmark list.",
-        fullWidth: true,
-        preview: <PricingGrid />,
-      },
-      {
-        registryName: "specs-table",
-        category: "blocks",
-        title: "Specs Comparison Table",
-        description:
-          "Flagship storefront hairline side-by-side model specifications comparison table.",
-        fullWidth: true,
-        preview: <SpecsTable />,
-      },
-      {
-        registryName: "tonal-tokens",
-        category: "tokens",
-        title: "Tonal Design Tokens (tokens.css)",
-        description:
-          "Complete live CSS custom properties for surfaces, ink hierarchy, radii, motion curves, and editorial type classes.",
-        fullWidth: true,
-        preview: (
-          <div className="flex flex-col gap-6">
-            {TOKEN_SPEC_GROUPS.map((group) => (
-              <div key={group.label} className="flex flex-col gap-2.5">
-                <span className="text-[12px] font-medium uppercase tracking-[0.04em] text-[var(--t-ink-muted)]">
-                  {group.label}
-                </span>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  {group.tokens.map((t) => (
-                    <div
-                      key={t.name}
-                      className="flex items-center gap-2.5 rounded-[var(--t-radius-sm)] border border-[var(--t-border-subtle)] bg-[var(--t-bg)] p-2.5"
-                    >
-                      <span
-                        style={{ backgroundColor: `var(${t.name})` }}
-                        className="h-8 w-8 rounded-[8px] border border-[var(--t-border-subtle)] shrink-0"
-                      />
-                      <div className="min-w-0">
-                        <div className="text-[12.5px] font-medium text-[var(--t-ink)] truncate">
-                          {t.label}
-                        </div>
-                        <div className="text-[11px] font-mono text-[var(--t-ink-muted)] truncate">
-                          {t.name}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <div className="rounded-[var(--t-radius-sm)] border border-[var(--t-border-subtle)] bg-[var(--t-surface)] p-4 sm:p-5 flex flex-col gap-2">
-              <span className="text-[11.5px] font-mono text-[var(--t-ink-muted)]">
-                .t-display · .t-headline · .t-body
-              </span>
-              <div className="t-headline text-[22px] sm:text-[26px]">
-                Editorial hierarchy without heavy elevation.
-              </div>
-              <p className="t-body text-[14px]">
-                Switch to the <strong>Code</strong> tab above to inspect or copy
-                the exact live <code>registry/tonal/tokens.css</code> file.
-              </p>
-            </div>
-          </div>
-        ),
-      },
-    ],
-    [origin]
-  );
-
   const categoryCounts: Record<GalleryCategory, number> = React.useMemo(
     () => ({
-      all: galleryItems.length,
-      primitives: galleryItems.filter((i) => i.category === "primitives")
+      all: REGISTRY_CATALOG.length,
+      primitives: REGISTRY_CATALOG.filter((i) => i.category === "primitives")
         .length,
-      blocks: galleryItems.filter((i) => i.category === "blocks").length,
-      tokens: galleryItems.filter((i) => i.category === "tokens").length,
+      blocks: REGISTRY_CATALOG.filter((i) => i.category === "blocks").length,
+      tokens: REGISTRY_CATALOG.filter((i) => i.category === "tokens").length,
     }),
-    [galleryItems]
+    []
   );
 
   const visibleItems =
     activeCategory === "all"
-      ? galleryItems
-      : galleryItems.filter((item) => item.category === activeCategory);
+      ? REGISTRY_CATALOG
+      : REGISTRY_CATALOG.filter((item) => item.category === activeCategory);
 
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-10 sm:pt-14 flex flex-col gap-16">
       {/* Hero */}
       <section className="text-center max-w-3xl mx-auto flex flex-col items-center">
         <TonalChip tone="blue" className="mb-5">
-          shadcn-compatible registry · v0.1
+          shadcn-compatible registry · v0.2 · {REGISTRY_CATALOG.length} items
         </TonalChip>
         <h1 className="t-display text-[42px] sm:text-[62px] mb-5">
           Editorial tonal UI, minus the bloat.
@@ -402,13 +128,24 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 mb-7">
-          <Link href="/demos/hardware">
-            <TonalButton size="lg">Explore Live Demos</TonalButton>
+          <Link
+            href="/demos/hardware"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-[var(--t-cta-bg)] text-[var(--t-cta-fg,#ffffff)] hover:bg-[var(--t-cta-hover)] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            Explore Live Demos
           </Link>
-          <a href="#primitives">
-            <TonalButton variant="outline" size="lg">
-              Browse Components
-            </TonalButton>
+          <Link
+            href="/studio"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)] hover:bg-[var(--t-blue-tint-hover,#d2e3fc)] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            <Palette className="h-4 w-4" />
+            Theme Studio
+          </Link>
+          <a
+            href="#primitives"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-transparent text-[var(--t-ink)] border border-[var(--t-ink-muted)] hover:bg-[var(--t-hover-overlay,rgba(32,33,36,0.04))] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            Browse Components
           </a>
         </div>
 
@@ -431,7 +168,7 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
             {installCmd}
           </span>
           {copiedInstall ? (
-            <Check className="h-4 w-4 text-[var(--t-chip-mint-fg)] shrink-0" />
+            <Check className="h-4 w-4 text-[var(--t-success,#188038)] shrink-0" />
           ) : (
             <Copy className="h-4 w-4 text-[var(--t-ink-muted)] shrink-0" />
           )}
@@ -443,18 +180,19 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
             <p className="text-[13px] font-medium text-[var(--t-ink-muted)] mb-1">
-              Full local websites built with Tonal
+              Full websites powered by Tonal registry blocks
             </p>
             <h2 className="t-headline text-[28px] sm:text-[34px]">
-              Four real sites. One 12-token system.
+              Four real sites. One tonal token system.
             </h2>
           </div>
           <p className="text-[13.5px] text-[var(--t-ink-muted)]">
-            Try toggling{" "}
+            Press <kbd className="font-mono text-[var(--t-ink)]">⌘K</kbd> or
+            toggle{" "}
             <strong className="text-[var(--t-ink)]">
               Soft Pill / Commerce
             </strong>{" "}
-            in the top bar.
+            above.
           </p>
         </div>
 
@@ -494,7 +232,7 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
 
       {/* Token Palette Strip */}
       <section className="flex flex-col gap-5">
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-[13px] font-medium text-[var(--t-ink-muted)] mb-1">
               Foundation
@@ -503,9 +241,19 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
               Core tonal tokens
             </h2>
           </div>
-          <span className="text-[12.5px] text-[var(--t-ink-muted)]">
-            {copiedToken ? `Copied ${copiedToken}` : "Click any swatch to copy"}
-          </span>
+          <div className="flex items-center gap-4 text-[12.5px]">
+            <span className="text-[var(--t-ink-muted)]">
+              {copiedToken
+                ? `Copied ${copiedToken}`
+                : "Click any swatch to copy"}
+            </span>
+            <Link
+              href="/studio"
+              className="font-medium text-[var(--t-blue)] hover:underline underline-offset-4"
+            >
+              Remix in Theme Studio ›
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5">
@@ -546,7 +294,8 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <p className="text-[13px] font-medium text-[var(--t-ink-muted)] mb-1">
-              Installable via shadcn CLI · Live registry source
+              Installable via shadcn CLI · Syntax-highlighted source · True
+              responsive iframes
             </p>
             <h2 className="t-headline text-[28px] sm:text-[34px]">
               Primitives, Blocks &amp; Tokens
@@ -593,18 +342,21 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {visibleItems.map((item) => {
-            const sourceItem = sources[item.registryName];
+            const sourceItem = sources[item.slug];
             return (
               <CodePreviewCard
-                key={item.registryName}
+                key={item.slug}
                 title={item.title}
                 description={item.description}
-                registryName={item.registryName}
+                registryName={item.slug}
                 code={sourceItem?.code ?? ""}
+                highlightedHtml={sourceItem?.highlightedHtml}
                 filePath={sourceItem?.files[0]?.path}
+                dependencies={sourceItem?.dependencies}
+                registryDependencies={sourceItem?.registryDependencies}
                 className={item.fullWidth ? "lg:col-span-2" : undefined}
               >
-                {item.preview}
+                <RegistryPreview slug={item.slug} origin={origin} />
               </CodePreviewCard>
             );
           })}
