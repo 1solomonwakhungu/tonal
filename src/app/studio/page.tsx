@@ -1,13 +1,14 @@
 import * as React from "react";
-import type { Metadata } from "next";
 import { ThemeStudioClient } from "@/components/theme-studio-client";
+import { createPageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Theme Studio",
+  ogTitle: "Theme Studio — Tonal",
   description:
     "Remix Tonal accent hues, surface warmth, card radii, and Soft Pill vs. Commerce presets with live WCAG contrast checks and tokens.css export.",
-  alternates: { canonical: "/studio" },
-};
+  path: "/studio",
+});
 
 export default function StudioPage() {
   return (
