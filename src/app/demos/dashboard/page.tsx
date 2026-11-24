@@ -160,11 +160,41 @@ export default function DashboardDemoPage() {
   const [showModal, setShowModal] = React.useState(false);
   const [newName, setNewName] = React.useState("");
   const [newRegion, setNewRegion] = React.useState("us-central1");
+  const newProjectBtnRef = React.useRef<HTMLButtonElement | null>(null);
+  const dialogRef = React.useRef<HTMLDivElement | null>(null);
+  const wasModalOpenRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (showModal) {
+      wasModalOpenRef.current = true;
+    } else if (wasModalOpenRef.current) {
+      wasModalOpenRef.current = false;
+      newProjectBtnRef.current?.focus();
+    }
+  }, [showModal]);
 
   React.useEffect(() => {
     if (!showModal) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setShowModal(false);
+      if (e.key === "Escape") {
+        setShowModal(false);
+        return;
+      }
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -243,7 +273,11 @@ export default function DashboardDemoPage() {
             <CheckCircle2 className="h-3.5 w-3.5" />
             All systems operational
           </span>
-          <TonalButton size="sm" onClick={() => setShowModal(true)}>
+          <TonalButton
+            ref={newProjectBtnRef}
+            size="sm"
+            onClick={() => setShowModal(true)}
+          >
             <Plus className="h-4 w-4" />
             New project
           </TonalButton>
@@ -265,7 +299,7 @@ export default function DashboardDemoPage() {
                 <button
                   key={item.id}
                   type="button"
-                  aria-current={active ? "page" : undefined}
+                  aria-pressed={active}
                   onClick={() => setActiveNav(item.id)}
                   className={cn(
                     "flex items-center gap-3 px-4 py-2.5 rounded-full text-[14px] font-medium cursor-pointer transition-colors duration-180 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]",
@@ -331,15 +365,14 @@ export default function DashboardDemoPage() {
 
             <div
               className="inline-flex self-start rounded-full bg-[var(--t-surface-muted)] p-1 border border-[var(--t-border-subtle)]"
-              role="tablist"
+              role="group"
               aria-label="Date range"
             >
               {(["7d", "30d", "90d"] as RangeKey[]).map((key) => (
                 <button
                   key={key}
                   type="button"
-                  role="tab"
-                  aria-selected={range === key}
+                  aria-pressed={range === key}
                   onClick={() => {
                     setRange(key);
                     setHoveredIdx(null);
@@ -672,6 +705,7 @@ export default function DashboardDemoPage() {
           }}
         >
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="create-project-title"

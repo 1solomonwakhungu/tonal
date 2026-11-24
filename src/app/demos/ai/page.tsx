@@ -65,7 +65,7 @@ export default function AiDemoPage() {
           <div className="text-[36px] font-medium tracking-[-0.03em] text-[var(--t-ink)] mb-2">
             2M
           </div>
-          <h3 className="t-headline text-[20px] mb-2">Long context memory</h3>
+          <h2 className="t-headline text-[20px] mb-2">Long context memory</h2>
           <p className="t-body text-[14px]">
             Drop entire codebases, PDFs, or product specs into one thread
             without losing the plot.
@@ -76,7 +76,7 @@ export default function AiDemoPage() {
           <div className="text-[36px] font-medium tracking-[-0.03em] text-[var(--t-ink)] mb-2">
             0.4s
           </div>
-          <h3 className="t-headline text-[20px] mb-2">Instant first token</h3>
+          <h2 className="t-headline text-[20px] mb-2">Instant first token</h2>
           <p className="t-body text-[14px]">
             Optimized for fluid back-and-forth thinking so responses arrive
             before your focus breaks.
@@ -87,7 +87,7 @@ export default function AiDemoPage() {
           <div className="text-[36px] font-medium tracking-[-0.03em] text-[var(--t-blue-hover)] mb-2">
             Private
           </div>
-          <h3 className="t-headline text-[20px] mb-2">Yours by default</h3>
+          <h2 className="t-headline text-[20px] mb-2">Yours by default</h2>
           <p className="t-body text-[14px]">
             Enterprise-grade encryption and clear retention controls built in
             from day one.
