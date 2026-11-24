@@ -278,21 +278,26 @@ export function serializeStudioConfig(config: ThemeStudioConfig): string {
 export function parseStudioConfig(
   params: URLSearchParams
 ): ThemeStudioConfig {
-  const presetId = params.get("preset") ?? DEFAULT_STUDIO_CONFIG.presetId;
+  const presetParam = params.get("preset");
+  const isCustom = presetParam === "custom";
   const preset =
-    THEME_PRESETS.find((p) => p.id === presetId) ?? THEME_PRESETS[0];
+    THEME_PRESETS.find((p) => p.id === presetParam) ?? THEME_PRESETS[0];
 
   const accentParam = params.get("accent");
   const accentLight = accentParam
     ? normalizeHex(accentParam, preset.accentLight)
     : preset.accentLight;
-  const accentLightHover = accentParam
+
+  const isCustomAccent =
+    isCustom || accentLight.toLowerCase() !== preset.accentLight.toLowerCase();
+
+  const accentLightHover = isCustomAccent
     ? mixHex(accentLight, "#000000", 0.8)
     : preset.accentLightHover;
-  const accentDark = accentParam
+  const accentDark = isCustomAccent
     ? mixHex(accentLight, "#ffffff", 0.45)
     : preset.accentDark;
-  const accentDarkHover = accentParam
+  const accentDarkHover = isCustomAccent
     ? mixHex(accentLight, "#ffffff", 0.3)
     : preset.accentDarkHover;
 
@@ -316,7 +321,7 @@ export function parseStudioConfig(
   const theme = themeParam === "dark" ? "dark" : "light";
 
   return {
-    presetId: preset.id,
+    presetId: isCustomAccent ? "custom" : preset.id,
     accentLight,
     accentLightHover,
     accentDark,

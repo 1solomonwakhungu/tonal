@@ -1,5 +1,7 @@
 /* Tonal Design Tokens — Editorial Tonal Surfaces, Semantic Status & Typography */
-:root {
+:root,
+[data-tonal-theme="light"] {
+  color-scheme: light;
   --t-font: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Surfaces (flat tonal steps instead of heavy shadows) */
@@ -30,10 +32,10 @@
   --t-nav-active-bg: #c2e7ff;
   --t-nav-active-fg: #001d35;
 
-  /* Semantic Status */
+  /* Semantic Status (all pairs >= 4.5:1 WCAG AA) */
   --t-success: #137333;
   --t-success-surface: #e6f4ea;
-  --t-warning: #b06000;
+  --t-warning: #9c5300;
   --t-warning-surface: #fef7e0;
   --t-danger: #c5221f;
   --t-danger-surface: #fce8e6;
@@ -51,6 +53,14 @@
   --t-dark-btn-hover: #3c4043;
   --t-hover-overlay: rgba(32, 33, 36, 0.04);
   --t-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Explicit Soft Pill reset when nested inside a Commerce ancestor */
+[data-tonal-mode="pill"] {
+  --t-radius-btn: 9999px;
+  --t-cta-bg: var(--t-blue);
+  --t-cta-fg: #ffffff;
+  --t-cta-hover: var(--t-blue-hover);
 }
 
 /* Switch button shape & primary ink globally for Commerce mode */
@@ -106,8 +116,15 @@
   --t-hover-overlay: rgba(227, 227, 227, 0.08);
 }
 
+[data-tonal-theme="dark"][data-tonal-mode="pill"],
+[data-tonal-theme="dark"] [data-tonal-mode="pill"]:not([data-tonal-theme="light"]) {
+  --t-cta-bg: #8ab4f8;
+  --t-cta-fg: #062e6f;
+  --t-cta-hover: #aecbfa;
+}
+
 [data-tonal-theme="dark"][data-tonal-mode="commerce"],
-[data-tonal-theme="dark"] [data-tonal-mode="commerce"] {
+[data-tonal-theme="dark"] [data-tonal-mode="commerce"]:not([data-tonal-theme="light"]) {
   --t-cta-bg: #e3e3e3;
   --t-cta-fg: #131314;
   --t-cta-hover: #ffffff;

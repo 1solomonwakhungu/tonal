@@ -59,13 +59,13 @@ export const TonalInput = React.forwardRef<HTMLInputElement, TonalInputProps>(
             aria-invalid={error ? true : undefined}
             aria-describedby={error || hint ? messageId : undefined}
             className={cn(
-              "w-full text-[14px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] transition-colors duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed",
+              "w-full text-[14px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed",
               variant === "pill"
-                ? "rounded-full bg-[var(--t-surface-cool)] border border-transparent py-2 pr-4 focus:border-[var(--t-ring,var(--t-blue))] focus:bg-[var(--t-bg)]"
-                : "rounded-[12px] bg-[var(--t-bg)] border border-[var(--t-border)] py-2.5 pr-3.5 focus:border-[var(--t-ring,var(--t-blue))]",
+                ? "rounded-full bg-[var(--t-surface-cool)] border border-transparent py-2 pr-4 focus:border-[var(--t-ring,var(--t-blue))] focus:bg-[var(--t-bg)] focus-visible:ring-[var(--t-ring,var(--t-blue))]/35"
+                : "rounded-[12px] bg-[var(--t-bg)] border border-[var(--t-border)] py-2.5 pr-3.5 focus:border-[var(--t-ring,var(--t-blue))] focus-visible:ring-[var(--t-ring,var(--t-blue))]/35",
               leadingIcon ? "pl-10" : variant === "pill" ? "pl-4" : "pl-3.5",
               error &&
-                "border-[var(--t-danger,#c5221f)] focus:border-[var(--t-danger,#c5221f)]",
+                "border-[var(--t-danger,#c5221f)] focus:border-[var(--t-danger,#c5221f)] focus-visible:ring-[var(--t-danger,#c5221f)]/35",
               className
             )}
             {...props}
@@ -74,6 +74,7 @@ export const TonalInput = React.forwardRef<HTMLInputElement, TonalInputProps>(
         {(error || hint) && (
           <p
             id={messageId}
+            role={error ? "alert" : undefined}
             className={cn(
               "text-[12px] leading-snug",
               error
@@ -126,9 +127,9 @@ export const TonalSelect = React.forwardRef<HTMLSelectElement, TonalSelectProps>
             aria-invalid={error ? true : undefined}
             aria-describedby={error || hint ? messageId : undefined}
             className={cn(
-              "w-full appearance-none rounded-[12px] border border-[var(--t-border)] bg-[var(--t-bg)] px-3.5 py-2.5 pr-9 text-[14px] text-[var(--t-ink)] transition-colors duration-200 focus:border-[var(--t-ring,var(--t-blue))] focus:outline-none disabled:opacity-50",
+              "w-full appearance-none rounded-[12px] border border-[var(--t-border)] bg-[var(--t-bg)] px-3.5 py-2.5 pr-9 text-[14px] text-[var(--t-ink)] transition-all duration-200 focus:border-[var(--t-ring,var(--t-blue))] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[var(--t-ring,var(--t-blue))]/35 disabled:opacity-50",
               error &&
-                "border-[var(--t-danger,#c5221f)] focus:border-[var(--t-danger,#c5221f)]",
+                "border-[var(--t-danger,#c5221f)] focus:border-[var(--t-danger,#c5221f)] focus-visible:ring-[var(--t-danger,#c5221f)]/35",
               className
             )}
             {...props}
@@ -149,6 +150,7 @@ export const TonalSelect = React.forwardRef<HTMLSelectElement, TonalSelectProps>
         {(error || hint) && (
           <p
             id={messageId}
+            role={error ? "alert" : undefined}
             className={cn(
               "text-[12px] leading-snug",
               error
@@ -197,9 +199,9 @@ export const TonalTextarea = React.forwardRef<
         aria-invalid={error ? true : undefined}
         aria-describedby={error || hint ? messageId : undefined}
         className={cn(
-          "w-full rounded-[14px] border border-[var(--t-border)] bg-[var(--t-bg)] px-3.5 py-2.5 text-[14px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] transition-colors duration-200 focus:border-[var(--t-ring,var(--t-blue))] focus:outline-none disabled:opacity-50 resize-y",
+          "w-full rounded-[14px] border border-[var(--t-border)] bg-[var(--t-bg)] px-3.5 py-2.5 text-[14px] text-[var(--t-ink)] placeholder:text-[var(--t-ink-muted)] transition-all duration-200 focus:border-[var(--t-ring,var(--t-blue))] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[var(--t-ring,var(--t-blue))]/35 disabled:opacity-50 resize-y",
           error &&
-            "border-[var(--t-danger,#c5221f)] focus:border-[var(--t-danger,#c5221f)]",
+            "border-[var(--t-danger,#c5221f)] focus:border-[var(--t-danger,#c5221f)] focus-visible:ring-[var(--t-danger,#c5221f)]/35",
           className
         )}
         {...props}
@@ -207,6 +209,7 @@ export const TonalTextarea = React.forwardRef<
       {(error || hint) && (
         <p
           id={messageId}
+          role={error ? "alert" : undefined}
           className={cn(
             "text-[12px] leading-snug",
             error

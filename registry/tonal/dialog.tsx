@@ -33,6 +33,9 @@ const drawerSizes = {
   lg: "max-w-lg",
 };
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function TonalDialog({
   open,
   onOpenChange,
@@ -47,7 +50,10 @@ export function TonalDialog({
   const titleId = React.useId();
   const descId = React.useId();
   const panelRef = React.useRef<HTMLDivElement>(null);
+  const bodyRef = React.useRef<HTMLDivElement>(null);
   const previousFocusRef = React.useRef<HTMLElement | null>(null);
+  const onOpenChangeRef = React.useRef(onOpenChange);
+  onOpenChangeRef.current = onOpenChange;
 
   React.useEffect(() => {
     if (!open) return;
@@ -59,9 +65,12 @@ export function TonalDialog({
     const focusTimer = window.setTimeout(() => {
       const panel = panelRef.current;
       if (!panel) return;
-      const autoFocusTarget = panel.querySelector<HTMLElement>("[data-autofocus], input, select, textarea, button");
-      if (autoFocusTarget) {
-        autoFocusTarget.focus();
+      const preferred =
+        panel.querySelector<HTMLElement>("[data-autofocus]") ??
+        bodyRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR) ??
+        panel.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+      if (preferred) {
+        preferred.focus();
       } else {
         panel.focus();
       }
@@ -70,7 +79,26 @@ export function TonalDialog({
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        onOpenChange(false);
+        onOpenChangeRef.current(false);
+        return;
+      }
+      if (e.key === "Tab" && panelRef.current) {
+        const focusables = Array.from(
+          panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+        );
+        if (focusables.length === 0) {
+          e.preventDefault();
+          return;
+        }
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -81,7 +109,7 @@ export function TonalDialog({
       document.body.style.overflow = prevOverflow;
       previousFocusRef.current?.focus?.();
     };
-  }, [open, onOpenChange]);
+  }, [open]);
 
   if (!open) return null;
 
@@ -138,7 +166,9 @@ export function TonalDialog({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto">{children}</div>
+        <div ref={bodyRef} className="flex-1 overflow-y-auto">
+          {children}
+        </div>
 
         {footer && (
           <div className="mt-5 pt-4 border-t border-[var(--t-border-subtle)] flex items-center justify-end gap-2">

@@ -20,9 +20,13 @@ function runAsync(cmd, args, options = {}) {
 
 async function main() {
   const server = http.createServer((req, res) => {
-    const clean = (req.url || "").split("?")[0].replace(/^\/r\//, "");
-    const filePath = path.join(PUBLIC_R, clean);
-    if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    const clean = path.basename((req.url || "").split("?")[0]);
+    const filePath = path.resolve(PUBLIC_R, clean);
+    if (
+      !filePath.startsWith(PUBLIC_R + path.sep) ||
+      !fs.existsSync(filePath) ||
+      fs.statSync(filePath).isDirectory()
+    ) {
       res.writeHead(404);
       res.end("Not found");
       return;

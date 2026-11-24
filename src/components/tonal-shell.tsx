@@ -35,6 +35,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = React.useState<"pill" | "commerce">("pill");
   const [theme, setTheme] = React.useState<"light" | "dark">("light");
   const [commandOpen, setCommandOpen] = React.useState(false);
+  const hasHydratedRef = React.useRef(false);
 
   const isBarePreview = pathname?.startsWith("/preview/");
 
@@ -64,11 +65,13 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
       }
     } catch {
       // Ignore storage errors
+    } finally {
+      hasHydratedRef.current = true;
     }
   }, []);
 
   React.useEffect(() => {
-    if (isBarePreview) return;
+    if (isBarePreview || !hasHydratedRef.current) return;
     document.documentElement.dataset.tonalTheme = theme;
     document.documentElement.dataset.tonalMode = mode;
   }, [theme, mode, isBarePreview]);
@@ -201,11 +204,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
 
   return (
     <TonalToastProvider>
-      <div
-        data-tonal-mode={mode}
-        data-tonal-theme={theme}
-        className="min-h-screen bg-[var(--t-bg)] text-[var(--t-ink)] flex flex-col transition-colors duration-200"
-      >
+      <div className="min-h-screen bg-[var(--t-bg)] text-[var(--t-ink)] flex flex-col transition-colors duration-200">
         <header className="sticky top-0 z-40 bg-[var(--t-bg)]/90 backdrop-blur-md border-b border-[var(--t-border-subtle)] transition-colors duration-200">
           <div className="mx-auto max-w-6xl px-5 sm:px-8 h-16 flex items-center justify-between gap-3">
             <div className="flex items-center gap-5 min-w-0">
@@ -240,6 +239,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
                     <Link
                       key={item.href}
                       href={item.href}
+                      aria-current={active ? "page" : undefined}
                       className={cn(
                         "px-3 py-1.5 rounded-full text-[13.5px] font-medium transition-colors duration-200",
                         active
@@ -277,6 +277,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
               >
                 <button
                   type="button"
+                  aria-pressed={mode === "pill"}
                   onClick={() => updateMode("pill")}
                   className={cn(
                     "px-2.5 sm:px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-all duration-200",
@@ -289,6 +290,7 @@ export function TonalShell({ children }: { children: React.ReactNode }) {
                 </button>
                 <button
                   type="button"
+                  aria-pressed={mode === "commerce"}
                   onClick={() => updateMode("commerce")}
                   className={cn(
                     "px-2.5 sm:px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-all duration-200",

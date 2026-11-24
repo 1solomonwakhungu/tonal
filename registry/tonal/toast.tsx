@@ -30,7 +30,7 @@ const ToastContext = React.createContext<ToastContextValue | null>(null);
 const toneAccent: Record<ToastTone, string> = {
   neutral: "text-[var(--t-ink-secondary)]",
   success: "text-[var(--t-success,#137333)]",
-  warning: "text-[var(--t-warning,#b06000)]",
+  warning: "text-[var(--t-warning,#9c5300)]",
   danger: "text-[var(--t-danger,#c5221f)]",
   info: "text-[var(--t-blue)]",
 };
@@ -103,7 +103,19 @@ export function TonalToastProvider({
     (input: Omit<TonalToastData, "id">) => {
       const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
       const duration = input.durationMs ?? 3600;
-      setToasts((prev) => [...prev.slice(-3), { ...input, id }]);
+      setToasts((prev) => {
+        if (prev.length >= 4) {
+          const evicted = prev.slice(0, prev.length - 3);
+          for (const old of evicted) {
+            const oldTimer = timersRef.current.get(old.id);
+            if (oldTimer !== undefined) {
+              window.clearTimeout(oldTimer);
+              timersRef.current.delete(old.id);
+            }
+          }
+        }
+        return [...prev.slice(-3), { ...input, id }];
+      });
       if (duration > 0) {
         const timer = window.setTimeout(() => dismiss(id), duration);
         timersRef.current.set(id, timer);
@@ -121,8 +133,13 @@ export function TonalToastProvider({
     };
   }, []);
 
+  const contextValue = React.useMemo(
+    () => ({ toasts, toast, dismiss }),
+    [toasts, toast, dismiss]
+  );
+
   return (
-    <ToastContext.Provider value={{ toasts, toast, dismiss }}>
+    <ToastContext.Provider value={contextValue}>
       {children}
       <div
         aria-live="polite"

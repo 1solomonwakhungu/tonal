@@ -12,7 +12,6 @@ import {
   Smartphone,
   Sparkles,
 } from "lucide-react";
-import { TonalButton } from "@registry/tonal/button";
 import { SurfaceTile } from "@registry/tonal/surface-tile";
 import { TonalChip } from "@registry/tonal/chip";
 import { CodePreviewCard } from "@/components/code-preview-card";
@@ -129,19 +128,24 @@ export function ShowcaseClient({ sources }: { sources: RegistrySourceMap }) {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 mb-7">
-          <Link href="/demos/hardware">
-            <TonalButton size="lg">Explore Live Demos</TonalButton>
+          <Link
+            href="/demos/hardware"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-[var(--t-cta-bg)] text-[var(--t-cta-fg,#ffffff)] hover:bg-[var(--t-cta-hover)] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            Explore Live Demos
           </Link>
-          <Link href="/studio">
-            <TonalButton variant="tonal" size="lg">
-              <Palette className="h-4 w-4" />
-              Theme Studio
-            </TonalButton>
+          <Link
+            href="/studio"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-[var(--t-blue-tint)] text-[var(--t-blue-hover)] hover:bg-[var(--t-blue-tint-hover,#d2e3fc)] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            <Palette className="h-4 w-4" />
+            Theme Studio
           </Link>
-          <a href="#primitives">
-            <TonalButton variant="outline" size="lg">
-              Browse Components
-            </TonalButton>
+          <a
+            href="#primitives"
+            className="inline-flex items-center justify-center gap-2 font-medium leading-none tracking-[-0.01em] px-7 py-3.5 text-[15px] rounded-[var(--t-radius-btn)] bg-transparent text-[var(--t-ink)] border border-[var(--t-ink-muted)] hover:bg-[var(--t-hover-overlay,rgba(32,33,36,0.04))] transition-all duration-200 [transition-timing-function:var(--t-ease)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--t-blue)]"
+          >
+            Browse Components
           </a>
         </div>
 

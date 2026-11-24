@@ -104,6 +104,7 @@ describe("Tonal registry integrity & tokens contract", () => {
       ["Light muted ink on bg", "#5f6368", "#ffffff"],
       ["Light blue on bg", "#1967d2", "#ffffff"],
       ["Light success on mint", "#137333", "#e6f4ea"],
+      ["Light warning on sand", "#9c5300", "#fef7e0"],
       ["Light danger on danger-surface", "#c5221f", "#fce8e6"],
       ["Dark ink on bg", "#e3e3e3", "#131314"],
       ["Dark blue on bg", "#8ab4f8", "#131314"],
