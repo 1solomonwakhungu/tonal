@@ -95,7 +95,7 @@ export default function OpenGraphImage() {
               maxWidth: 860,
             }}
           >
-            13 installable primitives, blocks, and design tokens built on flat
+            19 installable primitives, blocks, and design tokens built on flat
             tonal surfaces, Google Sans, and Tailwind CSS v4.
           </div>
         </div>

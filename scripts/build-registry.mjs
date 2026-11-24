@@ -8,18 +8,21 @@ const outDir = path.join(root, "public", "r");
 fs.mkdirSync(outDir, { recursive: true });
 
 const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
+const overrideUrl = process.env.TONAL_REGISTRY_URL?.replace(/\/+$/, "");
 
 if (
-  typeof registry.homepage !== "string" ||
-  !registry.homepage.startsWith("https://") ||
-  /localhost|127\.0\.0\.1/i.test(registry.homepage)
+  !overrideUrl &&
+  (typeof registry.homepage !== "string" ||
+    !registry.homepage.startsWith("https://") ||
+    /localhost|127\.0\.0\.1/i.test(registry.homepage))
 ) {
   throw new Error(
     `registry.json homepage must be a production https:// URL, got: ${registry.homepage}`
   );
 }
 
-const baseUrl = registry.homepage.replace(/\/+$/, "");
+const prodBaseUrl = registry.homepage.replace(/\/+$/, "");
+const baseUrl = overrideUrl || prodBaseUrl;
 const itemNames = new Set(registry.items.map((item) => item.name));
 
 if (itemNames.size !== registry.items.length) {
@@ -27,7 +30,7 @@ if (itemNames.size !== registry.items.length) {
 }
 
 function normalizeRegistryDep(dep, ownerName) {
-  if (/localhost|127\.0\.0\.1/i.test(dep)) {
+  if (!overrideUrl && /localhost|127\.0\.0\.1/i.test(dep)) {
     throw new Error(
       `Registry item "${ownerName}" has a localhost dependency: ${dep}`
     );
@@ -37,18 +40,18 @@ function normalizeRegistryDep(dep, ownerName) {
     return `${baseUrl}/r/${dep}.json`;
   }
 
-  const internalPrefix = `${baseUrl}/r/`;
-  if (dep.startsWith(internalPrefix) && dep.endsWith(".json")) {
-    const depName = dep.slice(internalPrefix.length, -".json".length);
+  const prodPrefix = `${prodBaseUrl}/r/`;
+  if (dep.startsWith(prodPrefix) && dep.endsWith(".json")) {
+    const depName = dep.slice(prodPrefix.length, -".json".length);
     if (!itemNames.has(depName)) {
       throw new Error(
         `Registry item "${ownerName}" references unknown internal dependency: ${dep}`
       );
     }
-    return dep;
+    return `${baseUrl}/r/${depName}.json`;
   }
 
-  if (dep.startsWith("https://")) {
+  if (dep.startsWith("https://") || (overrideUrl && dep.startsWith("http://"))) {
     return dep;
   }
 
@@ -125,4 +128,6 @@ for (const entry of fs.readdirSync(outDir)) {
   }
 }
 
-console.log(`Built ${indexItems.length} Tonal registry items into public/r/`);
+console.log(
+  `Built ${indexItems.length} Tonal registry items into public/r/ (base: ${baseUrl})`
+);
