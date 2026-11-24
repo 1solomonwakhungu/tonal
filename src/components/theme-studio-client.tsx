@@ -32,7 +32,12 @@ export function ThemeStudioClient() {
   const [config, setConfig] = React.useState<ThemeStudioConfig>(() =>
     parseStudioConfig(new URLSearchParams(searchParams?.toString() ?? ""))
   );
+  const [hexDraft, setHexDraft] = React.useState<string>(config.accentLight);
   const [copiedCss, setCopiedCss] = React.useState(false);
+
+  React.useEffect(() => {
+    setHexDraft(config.accentLight);
+  }, [config.accentLight]);
 
   const tokens = React.useMemo(() => buildStudioTokens(config), [config]);
   const cssOutput = React.useMemo(() => generateTokensCss(config), [config]);
@@ -52,6 +57,7 @@ export function ThemeStudioClient() {
       ratio: getContrastRatio(inkHex, tokens["--t-surface"]),
     },
   ];
+  const allContrastAa = contrastChecks.every((c) => c.ratio >= 4.5);
 
   const applyPreset = (presetId: string) => {
     const preset = THEME_PRESETS.find((p) => p.id === presetId);
@@ -69,7 +75,9 @@ export function ThemeStudioClient() {
     }));
   };
 
-  const handleAccentChange = (hex: string) => {
+  const commitAccentHex = (hex: string) => {
+    const cleaned = hex.trim().replace(/^#/, "");
+    if (!/^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(cleaned)) return;
     const normalized = normalizeHex(hex, config.accentLight);
     setConfig((prev) => ({
       ...prev,
@@ -79,6 +87,11 @@ export function ThemeStudioClient() {
       accentDark: mixHex(normalized, "#ffffff", 0.45),
       accentDarkHover: mixHex(normalized, "#ffffff", 0.3),
     }));
+  };
+
+  const handleHexInputChange = (raw: string) => {
+    setHexDraft(raw);
+    commitAccentHex(raw);
   };
 
   const copyCss = () => {
@@ -99,7 +112,7 @@ export function ThemeStudioClient() {
     a.href = url;
     a.download = `tonal-${config.presetId}-tokens.css`;
     a.click();
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast({
       title: "Downloaded tokens.css",
       description: `Saved tonal-${config.presetId}-tokens.css.`,
@@ -189,6 +202,7 @@ export function ThemeStudioClient() {
                   <button
                     key={preset.id}
                     type="button"
+                    aria-pressed={active}
                     onClick={() => applyPreset(preset.id)}
                     className={cn(
                       "flex items-center gap-3 rounded-[14px] px-3.5 py-2.5 text-left border cursor-pointer transition-colors",
@@ -228,13 +242,14 @@ export function ThemeStudioClient() {
                 id="studio-accent-color"
                 type="color"
                 value={config.accentLight}
-                onChange={(e) => handleAccentChange(e.target.value)}
+                onChange={(e) => commitAccentHex(e.target.value)}
                 className="h-10 w-12 rounded-[10px] border border-[var(--t-border)] bg-[var(--t-bg)] p-1 cursor-pointer"
               />
               <TonalInput
                 aria-label="Accent hex value"
-                value={config.accentLight}
-                onChange={(e) => handleAccentChange(e.target.value)}
+                value={hexDraft}
+                onChange={(e) => handleHexInputChange(e.target.value)}
+                onBlur={() => setHexDraft(config.accentLight)}
                 className="font-mono text-[13px]"
               />
             </div>
@@ -369,7 +384,9 @@ export function ThemeStudioClient() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <TonalChip tone="blue">Live Scoped Stage</TonalChip>
-                <TonalChip tone="mint">WCAG Verified</TonalChip>
+                <TonalChip tone={allContrastAa ? "mint" : "warning"}>
+                  {allContrastAa ? "WCAG AA Pass" : "Check Contrast"}
+                </TonalChip>
                 <TonalChip tone="warning">Preview</TonalChip>
               </div>
               <span className="text-[12px] font-mono text-[var(--t-ink-muted)]">

@@ -223,6 +223,7 @@ export function CodePreviewCard({
           <div className="inline-flex rounded-full bg-[var(--t-surface)] p-0.5 border border-[var(--t-border-subtle)]">
             <button
               type="button"
+              aria-pressed={tab === "preview"}
               onClick={() => setTab("preview")}
               className={cn(
                 "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-colors duration-200 [transition-timing-function:cubic-bezier(0.2,0,0,1)]",
@@ -235,6 +236,7 @@ export function CodePreviewCard({
             </button>
             <button
               type="button"
+              aria-pressed={tab === "code"}
               onClick={() => setTab("code")}
               className={cn(
                 "px-3 py-1 rounded-full text-[12px] font-medium cursor-pointer transition-colors duration-200 [transition-timing-function:cubic-bezier(0.2,0,0,1)]",

@@ -61,10 +61,32 @@ describe("Theme Studio token engine & WCAG contrast utilities", () => {
 
     expect(parsed.presetId).toBe("sage");
     expect(parsed.accentLight).toBe("#137333");
+    expect(parsed.accentDark).toBe("#81c995");
     expect(parsed.surfaceWarmth).toBe("warm");
     expect(parsed.cardRadius).toBe(28);
     expect(parsed.mode).toBe("commerce");
     expect(parsed.theme).toBe("dark");
+  });
+
+  it("preserves custom presetId and curated preset dark accents on URL round-trip", () => {
+    const customConfig = {
+      ...DEFAULT_STUDIO_CONFIG,
+      presetId: "custom",
+      accentLight: "#7c3aed",
+    };
+    const customParsed = parseStudioConfig(
+      new URLSearchParams(serializeStudioConfig(customConfig))
+    );
+    expect(customParsed.presetId).toBe("custom");
+    expect(customParsed.accentLight).toBe("#7c3aed");
+
+    const cobaltPreset = THEME_PRESETS.find((p) => p.id === "cobalt")!;
+    const cobaltParsed = parseStudioConfig(
+      new URLSearchParams(serializeStudioConfig(DEFAULT_STUDIO_CONFIG))
+    );
+    expect(cobaltParsed.presetId).toBe("cobalt");
+    expect(cobaltParsed.accentDark).toBe(cobaltPreset.accentDark);
+    expect(cobaltParsed.accentLightHover).toBe(cobaltPreset.accentLightHover);
   });
 
   it("generates complete CSS with both :root and dark theme blocks", () => {

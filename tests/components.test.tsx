@@ -45,23 +45,40 @@ describe("Tonal primitives & blocks", () => {
     expect(q2).toHaveAttribute("aria-expanded", "true");
   });
 
-  it("opens TonalDialog and dismisses on Escape", () => {
+  it("opens TonalDialog, prioritizes data-autofocus, stays stable on re-render, and dismisses on Escape", async () => {
+    vi.useFakeTimers();
     const onOpenChange = vi.fn();
-    render(
-      <TonalDialog
-        open={true}
-        onOpenChange={onOpenChange}
-        title="Confirm deploy"
-        description="This pushes to edge."
-      >
-        <p>Body content</p>
-      </TonalDialog>
-    );
+    function Wrapper() {
+      const [val, setVal] = React.useState("");
+      return (
+        <TonalDialog
+          open={true}
+          onOpenChange={(next) => onOpenChange(next)}
+          title="Confirm deploy"
+          description="This pushes to edge."
+        >
+          <input
+            aria-label="Release name"
+            data-autofocus
+            value={val}
+            onChange={(e) => setVal(e.target.value)}
+          />
+        </TonalDialog>
+      );
+    }
+
+    render(<Wrapper />);
     expect(screen.getByRole("dialog")).toHaveAttribute("aria-modal", "true");
-    expect(screen.getByText("Confirm deploy")).toBeInTheDocument();
+    vi.runAllTimers();
+    const input = screen.getByLabelText("Release name");
+    expect(document.activeElement).toBe(input);
+
+    fireEvent.change(input, { target: { value: "v0.2" } });
+    expect(document.activeElement).toBe(input);
 
     fireEvent.keyDown(window, { key: "Escape" });
     expect(onOpenChange).toHaveBeenCalledWith(false);
+    vi.useRealTimers();
   });
 
   it("links TonalInput & TonalSelect labels and semantic errors", () => {
@@ -79,11 +96,11 @@ describe("Tonal primitives & blocks", () => {
     );
     const input = screen.getByLabelText("Service name");
     expect(input).toHaveAttribute("aria-invalid", "true");
-    expect(screen.getByText("Required field")).toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("Required field");
     expect(screen.getByLabelText("Region")).toHaveValue("us");
   });
 
-  it("supports keyboard navigation in TonalSegmentedControl", async () => {
+  it("supports keyboard navigation and tab reachability in TonalSegmentedControl", async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     render(
@@ -97,12 +114,12 @@ describe("Tonal primitives & blocks", () => {
         ]}
       />
     );
-    const first = screen.getByRole("tab", { name: "7D" });
+    const first = screen.getByRole("radio", { name: "7D" });
     first.focus();
     await user.keyboard("{ArrowRight}");
     expect(onChange).toHaveBeenCalledWith("30d");
-    expect(screen.getByRole("tab", { name: "30D" })).toHaveAttribute(
-      "aria-selected",
+    expect(screen.getByRole("radio", { name: "30D" })).toHaveAttribute(
+      "aria-checked",
       "true"
     );
   });
@@ -138,26 +155,30 @@ describe("Tonal primitives & blocks", () => {
     expect(screen.queryByText("Saved tokens")).not.toBeInTheDocument();
   });
 
-  it("filters and runs commands in TonalCommand", async () => {
+  it("filters and runs commands in grouped order in TonalCommand (including interleaved groups)", async () => {
     const user = userEvent.setup();
     const onOpenChange = vi.fn();
-    const onSelect = vi.fn();
+    const onBlockOne = vi.fn();
+    const onPrimitive = vi.fn();
+    const onBlockTwo = vi.fn();
     render(
       <TonalCommand
         open={true}
         onOpenChange={onOpenChange}
         items={[
-          { id: "a", label: "Alpha", group: "Nav", onSelect: vi.fn() },
-          { id: "b", label: "Theme Studio", group: "Nav", onSelect },
+          { id: "b1", label: "Editorial Hero", group: "Blocks", onSelect: onBlockOne },
+          { id: "p1", label: "Tonal Button", group: "Primitives", onSelect: onPrimitive },
+          { id: "b2", label: "Tonal App Shell", group: "Blocks", onSelect: onBlockTwo },
         ]}
       />
     );
 
     const search = screen.getByPlaceholderText(/Search components/i);
-    await user.type(search, "Studio");
-    expect(screen.queryByText("Alpha")).not.toBeInTheDocument();
-    await user.keyboard("{Enter}");
-    expect(onSelect).toHaveBeenCalledTimes(1);
+    search.focus();
+    // Grouped order is: Editorial Hero (0), Tonal App Shell (1), Tonal Button (2)
+    await user.keyboard("{ArrowDown}{Enter}");
+    expect(onBlockTwo).toHaveBeenCalledTimes(1);
+    expect(onPrimitive).not.toHaveBeenCalled();
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 

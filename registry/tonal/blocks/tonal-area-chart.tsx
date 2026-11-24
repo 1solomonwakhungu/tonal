@@ -56,15 +56,18 @@ export function TonalAreaChart({
 
   const safePoints = points.length > 0 ? points : DEFAULT_CHART_POINTS;
   const values = safePoints.map((p) => p.value);
-  const maxVal = Math.max(...values) * 1.12;
-  const minVal = Math.min(...values) * 0.72;
+  const rawMax = Math.max(...values);
+  const rawMin = Math.min(...values);
+  const span = rawMax - rawMin || Math.abs(rawMax) || 1;
+  const maxVal = rawMax + span * 0.16;
+  const minVal = rawMin - span * 0.22;
 
   const coords = safePoints.map((p, idx) => {
     const x =
       safePoints.length === 1
         ? chartW / 2
         : padX + (idx / (safePoints.length - 1)) * (chartW - padX * 2);
-    const ratio = (p.value - minVal) / Math.max(maxVal - minVal, 1);
+    const ratio = (p.value - minVal) / Math.max(maxVal - minVal, 1e-6);
     const y = chartH - padY - ratio * (chartH - padY * 2);
     return { x, y, ...p };
   });
@@ -113,7 +116,7 @@ export function TonalAreaChart({
         <svg
           viewBox={`0 0 ${chartW} ${chartH}`}
           className="w-full h-auto block"
-          role="img"
+          role="group"
           aria-label={title}
         >
           <defs>
@@ -149,10 +152,10 @@ export function TonalAreaChart({
           />
 
           {coords.map((pt, idx) => {
-            const isHovered = activeIdx === idx;
+            const isActive = activeIdx === idx;
             return (
               <g
-                key={pt.label}
+                key={`${pt.label}-${idx}`}
                 tabIndex={0}
                 role="button"
                 aria-label={`${pt.label}: ${pt.value}${valueSuffix}${
@@ -165,21 +168,30 @@ export function TonalAreaChart({
                 className="cursor-pointer focus:outline-none"
               >
                 <circle cx={pt.x} cy={pt.y} r={16} fill="transparent" />
+                {isActive && (
+                  <circle
+                    cx={pt.x}
+                    cy={pt.y}
+                    r={10}
+                    fill="var(--t-blue)"
+                    fillOpacity="0.16"
+                  />
+                )}
                 <circle
                   cx={pt.x}
                   cy={pt.y}
-                  r={isHovered ? 6 : 4}
+                  r={isActive ? 6 : 4}
                   fill="var(--t-bg)"
                   stroke="var(--t-blue)"
-                  strokeWidth={isHovered ? 3 : 2.5}
+                  strokeWidth={isActive ? 3 : 2.5}
                 />
                 <text
                   x={pt.x}
                   y={chartH - 4}
                   textAnchor="middle"
                   fontSize="11.5"
-                  fill={isHovered ? "var(--t-ink)" : "var(--t-ink-muted)"}
-                  fontWeight={isHovered ? 600 : 400}
+                  fill={isActive ? "var(--t-ink)" : "var(--t-ink-muted)"}
+                  fontWeight={isActive ? 600 : 400}
                 >
                   {pt.label}
                 </text>

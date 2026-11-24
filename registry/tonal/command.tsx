@@ -38,32 +38,36 @@ export function TonalCommand({
   const [query, setQuery] = React.useState("");
   const [activeIndex, setActiveIndex] = React.useState(0);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const optionRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
+  const previousFocusRef = React.useRef<HTMLElement | null>(null);
+  const listboxId = React.useId();
 
-  const filtered = React.useMemo(() => {
+  const { grouped, flatItems } = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return items;
-    return items.filter((item) => {
-      const hay = [
-        item.label,
-        item.description ?? "",
-        item.group,
-        ...(item.keywords ?? []),
-      ]
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(q);
-    });
-  }, [items, query]);
+    const matched = q
+      ? items.filter((item) => {
+          const hay = [
+            item.label,
+            item.description ?? "",
+            item.group,
+            ...(item.keywords ?? []),
+          ]
+            .join(" ")
+            .toLowerCase();
+          return hay.includes(q);
+        })
+      : items;
 
-  const grouped = React.useMemo(() => {
     const map = new Map<string, CommandItem[]>();
-    for (const item of filtered) {
+    for (const item of matched) {
       const list = map.get(item.group) ?? [];
       list.push(item);
       map.set(item.group, list);
     }
-    return Array.from(map.entries());
-  }, [filtered]);
+    const entries = Array.from(map.entries());
+    const ordered = entries.flatMap(([, list]) => list);
+    return { grouped: entries, flatItems: ordered };
+  }, [items, query]);
 
   React.useEffect(() => {
     setActiveIndex(0);
@@ -74,16 +78,28 @@ export function TonalCommand({
       setQuery("");
       return;
     }
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
     const timer = window.setTimeout(() => inputRef.current?.focus(), 0);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       window.clearTimeout(timer);
       document.body.style.overflow = prevOverflow;
+      previousFocusRef.current?.focus?.();
     };
   }, [open]);
 
+  React.useEffect(() => {
+    if (!open) return;
+    optionRefs.current[activeIndex]?.scrollIntoView?.({ block: "nearest" });
+  }, [activeIndex, open]);
+
   if (!open) return null;
+
+  const activeOption = flatItems[activeIndex];
+  const activeDescendantId = activeOption
+    ? `${listboxId}-opt-${activeIndex}`
+    : undefined;
 
   const runItem = (item: CommandItem) => {
     onOpenChange(false);
@@ -96,18 +112,21 @@ export function TonalCommand({
       onOpenChange(false);
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      if (filtered.length > 0) {
-        setActiveIndex((i) => (i + 1) % filtered.length);
+      if (flatItems.length > 0) {
+        setActiveIndex((i) => (i + 1) % flatItems.length);
       }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      if (filtered.length > 0) {
-        setActiveIndex((i) => (i - 1 + filtered.length) % filtered.length);
+      if (flatItems.length > 0) {
+        setActiveIndex((i) => (i - 1 + flatItems.length) % flatItems.length);
       }
     } else if (e.key === "Enter") {
       e.preventDefault();
-      const target = filtered[activeIndex];
+      const target = flatItems[activeIndex];
       if (target) runItem(target);
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      inputRef.current?.focus();
     }
   };
 
@@ -135,6 +154,11 @@ export function TonalCommand({
           <input
             ref={inputRef}
             type="text"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls={listboxId}
+            aria-activedescendant={activeDescendantId}
+            aria-autocomplete="list"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
@@ -144,7 +168,10 @@ export function TonalCommand({
           {query && (
             <button
               type="button"
-              onClick={() => setQuery("")}
+              onClick={() => {
+                setQuery("");
+                inputRef.current?.focus();
+              }}
               aria-label="Clear search"
               className="h-6 w-6 rounded-full hover:bg-[var(--t-surface-muted)] grid place-items-center text-[var(--t-ink-muted)] cursor-pointer"
             >
@@ -157,6 +184,7 @@ export function TonalCommand({
         </div>
 
         <div
+          id={listboxId}
           role="listbox"
           aria-label="Command results"
           className="max-h-[360px] overflow-y-auto p-2 flex flex-col gap-2"
@@ -179,6 +207,10 @@ export function TonalCommand({
                   return (
                     <button
                       key={item.id}
+                      id={`${listboxId}-opt-${idx}`}
+                      ref={(el) => {
+                        optionRefs.current[idx] = el;
+                      }}
                       type="button"
                       role="option"
                       aria-selected={active}

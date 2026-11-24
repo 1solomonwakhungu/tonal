@@ -1,7 +1,12 @@
 import * as React from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCatalogItem, REGISTRY_CATALOG } from "@/lib/registry-catalog";
 import { PreviewFrameClient } from "@/components/preview-frame-client";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export function generateStaticParams() {
   return REGISTRY_CATALOG.map((item) => ({ slug: item.slug }));

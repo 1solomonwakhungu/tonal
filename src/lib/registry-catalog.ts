@@ -25,7 +25,7 @@ export const REGISTRY_CATALOG: CatalogItemMeta[] = [
     description:
       "Split hero with dynamic finish swatches that tint the surrounding tonal surface.",
     fullWidth: true,
-    usage: `import { EditorialHero } from "@/components/editorial-hero";
+    usage: `import { EditorialHero } from "@/components/tonal/blocks/editorial-hero";
 
 export default function Page() {
   return (
@@ -50,7 +50,7 @@ export default function Page() {
     category: "primitives",
     title: "Tonal Button",
     description: "Automatically adapts between Soft Pill and Commerce corners.",
-    usage: `import { TonalButton } from "@/components/ui/button";
+    usage: `import { TonalButton } from "@/components/tonal/button";
 
 export function Actions() {
   return (
@@ -71,7 +71,7 @@ export function Actions() {
     category: "primitives",
     title: "Surface Tile",
     description: "Depth via flat tonal steps instead of muddy drop shadows.",
-    usage: `import { SurfaceTile } from "@/components/ui/surface-tile";
+    usage: `import { SurfaceTile } from "@/components/tonal/surface-tile";
 
 <SurfaceTile tone="cool" padding="lg">
   Flat tonal container
@@ -87,7 +87,7 @@ export function Actions() {
     category: "primitives",
     title: "Tonal Chip",
     description: "Soft tinted category pills and semantic status badges.",
-    usage: `import { TonalChip } from "@/components/ui/chip";
+    usage: `import { TonalChip } from "@/components/tonal/chip";
 
 <TonalChip tone="mint">Healthy</TonalChip>`,
     props: [
@@ -99,7 +99,7 @@ export function Actions() {
     category: "primitives",
     title: "Chevron Link",
     description: "Quiet editorial inline text action with subtle animated chevron.",
-    usage: `import { ChevronLink } from "@/components/ui/chevron-link";
+    usage: `import { ChevronLink } from "@/components/tonal/chevron-link";
 
 <ChevronLink href="#specs">Compare specs</ChevronLink>`,
     props: [
@@ -112,7 +112,7 @@ export function Actions() {
     category: "primitives",
     title: "Tonal Dialog & Drawer",
     description: "Accessible modal and slide-over drawer with ESC close and focus restoration.",
-    usage: `import { TonalDialog } from "@/components/ui/dialog";
+    usage: `import { TonalDialog } from "@/components/tonal/dialog";
 
 <TonalDialog open={open} onOpenChange={setOpen} title="Create project" variant="modal">
   ...
@@ -132,7 +132,7 @@ export function Actions() {
     category: "primitives",
     title: "Tonal Form Controls",
     description: "Calm labeled input (default & pill search), select, and textarea with semantic error states.",
-    usage: `import { TonalInput, TonalSelect } from "@/components/ui/input";
+    usage: `import { TonalInput, TonalSelect } from "@/components/tonal/input";
 
 <TonalInput label="Project name" placeholder="e.g. Tonal Docs Edge" />`,
     props: [
@@ -148,7 +148,7 @@ export function Actions() {
     category: "primitives",
     title: "Tonal Segmented Control",
     description: "Accessible pill switcher with Arrow/Home/End roving keyboard navigation.",
-    usage: `import { TonalSegmentedControl } from "@/components/ui/segmented-control";
+    usage: `import { TonalSegmentedControl } from "@/components/tonal/segmented-control";
 
 <TonalSegmentedControl
   value={range}
@@ -168,7 +168,7 @@ export function Actions() {
     category: "primitives",
     title: "Tonal Toast",
     description: "Calm floating notifications with semantic tones and polite aria-live announcements.",
-    usage: `import { useTonalToast } from "@/components/ui/toast";
+    usage: `import { useTonalToast } from "@/components/tonal/toast";
 
 const { toast } = useTonalToast();
 toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
@@ -184,7 +184,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     category: "primitives",
     title: "Tonal Command Palette",
     description: "Keyboard-first ⌘K command menu with grouped results and Arrow/Enter navigation.",
-    usage: `import { TonalCommand } from "@/components/ui/command";
+    usage: `import { TonalCommand } from "@/components/tonal/command";
 
 <TonalCommand open={open} onOpenChange={setOpen} items={items} />`,
     props: [
@@ -200,7 +200,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     title: "Hairline Accordion",
     description: "Minimal editorial FAQ section with decelerating spring motion.",
     fullWidth: true,
-    usage: `import { TonalAccordion } from "@/components/ui/accordion";
+    usage: `import { TonalAccordion } from "@/components/tonal/accordion";
 
 <TonalAccordion items={[{ question: "...", answer: "..." }]} />`,
     props: [
@@ -215,7 +215,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     description:
       "Cool tonal outer workspace frame with interactive pill navigation rail, quota card, and elevated content sheet.",
     fullWidth: true,
-    usage: `import { TonalAppShell, TonalQuotaCard } from "@/components/tonal-app-shell";
+    usage: `import { TonalAppShell, TonalQuotaCard } from "@/components/tonal/blocks/tonal-app-shell";
 
 <TonalAppShell items={navItems} activeId={active} onSelect={setActive} sidebarFooter={<TonalQuotaCard />}>
   ...
@@ -235,7 +235,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     description:
       "Calm 4-column analytics KPI metric tiles with title, delta chip, crisp display figure, and subtitle.",
     fullWidth: true,
-    usage: `import { KpiGrid } from "@/components/kpi-grid";
+    usage: `import { KpiGrid } from "@/components/tonal/blocks/kpi-grid";
 
 <KpiGrid items={metrics} columns={4} />`,
     props: [
@@ -250,7 +250,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     description:
       "Zero-dependency responsive SVG throughput & trend area chart with hover and keyboard-focusable points.",
     fullWidth: true,
-    usage: `import { TonalAreaChart } from "@/components/tonal-area-chart";
+    usage: `import { TonalAreaChart } from "@/components/tonal/blocks/tonal-area-chart";
 
 <TonalAreaChart title="Request throughput" points={points} valueSuffix="K requests" />`,
     props: [
@@ -267,7 +267,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     description:
       "Interactive pill search field, status filter chips, and hairline data table with hover highlights and resettable empty state.",
     fullWidth: true,
-    usage: `import { TonalTable } from "@/components/tonal-table";
+    usage: `import { TonalTable } from "@/components/tonal/blocks/tonal-table";
 
 <TonalTable title="Services" rows={rows} />`,
     props: [
@@ -284,7 +284,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     description:
       "Interactive calm AI studio capability switcher inside a cool tonal stage with prompt and grounded response panels.",
     fullWidth: true,
-    usage: `import { CapabilityTabs } from "@/components/capability-tabs";
+    usage: `import { CapabilityTabs } from "@/components/tonal/blocks/capability-tabs";
 
 <CapabilityTabs items={capabilities} />`,
     props: [
@@ -300,7 +300,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     description:
       "Clean 2-tier editorial pricing cards pairing a bordered canvas tier with a cool tonal recommended tier and checkmark list.",
     fullWidth: true,
-    usage: `import { PricingGrid } from "@/components/pricing-grid";
+    usage: `import { PricingGrid } from "@/components/tonal/blocks/pricing-grid";
 
 <PricingGrid tiers={tiers} onSelectTier={(tier) => console.log(tier.id)} />`,
     props: [
@@ -317,7 +317,7 @@ toast({ title: "Saved", description: "Tokens copied.", tone: "success" });`,
     description:
       "Flagship storefront hairline side-by-side model specifications comparison table.",
     fullWidth: true,
-    usage: `import { SpecsTable } from "@/components/specs-table";
+    usage: `import { SpecsTable } from "@/components/tonal/blocks/specs-table";
 
 <SpecsTable title="Compare Lumen 10 models" models={models} rows={rows} />`,
     props: [

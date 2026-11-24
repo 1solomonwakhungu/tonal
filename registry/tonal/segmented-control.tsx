@@ -39,6 +39,10 @@ export function TonalSegmentedControl<T extends string = string>({
   );
   const current = value ?? internal;
   const buttonRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
+  const activeIdx = Math.max(
+    0,
+    options.findIndex((o) => o.value === current)
+  );
 
   const select = (next: T) => {
     if (value === undefined) setInternal(next);
@@ -63,7 +67,7 @@ export function TonalSegmentedControl<T extends string = string>({
 
   return (
     <div
-      role="tablist"
+      role="radiogroup"
       aria-label={ariaLabel}
       className={cn(
         "inline-flex flex-wrap items-center gap-0.5 rounded-full bg-[var(--t-surface-muted)] p-1 border border-[var(--t-border-subtle)]",
@@ -80,9 +84,9 @@ export function TonalSegmentedControl<T extends string = string>({
               buttonRefs.current[idx] = el;
             }}
             type="button"
-            role="tab"
-            aria-selected={active}
-            tabIndex={active ? 0 : -1}
+            role="radio"
+            aria-checked={active}
+            tabIndex={idx === activeIdx ? 0 : -1}
             onClick={() => select(opt.value)}
             onKeyDown={(e) => handleKeyDown(e, idx)}
             className={cn(
